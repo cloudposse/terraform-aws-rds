@@ -29,29 +29,28 @@ variable "database_password" {}
 
 variable "database_port" {}
 
-variable "rds_is_multi_az" {
+variable "multi_az" {
   description = "Set to true if multi AZ deployment must be supported"
   default     = false
 }
 
-variable "rds_storage_type" {
+variable "storage_type" {
   description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD)."
   default     = "standard"
 }
 
-variable "rds_iops" {
+variable "iops" {
   description = "The amount of provisioned IOPS. Setting this implies a storage_type of 'io1'. Default is 0 if rds storage type is not 'io1'"
   default     = "0"
 }
 
-variable "rds_allocated_storage" {
+variable "allocated_storage" {
   description = "The allocated storage in GBs"
   # Number, e.g. 10
 }
 
-variable "rds_engine_type" {
+variable "engine" {
   description = "Database engine type"
-
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
   # - mysql
   # - postgres
@@ -59,17 +58,17 @@ variable "rds_engine_type" {
   # - sqlserver-*
 }
 
-variable "rds_engine_version" {
+variable "engine_version" {
   description = "Database engine version, depends on engine type"
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
 }
 
-variable "rds_instance_class" {
+variable "instance_class" {
   description = "Class of RDS instance"
   # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 }
 
-# This is for a custom parameter to be passed to the DB
+# This is for custom parameters to be passed to the DB
 # We're "cloning" default ones, but we need to specify which should be copied
 variable "db_parameter_group" {
   description = "Parameter group, depends on DB engine used"

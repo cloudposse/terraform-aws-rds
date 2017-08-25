@@ -1,12 +1,12 @@
-output "rds_instance_id" {
+output "instance_id" {
   value = "${aws_db_instance.default.id}"
 }
 
-output "rds_instance_address" {
+output "instance_address" {
   value = "${aws_db_instance.default.address}"
 }
 
-output "rds_instance_endpoint" {
+output "instance_endpoint" {
   value = "${aws_db_instance.default.endpoint}"
 }
 
@@ -16,6 +16,10 @@ output "subnet_group_id" {
 
 output "security_group_id" {
   value = "${aws_security_group.default.id}"
+}
+
+output "parameter_group_id" {
+  value = "${aws_db_parameter_group.default.id}"
 }
 
 output "hostname" {

@@ -23,13 +23,13 @@ The module will create:
 - `database_user` - Admin user name (_e.g._ `admin`)
 - `database_password` - Admin password
 - `database_port` - Database port (_e.g._ `3306` for `MySQL`). Used in the DB Security Group to allow access to the DB instance from the provided `security_group_ids`
-- `rds_is_multi_az` - Default `false`. Set to `true` for a multi-AZ deployment (recommended for production)
-- `rds_storage_type` - One of `standard` (magnetic), `gp2` (general purpose SSD), or `io1` (provisioned IOPS SSD). Default `standard` (magnetic)
-- `rds_iops` - The amount of provisioned IOPS. Setting this implies a storage_type of `io1`. Default is `0` if rds storage type is not `io1`
-- `rds_allocated_storage` - The number of GBs to allocate for DB storage. Must be an integer, _e.g._ `10`
-- `rds_engine_type` - Engine type, such as `mysql` or `postgres`
-- `rds_engine_version` - DB Engine version, _e.g._ `9.5.4` for `Postgres`
-- `rds_instance_class` - Instance class, _e.g._ `db.t2.micro`
+- `multi_az` - Default `false`. Set to `true` for a multi-AZ deployment (recommended for production)
+- `storage_type` - One of `standard` (magnetic), `gp2` (general purpose SSD), or `io1` (provisioned IOPS SSD). Default `standard` (magnetic)
+- `iops` - The amount of provisioned IOPS. Setting this implies a storage_type of `io1`. Default is `0` if rds storage type is not `io1`
+- `allocated_storage` - The number of GBs to allocate for DB storage. Must be an integer, _e.g._ `10`
+- `engine` - Engine type, such as `mysql` or `postgres`
+- `engine_version` - DB Engine version, _e.g._ `9.5.4` for `Postgres`
+- `instance_class` - Instance class, _e.g._ `db.t2.micro`
 - `db_parameter_group` - DB Parameter Group, _e.g._ `mysql5.6` for MySQL, `postgres9.5` for `Postgres`
 - `publicly_accessible` - Determines if the DB instance can be publicly accessed from the Internet. Default `false`
 - `subnet_ids` - List of subnets IDs in the VPC, _e.g._ `["sb-1234567890", "sb-0987654321"]`
@@ -47,12 +47,13 @@ The module will create:
 
 ## Outputs
 
-- `rds_instance_id` - The ID of the RDS instance
-- `rds_instance_address` - The Address of the RDS instance
-- `rds_instance_endpoint` - The DNS Endpoint of the RDS instance
-- `subnet_group_id` - The ID of the Subnet Group
-- `security_group_id` - The ID of the Subnet Group
-- `hostname` - The DNS host name of the RDS instance
+- `instance_id` - ID of the instance
+- `instance_address` - Address of the instance
+- `instance_endpoint` - DNS Endpoint of the instance
+- `subnet_group_id` - ID of the Subnet Group
+- `security_group_id` - ID of the Security Group
+- `parameter_group_id` - ID of the Parameter Group
+- `hostname` - DNS host name of the instance
 
 
 
@@ -72,12 +73,12 @@ module "rds_instance" {
       database_user               = "admin"
       database_password           = "xxxxxxxxxxxx"
       database_port               = 3306
-      rds_is_multi_az             = true
-      rds_storage_type            = "gp2"
-      rds_allocated_storage       = "100"
-      rds_engine_type             = "mysql"
-      rds_engine_version          = "5.7.17"
-      rds_instance_class          = "db.t2.medium"
+      multi_az                    = true
+      storage_type                = "gp2"
+      allocated_storage           = "100"
+      engine                      = "mysql"
+      engine_version              = "5.7.17"
+      instance_class              = "db.t2.medium"
       db_parameter_group          = "mysql5.6"
       publicly_accessible         = false
       subnet_ids                  = ["sb-xxxxxxxxx", "sb-xxxxxxxxx"]
