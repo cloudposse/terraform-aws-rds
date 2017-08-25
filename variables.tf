@@ -1,9 +1,9 @@
-variable "namespace" {
-  default = "global"
-}
-
 variable "stage" {
   default = "default"
+}
+
+variable "namespace" {
+  default = "global"
 }
 
 variable "name" {
@@ -21,16 +21,16 @@ variable "security_group_ids" {
   type = "list"
 }
 
-variable "rds_instance_identifier" {
-  description = "Name of the instance"
-}
+variable "database_name" {}
 
-variable "database_name" {
-  default = "db"
-}
+variable "database_user" {}
+
+variable "database_password" {}
+
+variable "database_port" {}
 
 variable "rds_is_multi_az" {
-  description = "Set to true on production"
+  description = "Set to true if multi AZ deployment must be supported"
   default     = false
 }
 
@@ -40,7 +40,7 @@ variable "rds_storage_type" {
 }
 
 variable "rds_iops" {
-  description = "The amount of provisioned IOPS. Setting this implies a storage_type of 'io1', default is 0 if rds storage type is not io1"
+  description = "The amount of provisioned IOPS. Setting this implies a storage_type of 'io1'. Default is 0 if rds storage type is not 'io1'"
   default     = "0"
 }
 
@@ -69,6 +69,28 @@ variable "rds_instance_class" {
   # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 }
 
+# This is for a custom parameter to be passed to the DB
+# We're "cloning" default ones, but we need to specify which should be copied
+variable "db_parameter_group" {
+  description = "Parameter group, depends on DB engine used"
+  # "mysql5.6"
+  # "postgres9.5"
+}
+
+variable "publicly_accessible" {
+  description = "Determines if database can be publicly available (NOT recommended)"
+  default     = false
+}
+
+variable "subnet_ids" {
+  description = "List of subnets for the DB"
+  type        = "list"
+}
+
+variable "vpc_id" {
+  type = "string"
+}
+
 variable "auto_minor_version_upgrade" {
   description = "Allow automated minor version upgrade"
   default     = true
@@ -89,33 +111,6 @@ variable "maintenance_window" {
   default     = "Mon:03:00-Mon:04:00"
 }
 
-variable "database_user" {}
-variable "database_password" {}
-variable "database_port" {}
-
-# This is for a custom parameter to be passed to the DB
-# We're "cloning" default ones, but we need to specify which should be copied
-variable "db_parameter_group" {
-  description = "Parameter group, depends on DB engine used"
-
-  # default = "mysql5.6"
-  # default = "postgres9.5"
-}
-
-variable "publicly_accessible" {
-  description = "Determines if database can be publicly available (NOT recommended)"
-  default     = false
-}
-
-variable "subnet_ids" {
-  description = "List of subnets for the DB"
-  type        = "list"
-}
-
-variable "rds_vpc_id" {
-  type = "string"
-}
-
 variable "skip_final_snapshot" {
   description = "If true (default), no snapshot will be made before deleting DB"
   default     = true
@@ -126,13 +121,12 @@ variable "copy_tags_to_snapshot" {
   default     = true
 }
 
-variable "backup_window" {
-  description = "When AWS can run snapshot, can't overlap with maintenance window"
-  default     = "22:00-03:00"
+variable "backup_retention_period" {
+  description = "Backup retention period in days. Must be > 0 to enable backups"
+  default     = 0
 }
 
-variable "backup_retention_period" {
-  type        = "string"
-  description = "How long will we retain backups"
-  default     = 0
+variable "backup_window" {
+  description = "When AWS can perform DB snapshots, can't overlap with maintenance window"
+  default     = "22:00-03:00"
 }

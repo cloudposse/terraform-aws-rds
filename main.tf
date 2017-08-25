@@ -11,32 +11,25 @@ resource "aws_db_instance" "default" {
   username                    = "${var.database_user}"
   password                    = "${var.database_password}"
   port                        = "${var.database_port}"
-
   engine                      = "${var.rds_engine_type}"
   engine_version              = "${var.rds_engine_version}"
   instance_class              = "${var.rds_instance_class}"
   allocated_storage           = "${var.rds_allocated_storage}"
-
   vpc_security_group_ids      = ["${aws_security_group.default.id}"]
   db_subnet_group_name        = "${aws_db_subnet_group.default.name}"
   parameter_group_name        = "${aws_db_parameter_group.default.name}"
-
   multi_az                    = "${var.rds_is_multi_az}"
   storage_type                = "${var.rds_storage_type}"
   iops                        = "${var.rds_iops}"
   publicly_accessible         = "${var.publicly_accessible}"
-
   allow_major_version_upgrade = "${var.allow_major_version_upgrade}"
   auto_minor_version_upgrade  = "${var.auto_minor_version_upgrade}"
   apply_immediately           = "${var.apply_immediately}"
   maintenance_window          = "${var.maintenance_window}"
-
   skip_final_snapshot         = "${var.skip_final_snapshot}"
   copy_tags_to_snapshot       = "${var.copy_tags_to_snapshot}"
-
   backup_retention_period     = "${var.backup_retention_period}"
   backup_window               = "${var.backup_window}"
-
   tags                        = "${module.label.tags}"
 }
 
@@ -55,7 +48,7 @@ resource "aws_db_subnet_group" "default" {
 resource "aws_security_group" "default" {
   name        = "${module.label.id}"
   description = "Allow inbound traffic from the security groups"
-  vpc_id      = "${var.rds_vpc_id}"
+  vpc_id      = "${var.vpc_id}"
 
   ingress {
     from_port       = "${var.database_port}"
