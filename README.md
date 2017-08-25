@@ -1,2 +1,2 @@
 # tf_rds
-Terraform Template for AWS RDS
+Terraform module for AWS RDS

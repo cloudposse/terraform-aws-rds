@@ -1,0 +1,84 @@
+module "label" {
+  source    = "git::https://github.com/cloudposse/tf_label.git?ref=tags/0.2.0"
+  namespace = "${var.namespace}"
+  name      = "${var.name}"
+  stage     = "${var.stage}"
+}
+
+resource "aws_db_instance" "default" {
+  identifier                  = "${module.label.id}"
+  name                        = "${var.database_name}"
+  username                    = "${var.database_user}"
+  password                    = "${var.database_password}"
+  port                        = "${var.database_port}"
+
+  engine                      = "${var.rds_engine_type}"
+  engine_version              = "${var.rds_engine_version}"
+  instance_class              = "${var.rds_instance_class}"
+  allocated_storage           = "${var.rds_allocated_storage}"
+
+  vpc_security_group_ids      = ["${aws_security_group.default.id}"]
+  db_subnet_group_name        = "${aws_db_subnet_group.default.name}"
+  parameter_group_name        = "${aws_db_parameter_group.default.name}"
+
+  multi_az                    = "${var.rds_is_multi_az}"
+  storage_type                = "${var.rds_storage_type}"
+  iops                        = "${var.rds_iops}"
+  publicly_accessible         = "${var.publicly_accessible}"
+
+  allow_major_version_upgrade = "${var.allow_major_version_upgrade}"
+  auto_minor_version_upgrade  = "${var.auto_minor_version_upgrade}"
+  apply_immediately           = "${var.apply_immediately}"
+  maintenance_window          = "${var.maintenance_window}"
+
+  skip_final_snapshot         = "${var.skip_final_snapshot}"
+  copy_tags_to_snapshot       = "${var.copy_tags_to_snapshot}"
+
+  backup_retention_period     = "${var.backup_retention_period}"
+  backup_window               = "${var.backup_window}"
+
+  tags                        = "${module.label.tags}"
+}
+
+resource "aws_db_parameter_group" "default" {
+  name   = "${module.label.id}"
+  family = "${var.db_parameter_group}"
+  tags   = "${module.label.tags}"
+}
+
+resource "aws_db_subnet_group" "default" {
+  name       = "${module.label.id}"
+  subnet_ids = ["${var.subnet_ids}"]
+  tags       = "${module.label.tags}"
+}
+
+resource "aws_security_group" "default" {
+  name        = "${module.label.id}"
+  description = "Allow inbound traffic from the security groups"
+  vpc_id      = "${var.rds_vpc_id}"
+
+  ingress {
+    from_port       = "${var.database_port}"
+    to_port         = "${var.database_port}"
+    protocol        = "tcp"
+    security_groups = ["${var.security_group_ids}"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags        = "${module.label.tags}"
+}
+
+module "dns_host_name" {
+  source    = "git::https://github.com/cloudposse/tf_hostname.git?ref=tags/0.1.0"
+  namespace = "${var.namespace}"
+  name      = "${var.host_name}"
+  stage     = "${var.stage}"
+  zone_id   = "${var.dns_zone_id}"
+  records   = ["${aws_db_instance.default.endpoint}"]
+}
