@@ -129,3 +129,18 @@ variable "backup_window" {
   description = "When AWS can perform DB snapshots, can't overlap with maintenance window"
   default     = "22:00-03:00"
 }
+
+variable "delimiter" {
+  type    = "string"
+  default = "-"
+}
+
+variable "attributes" {
+  type    = "list"
+  default = []
+}
+
+variable "tags" {
+  type    = "map"
+  default = {}
+}
