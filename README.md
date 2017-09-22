@@ -1,5 +1,6 @@
-# tf_rds
-Terraform module for AWS RDS
+# terraform-aws-rds
+
+Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/) instances
 
 
 The module will create:
@@ -60,9 +61,9 @@ The module will create:
 ## Usage
 
 
-```
+```hcl
 module "rds_instance" {
-      source                      = "git::https://github.com/cloudposse/tf_rds.git?ref=tags/0.1.0"
+      source                      = "git::https://github.com/cloudposse/terraform-aws-rds.git?ref=master"
       stage                       = "prod"
       namespace                   = "cloudposse"
       name                        = "app"
@@ -95,6 +96,6 @@ module "rds_instance" {
 ```
 
 
-# License
+## License
 
-Apache 2 Licensed. See LICENSE for full details.
+Apache 2 License. See [`LICENSE`](LICENSE) for full details.

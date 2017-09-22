@@ -10,8 +10,7 @@ variable "name" {
   default = "app"
 }
 
-variable "dns_zone_id" {
-}
+variable "dns_zone_id" {}
 
 variable "host_name" {
   default = "db"
@@ -46,11 +45,13 @@ variable "iops" {
 
 variable "allocated_storage" {
   description = "The allocated storage in GBs"
+
   # Number, e.g. 10
 }
 
 variable "engine" {
   description = "Database engine type"
+
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
   # - mysql
   # - postgres
@@ -60,11 +61,13 @@ variable "engine" {
 
 variable "engine_version" {
   description = "Database engine version, depends on engine type"
+
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
 }
 
 variable "instance_class" {
   description = "Class of RDS instance"
+
   # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 }
 
@@ -72,6 +75,7 @@ variable "instance_class" {
 # We're "cloning" default ones, but we need to specify which should be copied
 variable "db_parameter_group" {
   description = "Parameter group, depends on DB engine used"
+
   # "mysql5.6"
   # "postgres9.5"
 }
