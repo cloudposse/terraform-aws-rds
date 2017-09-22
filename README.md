@@ -1,6 +1,6 @@
 # terraform-aws-rds
 
-Terraform module to provision AWS RDS instances
+Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/) instances
 
 
 The module will create:
