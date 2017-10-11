@@ -37,9 +37,10 @@ resource "aws_db_instance" "default" {
 }
 
 resource "aws_db_parameter_group" "default" {
-  name   = "${module.label.id}"
-  family = "${var.db_parameter_group}"
-  tags   = "${module.label.tags}"
+  name      = "${module.label.id}"
+  family    = "${var.db_parameter_group}"
+  tags      = "${module.label.tags}"
+  parameter = "${var.db_parameter}"
 }
 
 resource "aws_db_subnet_group" "default" {

@@ -148,3 +148,8 @@ variable "tags" {
   type    = "map"
   default = {}
 }
+
+variable "db_parameter" {
+  type = "list"
+  default = []
+}

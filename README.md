@@ -43,6 +43,7 @@ The module will create:
 - `copy_tags_to_snapshot` - Copy all tags from RDS database to snapshot. Default `true`
 - `backup_retention_period` - Backup retention period in days (default `0`). Must be `> 0` to enable backups
 - `backup_window` - When to perform DB snapshots. Default `"22:00-03:00"`. Can't overlap with the maintenance window
+- `db_parameter` -  A list of DB parameters to apply. Note that parameters may differ from a family to an other.
 
 
 
@@ -92,6 +93,11 @@ module "rds_instance" {
       copy_tags_to_snapshot       = true
       backup_retention_period     = 7
       backup_window               = "22:00-03:00"
+
+      db_parameter                = [
+        { name  = "myisam_sort_buffer_size"   value = "1048576" },
+        { name  = "sort_buffer_size"          value = "2097152" },
+      ]
 }
 ```
 
