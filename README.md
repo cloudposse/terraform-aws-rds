@@ -28,6 +28,7 @@ The module will create:
 - `storage_type` - One of `standard` (magnetic), `gp2` (general purpose SSD), or `io1` (provisioned IOPS SSD). Default `standard` (magnetic)
 - `iops` - The amount of provisioned IOPS. Setting this implies a storage_type of `io1`. Default is `0` if rds storage type is not `io1`
 - `allocated_storage` - The number of GBs to allocate for DB storage. Must be an integer, _e.g._ `10`
+- `storage_encrypted` - (Optional) Specifies whether the DB instance is encrypted. The default is false if not specified.
 - `engine` - Engine type, such as `mysql` or `postgres`
 - `engine_version` - DB Engine version, _e.g._ `9.5.4` for `Postgres`
 - `instance_class` - Instance class, _e.g._ `db.t2.micro`
@@ -77,6 +78,7 @@ module "rds_instance" {
       multi_az                    = true
       storage_type                = "gp2"
       allocated_storage           = "100"
+      storage_encrypted           = true
       engine                      = "mysql"
       engine_version              = "5.7.17"
       instance_class              = "db.t2.medium"
