@@ -25,6 +25,7 @@ resource "aws_db_instance" "default" {
   storage_type                = "${var.storage_type}"
   iops                        = "${var.iops}"
   publicly_accessible         = "${var.publicly_accessible}"
+  snapshot_identifier         = "${var.snapshot_identifier}"
   allow_major_version_upgrade = "${var.allow_major_version_upgrade}"
   auto_minor_version_upgrade  = "${var.auto_minor_version_upgrade}"
   apply_immediately           = "${var.apply_immediately}"

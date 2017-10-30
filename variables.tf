@@ -153,3 +153,7 @@ variable "db_parameter" {
   type = "list"
   default = []
 }
+
+variable "snapshot_identifier" {
+  default = ""
+}
