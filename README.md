@@ -44,7 +44,7 @@ The module will create:
 - `backup_retention_period` - Backup retention period in days (default `0`). Must be `> 0` to enable backups
 - `backup_window` - When to perform DB snapshots. Default `"22:00-03:00"`. Can't overlap with the maintenance window
 - `db_parameter` -  A list of DB parameters to apply. Note that parameters may differ from a family to an other
-- `snapshot_identifier` - Specifies whether or not to create this database from a snapshot. This correlates to the snapshot ID you'd find in the RDS console, e.g: rds:production-2015-06-26-06-05
+- `snapshot_identifier` - Specifies whether or not to create this database from a snapshot. This correlates to the snapshot ID you'd find in the RDS console, e.g: `rds:production-2015-06-26-06-05`
 
 
 ## Outputs
