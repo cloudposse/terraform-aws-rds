@@ -25,6 +25,7 @@ resource "aws_db_instance" "default" {
   storage_type                = "${var.storage_type}"
   iops                        = "${var.iops}"
   publicly_accessible         = "${var.publicly_accessible}"
+  snapshot_identifier         = "${var.snapshot_identifier}"
   allow_major_version_upgrade = "${var.allow_major_version_upgrade}"
   auto_minor_version_upgrade  = "${var.auto_minor_version_upgrade}"
   apply_immediately           = "${var.apply_immediately}"
@@ -34,6 +35,7 @@ resource "aws_db_instance" "default" {
   backup_retention_period     = "${var.backup_retention_period}"
   backup_window               = "${var.backup_window}"
   tags                        = "${module.label.tags}"
+  final_snapshot_identifier   = "${var.final_snapshot_identifier}"
 }
 
 resource "aws_db_parameter_group" "default" {
