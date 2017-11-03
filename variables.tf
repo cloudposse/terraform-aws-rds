@@ -159,3 +159,6 @@ variable "snapshot_identifier" {
   default = ""
 }
 
+variable "final_snapshot_identifier" {
+  default = ""
+}
