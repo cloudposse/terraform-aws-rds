@@ -158,7 +158,3 @@ variable "snapshot_identifier" {
   description = "Snapshot name e.g: rds:production-2015-06-26-06-05"
   default = ""
 }
-
-variable "final_snapshot_identifier" {
-  default = ""
-}

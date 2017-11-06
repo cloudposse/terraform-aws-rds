@@ -35,7 +35,7 @@ resource "aws_db_instance" "default" {
   backup_retention_period     = "${var.backup_retention_period}"
   backup_window               = "${var.backup_window}"
   tags                        = "${module.label.tags}"
-  final_snapshot_identifier   = "${var.final_snapshot_identifier}"
+  final_snapshot_identifier   = "${module.label.namespace}-${module.label.stage}-${module.label.name}-final-snapshot-${md5(timestamp())}"
 }
 
 resource "aws_db_parameter_group" "default" {
