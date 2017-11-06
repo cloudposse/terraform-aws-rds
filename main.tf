@@ -3,10 +3,18 @@ module "label" {
   namespace  = "${var.namespace}"
   name       = "${var.name}"
   stage      = "${var.stage}"
-  delimiter  = "${var.delimiter}"
   attributes = "${var.attributes}"
   tags       = "${var.tags}"
 }
+
+module "final_snapshot_label" {
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.2.1"
+  namespace  = "${var.namespace}"
+  name       = "${var.name}"
+  stage      = "${var.stage}"
+  attributes = ["${compact(concat(var.attributes, list("final", "snapshot", "${md5(timestamp())}")))}"]
+}
+
 
 resource "aws_db_instance" "default" {
   identifier                  = "${module.label.id}"
@@ -35,7 +43,7 @@ resource "aws_db_instance" "default" {
   backup_retention_period     = "${var.backup_retention_period}"
   backup_window               = "${var.backup_window}"
   tags                        = "${module.label.tags}"
-  final_snapshot_identifier   = "${module.label.namespace}-${module.label.stage}-${module.label.name}-final-snapshot-${md5(timestamp())}"
+  final_snapshot_identifier   = "${module.final_snapshot_label.id}"
 }
 
 resource "aws_db_parameter_group" "default" {
