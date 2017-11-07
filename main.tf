@@ -3,6 +3,7 @@ module "label" {
   namespace  = "${var.namespace}"
   name       = "${var.name}"
   stage      = "${var.stage}"
+  delimiter  = "${var.delimiter}"
   attributes = "${var.attributes}"
   tags       = "${var.tags}"
 }
@@ -12,6 +13,7 @@ module "final_snapshot_label" {
   namespace  = "${var.namespace}"
   name       = "${var.name}"
   stage      = "${var.stage}"
+  delimiter  = "${var.delimiter}"
   attributes = ["${compact(concat(var.attributes, list("final", "snapshot", "${md5(timestamp())}")))}"]
 }
 
@@ -43,7 +45,7 @@ resource "aws_db_instance" "default" {
   backup_retention_period     = "${var.backup_retention_period}"
   backup_window               = "${var.backup_window}"
   tags                        = "${module.label.tags}"
-  final_snapshot_identifier   = "${module.final_snapshot_label.id}"
+  final_snapshot_identifier   = "${length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id}"
 }
 
 resource "aws_db_parameter_group" "default" {
