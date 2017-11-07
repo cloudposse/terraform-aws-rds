@@ -160,5 +160,7 @@ variable "snapshot_identifier" {
 }
 
 variable "final_snapshot_identifier" {
+  description = "Identifier e.g.: some-db-final-snapshot-2015-06-26-06-05"
+  type = "string"
   default = ""
 }
