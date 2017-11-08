@@ -30,7 +30,7 @@ variable "database_port" {}
 
 variable "multi_az" {
   description = "Set to true if multi AZ deployment must be supported"
-  default     = false
+  default     = "false"
 }
 
 variable "storage_type" {
@@ -39,8 +39,8 @@ variable "storage_type" {
 }
 
 variable "storage_encrypted" {
-  description = "(Optional) Specifies whether the DB instance is encrypted. The default is false if not specified."  
-  default     = false
+  description = "(Optional) Specifies whether the DB instance is encrypted. The default is false if not specified."
+  default     = "false"
 }
 
 variable "iops" {
@@ -87,7 +87,7 @@ variable "db_parameter_group" {
 
 variable "publicly_accessible" {
   description = "Determines if database can be publicly available (NOT recommended)"
-  default     = false
+  default     = "false"
 }
 
 variable "subnet_ids" {
@@ -101,17 +101,17 @@ variable "vpc_id" {
 
 variable "auto_minor_version_upgrade" {
   description = "Allow automated minor version upgrade"
-  default     = true
+  default     = "true"
 }
 
 variable "allow_major_version_upgrade" {
   description = "Allow major version upgrade"
-  default     = false
+  default     = "false"
 }
 
 variable "apply_immediately" {
   description = "Specifies whether any database modifications are applied immediately, or during the next maintenance window"
-  default     = false
+  default     = "false"
 }
 
 variable "maintenance_window" {
@@ -121,12 +121,12 @@ variable "maintenance_window" {
 
 variable "skip_final_snapshot" {
   description = "If true (default), no snapshot will be made before deleting DB"
-  default     = true
+  default     = "true"
 }
 
 variable "copy_tags_to_snapshot" {
   description = "Copy tags from DB to a snapshot"
-  default     = true
+  default     = "true"
 }
 
 variable "backup_retention_period" {
@@ -155,17 +155,22 @@ variable "tags" {
 }
 
 variable "db_parameter" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
 variable "snapshot_identifier" {
   description = "Snapshot name e.g: rds:production-2015-06-26-06-05"
-  default = ""
+  default     = ""
 }
 
 variable "final_snapshot_identifier" {
   description = "Identifier e.g.: some-db-final-snapshot-2015-06-26-06-05"
-  type = "string"
-  default = ""
+  type        = "string"
+  default     = ""
+}
+
+variable "parameter_group_name" {
+  description = "Name of the DB parameter group to associate"
+  default     = ""
 }

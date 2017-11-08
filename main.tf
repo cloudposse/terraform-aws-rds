@@ -17,7 +17,6 @@ module "final_snapshot_label" {
   attributes = ["${compact(concat(var.attributes, list("final", "snapshot", "${md5(timestamp())}")))}"]
 }
 
-
 resource "aws_db_instance" "default" {
   identifier                  = "${module.label.id}"
   name                        = "${var.database_name}"
@@ -31,7 +30,7 @@ resource "aws_db_instance" "default" {
   storage_encrypted           = "${var.storage_encrypted}"
   vpc_security_group_ids      = ["${aws_security_group.default.id}"]
   db_subnet_group_name        = "${aws_db_subnet_group.default.name}"
-  parameter_group_name        = "${aws_db_parameter_group.default.name}"
+  parameter_group_name        = "${length(var.parameter_group_name) > 0 ? var.parameter_group_name : aws_db_parameter_group.default.name}"
   multi_az                    = "${var.multi_az}"
   storage_type                = "${var.storage_type}"
   iops                        = "${var.iops}"
@@ -50,6 +49,7 @@ resource "aws_db_instance" "default" {
 }
 
 resource "aws_db_parameter_group" "default" {
+  count     = "${length(var.parameter_group_name) == 0 ? 1 : 0}"
   name      = "${module.label.id}"
   family    = "${var.db_parameter_group}"
   tags      = "${module.label.tags}"
