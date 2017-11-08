@@ -47,7 +47,7 @@ The module will create:
 - `db_parameter` -  A list of DB parameters to apply. Note that parameters may differ from a family to an other
 - `snapshot_identifier` - Specifies whether or not to create this database from a snapshot. This correlates to the snapshot ID you'd find in the RDS console, e.g: `rds:production-2015-06-26-06-05`
 - `final_snapshot_identifier` - Specifies whether or not to create a final snapshot for this database when destroing. This option **must** be set if `skip_final_snapshot` = `false`. E.g.: `"dbname-final-snapshot-${md5(timestamp())}"`
-
+- `parameter_group_name` - (Optional) Name of the DB parameter group to associate (e.g. `mysql-5-6`)
 
 ## Outputs
 
@@ -85,6 +85,7 @@ module "rds_instance" {
       engine_version              = "5.7.17"
       instance_class              = "db.t2.medium"
       db_parameter_group          = "mysql5.6"
+      parameter_group_name        = "mysql-5-6"
       publicly_accessible         = "false"
       subnet_ids                  = ["sb-xxxxxxxxx", "sb-xxxxxxxxx"]
       vpc_id                      = "vpc-xxxxxxxx"
