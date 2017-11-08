@@ -38,6 +38,11 @@ variable "storage_type" {
   default     = "standard"
 }
 
+variable "storage_encrypted" {
+  description = "(Optional) Specifies whether the DB instance is encrypted. The default is false if not specified."  
+  default     = false
+}
+
 variable "iops" {
   description = "The amount of provisioned IOPS. Setting this implies a storage_type of 'io1'. Default is 0 if rds storage type is not 'io1'"
   default     = "0"

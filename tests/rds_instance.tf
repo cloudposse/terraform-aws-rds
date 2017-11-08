@@ -13,6 +13,7 @@ module "rds_instance" {
   multi_az                    = true
   storage_type                = "gp2"
   allocated_storage           = "100"
+  storage_encrypted           = false
   engine                      = "mysql"
   engine_version              = "5.7.17"
   instance_class              = "db.t2.medium"
