@@ -14,7 +14,7 @@ module "final_snapshot_label" {
   name       = "${var.name}"
   stage      = "${var.stage}"
   delimiter  = "${var.delimiter}"
-  attributes = ["${compact(concat(var.attributes, list("final", "snapshot", "${md5(timestamp())}")))}"]
+  attributes = ["${compact(concat(var.attributes, list("final", "snapshot")))}"]
 }
 
 resource "aws_db_instance" "default" {
@@ -90,5 +90,5 @@ module "dns_host_name" {
   name      = "${var.host_name}"
   stage     = "${var.stage}"
   zone_id   = "${var.dns_zone_id}"
-  records   = ["${aws_db_instance.default.endpoint}"]
+  records   = ["${aws_db_instance.default.address}"]
 }
