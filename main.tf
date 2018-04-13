@@ -1,5 +1,5 @@
 module "label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.2.1"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.3"
   namespace  = "${var.namespace}"
   name       = "${var.name}"
   stage      = "${var.stage}"
@@ -9,12 +9,13 @@ module "label" {
 }
 
 module "final_snapshot_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.2.1"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.3"
   namespace  = "${var.namespace}"
   name       = "${var.name}"
   stage      = "${var.stage}"
   delimiter  = "${var.delimiter}"
   attributes = ["${compact(concat(var.attributes, list("final", "snapshot")))}"]
+  tags       = "${var.tags}"
 }
 
 resource "aws_db_instance" "default" {
@@ -85,7 +86,7 @@ resource "aws_security_group" "default" {
 }
 
 module "dns_host_name" {
-  source    = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.1.1"
+  source    = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.2.2"
   namespace = "${var.namespace}"
   name      = "${var.host_name}"
   stage     = "${var.stage}"
