@@ -1,7 +1,7 @@
 module "rds_instance" {
-  source                      = "git::https://github.com/cloudposse/tf_rds.git?ref=tags/0.1.0"
+  source                      = "git::https://github.com/cloudposse/terraform-aws-rds.git?ref=master"
+  namespace                   = "cp"
   stage                       = "prod"
-  namespace                   = "cloudposse"
   name                        = "app"
   dns_zone_id                 = "Z89FN1IW975KPE"
   host_name                   = "db"
@@ -13,14 +13,16 @@ module "rds_instance" {
   multi_az                    = "true"
   storage_type                = "gp2"
   allocated_storage           = "100"
-  storage_encrypted           = "false"
+  storage_encrypted           = "true"
   engine                      = "mysql"
   engine_version              = "5.7.17"
   instance_class              = "db.t2.medium"
   db_parameter_group          = "mysql5.6"
+  parameter_group_name        = "mysql-5-6"
   publicly_accessible         = "false"
   subnet_ids                  = ["sb-xxxxxxxxx", "sb-xxxxxxxxx"]
   vpc_id                      = "vpc-xxxxxxxx"
+  snapshot_identifier         = "rds:production-2015-06-26-06-05"
   auto_minor_version_upgrade  = "true"
   allow_major_version_upgrade = "false"
   apply_immediately           = "false"
@@ -29,4 +31,17 @@ module "rds_instance" {
   copy_tags_to_snapshot       = "true"
   backup_retention_period     = 7
   backup_window               = "22:00-03:00"
+
+  db_parameter = [
+    {
+      name = "myisam_sort_buffer_size"
+
+      value = "1048576"
+    },
+    {
+      name = "sort_buffer_size"
+
+      value = "2097152"
+    },
+  ]
 }

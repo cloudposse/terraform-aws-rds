@@ -19,7 +19,7 @@ output "security_group_id" {
 }
 
 output "parameter_group_id" {
-  value = "${aws_db_parameter_group.default.id}"
+  value = "${join("", aws_db_parameter_group.default.*.id)}"
 }
 
 output "hostname" {
