@@ -1,32 +1,44 @@
-variable "stage" {
-  default = "default"
+variable "name" {
+  description = "The Name of the application or solution  (e.g. `bastion` or `portal`)"
 }
 
 variable "namespace" {
-  default = "global"
+  description = "Namespace (e.g. `cp` or `cloudposse`)"
 }
 
-variable "name" {
-  default = "app"
+variable "stage" {
+  description = "Stage (e.g. `prod`, `dev`, `staging`)"
 }
 
-variable "dns_zone_id" {}
+variable "dns_zone_id" {
+  description = "The ID of the DNS Zone in Route53 where a new DNS record will be created for the DB host name"
+}
 
 variable "host_name" {
-  default = "db"
+  default     = "db"
+  description = "The DB host name created in Route53"
 }
 
 variable "security_group_ids" {
-  type = "list"
+  type        = "list"
+  description = "he IDs of the security groups from which to allow `ingress` traffic to the DB instance"
 }
 
-variable "database_name" {}
+variable "database_name" {
+  description = "The name of the database to create when the DB instance is created"
+}
 
-variable "database_user" {}
+variable "database_user" {
+  description = "(Required unless a `snapshot_identifier` or `replicate_source_db` is provided) Username for the master DB user"
+}
 
-variable "database_password" {}
+variable "database_password" {
+  description = "(Required unless a snapshot_identifier or replicate_source_db is provided) Password for the master DB user"
+}
 
-variable "database_port" {}
+variable "database_port" {
+  description = "Database port (_e.g._ `3306` for `MySQL`). Used in the DB Security Group to allow access to the DB instance from the provided `security_group_ids`"
+}
 
 variable "multi_az" {
   description = "Set to true if multi AZ deployment must be supported"
@@ -96,7 +108,9 @@ variable "subnet_ids" {
 }
 
 variable "vpc_id" {
-  type = "string"
+  type        = "string"
+  default     = "true"
+  description = "VPC ID the DB instance will be connected to - `auto_minor_version_upgrade` - Automatically upgrade minor version of the DB (eg. from Postgres 9.5.3 to Postgres 9.5.4)."
 }
 
 variable "auto_minor_version_upgrade" {
