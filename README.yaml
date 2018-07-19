@@ -1,0 +1,112 @@
+---
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name: terraform-aws-rds
+
+# Logo for this project
+#logo: docs/logo.png
+
+# License of this project
+license: "APACHE2"
+
+# Canonical GitHub repo
+github_repo: cloudposse/terraform-aws-rds
+
+# Badges to display
+badges:
+  - name: "Build Status"
+    image: "https://travis-ci.org/cloudposse/terraform-aws-rds.svg?branch=master"
+    url: "https://travis-ci.org/cloudposse/terraform-aws-rds"
+  - name: "Latest Release"
+    image: "https://img.shields.io/github/release/cloudposse/terraform-aws-rds.svg"
+    url: "https://github.com/cloudposse/terraform-aws-rds/releases/latest"
+  - name: "Slack Community"
+    image: "https://slack.cloudposse.com/badge.svg"
+    url: "https://slack.cloudposse.com"
+
+related:
+  - name: "terraform-aws-rds-cluster"
+    description: "Terraform module to provision an RDS Aurora cluster for MySQL or Postgres"
+    url: "https://github.com/cloudposse/terraform-aws-rds-cluster"
+  - name: "terraform-aws-rds-cloudwatch-sns-alarms"
+    description: "Terraform module that configures important RDS alerts using CloudWatch and sends them to an SNS topic"
+    url: "https://github.com/cloudposse/terraform-aws-rds-cloudwatch-sns-alarms"
+
+# Short description of this project
+description: |-
+  Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/) instances
+
+introduction: |-
+  The module will create:
+
+  * DB instance (MySQL, Postgres, SQL Server, Oracle)
+  * DB Parameter Group
+  * DB Subnet Group
+  * DB Security Group
+  * DNS Record in Route53 for the DB endpoint
+
+
+# How to use this project
+usage: |-
+  ```hcl
+  module "rds_instance" {
+        source                      = "git::https://github.com/cloudposse/terraform-aws-rds.git?ref=master"
+        namespace                   = "cp"
+        stage                       = "prod"
+        name                        = "app"
+        dns_zone_id                 = "Z89FN1IW975KPE"
+        host_name                   = "db"
+        security_group_ids          = ["sg-xxxxxxxx"]
+        database_name               = "wordpress"
+        database_user               = "admin"
+        database_password           = "xxxxxxxxxxxx"
+        database_port               = 3306
+        multi_az                    = "true"
+        storage_type                = "gp2"
+        allocated_storage           = "100"
+        storage_encrypted           = "true"
+        engine                      = "mysql"
+        engine_version              = "5.7.17"
+        instance_class              = "db.t2.medium"
+        db_parameter_group          = "mysql5.6"
+        parameter_group_name        = "mysql-5-6"
+        publicly_accessible         = "false"
+        subnet_ids                  = ["sb-xxxxxxxxx", "sb-xxxxxxxxx"]
+        vpc_id                      = "vpc-xxxxxxxx"
+        snapshot_identifier         = "rds:production-2015-06-26-06-05"
+        auto_minor_version_upgrade  = "true"
+        allow_major_version_upgrade = "false"
+        apply_immediately           = "false"
+        maintenance_window          = "Mon:03:00-Mon:04:00"
+        skip_final_snapshot         = "false"
+        copy_tags_to_snapshot       = "true"
+        backup_retention_period     = 7
+        backup_window               = "22:00-03:00"
+
+        db_parameter                = [
+          { name  = "myisam_sort_buffer_size"   value = "1048576" },
+          { name  = "sort_buffer_size"          value = "2097152" },
+        ]
+  }
+  ```
+
+include:
+  - "docs/targets.md"
+  - "docs/terraform.md"
+
+# Contributors to this project
+contributors:
+  - name: "Andriy Knysh"
+    github: "aknysh"
+  - name: "Sergey Vasilyev"
+    github: "s2504s"
+  - name: "Valeriy"
+    github: "drama17"
+  - name: "Konstantin B"
+    github: "comeanother"
+  - name: "drmikecrowe"
+    github: "drmikecrowe"
