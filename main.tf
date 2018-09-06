@@ -86,10 +86,11 @@ resource "aws_security_group" "default" {
 }
 
 module "dns_host_name" {
-  source    = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.2.2"
+  source    = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.2.5"
   namespace = "${var.namespace}"
   name      = "${var.host_name}"
   stage     = "${var.stage}"
   zone_id   = "${var.dns_zone_id}"
   records   = ["${aws_db_instance.default.address}"]
+  enabled   = "${length(var.dns_zone_id) > 0 ? "true" : "false"}"
 }

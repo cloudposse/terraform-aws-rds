@@ -1,6 +1,6 @@
 module "rds_instance" {
   source                      = "git::https://github.com/cloudposse/terraform-aws-rds.git?ref=master"
-  namespace                   = "cp"
+  namespace                   = "eg"
   stage                       = "prod"
   name                        = "app"
   dns_zone_id                 = "Z89FN1IW975KPE"
