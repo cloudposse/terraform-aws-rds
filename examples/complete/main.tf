@@ -3,6 +3,7 @@ module "rds_instance" {
   namespace                   = "eg"
   stage                       = "prod"
   name                        = "app"
+  enabled                     = "true"
   dns_zone_id                 = "Z89FN1IW975KPE"
   host_name                   = "db"
   security_group_ids          = ["sg-xxxxxxxx"]

@@ -113,6 +113,7 @@ Available targets:
 | db_parameter_group | Parameter group, depends on DB engine used | string | - | yes |
 | delimiter | Delimiter to be used between `name`, `namespace`, `stage` and `attributes` | string | `-` | no |
 | dns_zone_id | The ID of the DNS Zone in Route53 where a new DNS record will be created for the DB host name | string | `` | no |
+| enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | engine | Database engine type | string | - | yes |
 | engine_version | Database engine version, depends on engine type | string | - | yes |
 | final_snapshot_identifier | Final snapshot identifier e.g.: some-db-final-snapshot-2015-06-26-06-05 | string | `` | no |

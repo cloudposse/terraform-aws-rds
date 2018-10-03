@@ -19,6 +19,7 @@ module "final_snapshot_label" {
 }
 
 resource "aws_db_instance" "default" {
+  count                       = "${var.enabled == "true" ? 1 : 0}"
   identifier                  = "${module.label.id}"
   name                        = "${var.database_name}"
   username                    = "${var.database_user}"
@@ -50,7 +51,7 @@ resource "aws_db_instance" "default" {
 }
 
 resource "aws_db_parameter_group" "default" {
-  count     = "${length(var.parameter_group_name) == 0 ? 1 : 0}"
+  count     = "${(length(var.parameter_group_name) == 0 && var.enabled == "true") ? 1 : 0}"
   name      = "${module.label.id}"
   family    = "${var.db_parameter_group}"
   tags      = "${module.label.tags}"
@@ -58,12 +59,14 @@ resource "aws_db_parameter_group" "default" {
 }
 
 resource "aws_db_subnet_group" "default" {
+  count      = "${var.enabled == "true" ? 1 : 0}"
   name       = "${module.label.id}"
   subnet_ids = ["${var.subnet_ids}"]
   tags       = "${module.label.tags}"
 }
 
 resource "aws_security_group" "default" {
+  count       = "${var.enabled == "true" ? 1 : 0}"
   name        = "${module.label.id}"
   description = "Allow inbound traffic from the security groups"
   vpc_id      = "${var.vpc_id}"
@@ -92,5 +95,5 @@ module "dns_host_name" {
   stage     = "${var.stage}"
   zone_id   = "${var.dns_zone_id}"
   records   = ["${aws_db_instance.default.address}"]
-  enabled   = "${length(var.dns_zone_id) > 0 ? "true" : "false"}"
+  enabled   = "${(length(var.dns_zone_id) > 0 && var.enabled == "true") ? "true" : "false"}"
 }
