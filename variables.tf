@@ -13,6 +13,11 @@ variable "stage" {
   description = "Stage (e.g. `prod`, `dev`, `staging`)"
 }
 
+variable "enabled" {
+  description = "Set to false to prevent the module from creating any resources"
+  default     = "true"
+}
+
 variable "dns_zone_id" {
   type        = "string"
   default     = ""
