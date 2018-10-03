@@ -51,7 +51,7 @@ resource "aws_db_instance" "default" {
 }
 
 resource "aws_db_parameter_group" "default" {
-  count     = "${( length(var.parameter_group_name) == 0 && var.enabled == "true" ) ? 1 : 0}"
+  count     = "${(length(var.parameter_group_name) == 0 && var.enabled == "true") ? 1 : 0}"
   name      = "${module.label.id}"
   family    = "${var.db_parameter_group}"
   tags      = "${module.label.tags}"
@@ -95,5 +95,5 @@ module "dns_host_name" {
   stage     = "${var.stage}"
   zone_id   = "${var.dns_zone_id}"
   records   = ["${aws_db_instance.default.address}"]
-  enabled   = "${( length(var.dns_zone_id) > 0 && var.enabled == "true" )? "true" : "false"}"
+  enabled   = "${(length(var.dns_zone_id) > 0 && var.enabled == "true") ? "true" : "false"}"
 }
