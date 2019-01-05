@@ -229,7 +229,7 @@ variable "parameter_group_name" {
 variable "kms_key_id" {
   type        = "string"
   description = "The ARN for the KMS encryption key. If creating an encrypted replica, set this to the destination KMS ARN"
-  value       = ""
+  default     = ""
 }
 
 variable "replicate_source_db" {
@@ -237,7 +237,7 @@ variable "replicate_source_db" {
   default     = ""
 }
 
-varwiable "monitoring_interval" {
+variable "monitoring_interval" {
   description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. To disable collecting Enhanced Monitoring metrics, specify 0. Valid Values are 0, 1, 5, 10, 15, 30, 60."
   default     = "0"
 }

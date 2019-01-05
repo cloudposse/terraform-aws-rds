@@ -67,7 +67,7 @@ resource "aws_db_instance" "default" {
   final_snapshot_identifier   = "${local.final_snapshot_identifier}"
   kms_key_id                  = "${local.kms_key_id}"
   monitoring_interval         = "${var.monitoring_interval}"
-  replicate_source_db         = "${var.source_db_identifier}"
+  replicate_source_db         = "${var.replicate_source_db}"
 }
 
 resource "aws_db_parameter_group" "default" {
