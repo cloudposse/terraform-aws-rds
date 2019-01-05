@@ -225,3 +225,19 @@ variable "parameter_group_name" {
   description = "Name of the DB parameter group to associate"
   default     = ""
 }
+
+variable "kms_key_id" {
+  type        = "string"
+  description = "The ARN for the KMS encryption key. If creating an encrypted replica, set this to the destination KMS ARN"
+  value       = ""
+}
+
+variable "replicate_source_db" {
+  description = "Specifies that this resource is a Replicate database, and to use this value as the source database. This correlates to the identifier of another Amazon RDS Database to replicate. Note that if you are creating a cross-region replica of an encrypted database you will also need to specify a kms_key_id. See [DB Instance Replication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Replication.html) and [Working with PostgreSQL and MySQL Read Replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html) for more information on using Replication."
+  default     = ""
+}
+
+varwiable "monitoring_interval" {
+  description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. To disable collecting Enhanced Monitoring metrics, specify 0. Valid Values are 0, 1, 5, 10, 15, 30, 60."
+  default     = "0"
+}
