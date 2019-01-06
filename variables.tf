@@ -39,6 +39,7 @@ variable "security_group_ids" {
 variable "database_name" {
   type        = "string"
   description = "The name of the database to create when the DB instance is created"
+  default     = ""
 }
 
 variable "database_user" {
@@ -119,6 +120,7 @@ variable "instance_class" {
 variable "db_parameter_group" {
   type        = "string"
   description = "Parameter group, depends on DB engine used"
+  default     = ""
 
   # "mysql5.6"
   # "postgres9.5"
