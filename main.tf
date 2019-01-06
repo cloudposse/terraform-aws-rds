@@ -99,15 +99,17 @@ locals {
 }
 
 resource "aws_security_group_rule" "allow_ingress" {
-  security_group_id = "${local.security_group_id}"
-  type              = "ingress"
-  from_port         = "${var.database_port}"
-  to_port           = "${var.database_port}"
-  protocol          = "tcp"
-  security_groups   = ["${var.security_group_ids}"]
+  count                    = "${local.enabled ? length(var.security_group_ids) : 0}"
+  security_group_id        = "${local.security_group_id}"
+  type                     = "ingress"
+  from_port                = "${var.database_port}"
+  to_port                  = "${var.database_port}"
+  protocol                 = "tcp"
+  source_security_group_id = ["${var.security_group_ids[count.index]}"]
 }
 
 resource "aws_security_group_rule" "allow_egress" {
+  count             = "${local.enabled ? 1 : 0}"
   security_group_id = "${local.security_group_id}"
   type              = "egress"
   from_port         = 0
