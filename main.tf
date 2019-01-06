@@ -105,7 +105,7 @@ resource "aws_security_group_rule" "allow_ingress" {
   from_port                = "${var.database_port}"
   to_port                  = "${var.database_port}"
   protocol                 = "tcp"
-  source_security_group_id = ["${var.security_group_ids[count.index]}"]
+  source_security_group_id = "${var.security_group_ids[count.index]}"
 }
 
 resource "aws_security_group_rule" "allow_egress" {
