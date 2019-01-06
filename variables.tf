@@ -82,6 +82,7 @@ variable "iops" {
 
 variable "allocated_storage" {
   description = "The allocated storage in GBs"
+  default     = ""
 
   # Number, e.g. 10
 }
@@ -89,6 +90,7 @@ variable "allocated_storage" {
 variable "engine" {
   type        = "string"
   description = "Database engine type"
+  default     = ""
 
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
   # - mysql
@@ -100,6 +102,7 @@ variable "engine" {
 variable "engine_version" {
   type        = "string"
   description = "Database engine version, depends on engine type"
+  default     = ""
 
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
 }
