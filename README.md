@@ -73,7 +73,7 @@ module "rds_instance" {
       instance_class              = "db.t2.medium"
       db_parameter_group          = "mysql5.6"
       parameter_group_name        = "mysql-5-6"
-      option_group_name           " "mysql-options"
+      option_group_name           = "mysql-options"
       publicly_accessible         = "false"
       subnet_ids                  = ["sb-xxxxxxxxx", "sb-xxxxxxxxx"]
       vpc_id                      = "vpc-xxxxxxxx"
@@ -149,7 +149,7 @@ Available targets:
 | multi_az | Set to true if multi AZ deployment must be supported | string | `false` | no |
 | name | The Name of the application or solution  (e.g. `bastion` or `portal`) | string | - | yes |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
-| option_group_name | Name of the Option group to associate | string | `` | no |
+| option_group_name | Name of the option group to associate | string | `` | no |
 | parameter_group_name | Name of the DB parameter group to associate | string | `` | no |
 | publicly_accessible | Determines if database can be publicly available (NOT recommended) | string | `false` | no |
 | security_group_ids | he IDs of the security groups from which to allow `ingress` traffic to the DB instance | list | `<list>` | no |
@@ -170,6 +170,7 @@ Available targets:
 | instance_address | Address of the instance |
 | instance_endpoint | DNS Endpoint of the instance |
 | instance_id | ID of the instance |
+| option_group_id | ID of the Option Group |
 | parameter_group_id | ID of the Parameter Group |
 | security_group_id | ID of the Security Group |
 | subnet_group_id | ID of the Subnet Group |
