@@ -104,6 +104,18 @@ variable "engine_version" {
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
 }
 
+variable "major_engine_version" {
+  type        = "string"
+  description = "Database MAJOR engine version, depends on engine type"
+
+  # https://docs.aws.amazon.com/cli/latest/reference/rds/create-option-group.html
+}
+
+variable "license_model" {
+  type        = "string"
+  description = "License model for this DB.  Optional, but required for some DB Engines. Valid values: license-included | bring-your-own-license | general-public-license"
+}
+
 variable "instance_class" {
   type        = "string"
   description = "Class of RDS instance"
@@ -206,6 +218,12 @@ variable "db_parameter" {
   type        = "list"
   default     = []
   description = "A list of DB parameters to apply. Note that parameters may differ from a DB family to another"
+}
+
+variable "db_options" {
+  type	      = "list"
+  default     = "[]"
+  description = "A list of DB options to apply with an option group.  Depends on DB engine"
 }
 
 variable "snapshot_identifier" {
