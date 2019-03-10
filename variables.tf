@@ -221,8 +221,8 @@ variable "db_parameter" {
 }
 
 variable "db_options" {
-  type	      = "list"
-  default     = "[]"
+  type        = "list"
+  default     = []
   description = "A list of DB options to apply with an option group.  Depends on DB engine"
 }
 
