@@ -70,6 +70,7 @@ module "rds_instance" {
       storage_encrypted           = "true"
       engine                      = "mysql"
       engine_version              = "5.7.17"
+      major_engine_version        = "5.7"
       instance_class              = "db.t2.medium"
       db_parameter_group          = "mysql5.6"
       parameter_group_name        = "mysql-5-6"
@@ -146,6 +147,7 @@ Available targets:
 | instance_class | Class of RDS instance | string | - | yes |
 | iops | The amount of provisioned IOPS. Setting this implies a storage_type of 'io1'. Default is 0 if rds storage type is not 'io1' | string | `0` | no |
 | maintenance_window | The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi' UTC | string | `Mon:03:00-Mon:04:00` | no |
+| major_engine_version | Similar to engine_version, but specifies the major version of the engine (i.e, 5.7) | string | `` | yes |
 | multi_az | Set to true if multi AZ deployment must be supported | string | `false` | no |
 | name | The Name of the application or solution  (e.g. `bastion` or `portal`) | string | - | yes |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
