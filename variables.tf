@@ -107,7 +107,6 @@ variable "engine_version" {
 variable "major_engine_version" {
   type        = "string"
   description = "Database MAJOR engine version, depends on engine type"
-  default     = ""
 
   # https://docs.aws.amazon.com/cli/latest/reference/rds/create-option-group.html
 }
@@ -115,7 +114,7 @@ variable "major_engine_version" {
 variable "license_model" {
   type        = "string"
   description = "License model for this DB.  Optional, but required for some DB Engines. Valid values: license-included | bring-your-own-license | general-public-license"
-  default = ""
+  default     = ""
 }
 
 variable "instance_class" {

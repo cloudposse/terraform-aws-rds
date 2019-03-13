@@ -33,7 +33,6 @@ output "option_group_id" {
   description = "ID of the Option Group"
 }
 
-
 output "hostname" {
   value       = "${module.dns_host_name.hostname}"
   description = "DNS host name of the instance"

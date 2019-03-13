@@ -59,6 +59,7 @@ introduction: |-
   The module will create:
 
   * DB instance (MySQL, Postgres, SQL Server, Oracle)
+  * DB Option Group (will create a new one or you may use an existing)
   * DB Parameter Group
   * DB Subnet Group
   * DB Security Group

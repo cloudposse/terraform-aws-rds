@@ -14,6 +14,7 @@
 | database_password | (Required unless a snapshot_identifier or replicate_source_db is provided) Password for the master DB user | string | `` | no |
 | database_port | Database port (_e.g._ `3306` for `MySQL`). Used in the DB Security Group to allow access to the DB instance from the provided `security_group_ids` | string | - | yes |
 | database_user | (Required unless a `snapshot_identifier` or `replicate_source_db` is provided) Username for the master DB user | string | `` | no |
+| db_options | A list of DB options to apply with an option group.  Depends on DB engine | list | `<list>` | no |
 | db_parameter | A list of DB parameters to apply. Note that parameters may differ from a DB family to another | list | `<list>` | no |
 | db_parameter_group | Parameter group, depends on DB engine used | string | - | yes |
 | delimiter | Delimiter to be used between `name`, `namespace`, `stage` and `attributes` | string | `-` | no |
@@ -25,10 +26,13 @@
 | host_name | The DB host name created in Route53 | string | `db` | no |
 | instance_class | Class of RDS instance | string | - | yes |
 | iops | The amount of provisioned IOPS. Setting this implies a storage_type of 'io1'. Default is 0 if rds storage type is not 'io1' | string | `0` | no |
+| license_model | License model for this DB.  Optional, but required for some DB Engines. Valid values: license-included | bring-your-own-license | general-public-license | string | `` | no |
 | maintenance_window | The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi' UTC | string | `Mon:03:00-Mon:04:00` | no |
+| major_engine_version | Database MAJOR engine version, depends on engine type | string | - | yes |
 | multi_az | Set to true if multi AZ deployment must be supported | string | `false` | no |
 | name | The Name of the application or solution  (e.g. `bastion` or `portal`) | string | - | yes |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
+| option_group_name | Name of the DB option group to associate | string | `` | no |
 | parameter_group_name | Name of the DB parameter group to associate | string | `` | no |
 | publicly_accessible | Determines if database can be publicly available (NOT recommended) | string | `false` | no |
 | security_group_ids | he IDs of the security groups from which to allow `ingress` traffic to the DB instance | list | `<list>` | no |
@@ -49,6 +53,7 @@
 | instance_address | Address of the instance |
 | instance_endpoint | DNS Endpoint of the instance |
 | instance_id | ID of the instance |
+| option_group_id | ID of the Option Group |
 | parameter_group_id | ID of the Parameter Group |
 | security_group_id | ID of the Security Group |
 | subnet_group_id | ID of the Subnet Group |

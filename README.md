@@ -44,6 +44,7 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 The module will create:
 
 * DB instance (MySQL, Postgres, SQL Server, Oracle)
+* DB Option Group (will create a new one or you may use an existing)
 * DB Parameter Group
 * DB Subnet Group
 * DB Security Group
@@ -53,54 +54,54 @@ The module will create:
 
 ```hcl
 module "rds_instance" {
-      source                      = "git::https://github.com/cloudposse/terraform-aws-rds.git?ref=master"
-      namespace                   = "eg"
-      stage                       = "prod"
-      name                        = "app"
-      dns_zone_id                 = "Z89FN1IW975KPE"
-      host_name                   = "db"
-      security_group_ids          = ["sg-xxxxxxxx"]
-      database_name               = "wordpress"
-      database_user               = "admin"
-      database_password           = "xxxxxxxxxxxx"
-      database_port               = 3306
-      multi_az                    = "true"
-      storage_type                = "gp2"
-      allocated_storage           = "100"
-      storage_encrypted           = "true"
-      engine                      = "mysql"
-      engine_version              = "5.7.17"
-      major_engine_version        = "5.7"
-      instance_class              = "db.t2.medium"
-      db_parameter_group          = "mysql5.6"
-      parameter_group_name        = "mysql-5-6"
-      option_group_name           = "mysql-options"
-      publicly_accessible         = "false"
-      subnet_ids                  = ["sb-xxxxxxxxx", "sb-xxxxxxxxx"]
-      vpc_id                      = "vpc-xxxxxxxx"
-      snapshot_identifier         = "rds:production-2015-06-26-06-05"
-      auto_minor_version_upgrade  = "true"
-      allow_major_version_upgrade = "false"
-      apply_immediately           = "false"
-      maintenance_window          = "Mon:03:00-Mon:04:00"
-      skip_final_snapshot         = "false"
-      copy_tags_to_snapshot       = "true"
-      backup_retention_period     = 7
-      backup_window               = "22:00-03:00"
+    source                      = "git::https://github.com/cloudposse/terraform-aws-rds.git?ref=master"
+    namespace                   = "eg"
+    stage                       = "prod"
+    name                        = "app"
+    dns_zone_id                 = "Z89FN1IW975KPE"
+    host_name                   = "db"
+    security_group_ids          = ["sg-xxxxxxxx"]
+    database_name               = "wordpress"
+    database_user               = "admin"
+    database_password           = "xxxxxxxxxxxx"
+    database_port               = 3306
+    multi_az                    = "true"
+    storage_type                = "gp2"
+    allocated_storage           = "100"
+    storage_encrypted           = "true"
+    engine                      = "mysql"
+    engine_version              = "5.7.17"
+    major_engine_version        = "5.7"
+    instance_class              = "db.t2.medium"
+    db_parameter_group          = "mysql5.6"
+    parameter_group_name        = "mysql-5-6"
+    option_group_name           = "mysql-options"
+    publicly_accessible         = "false"
+    subnet_ids                  = ["sb-xxxxxxxxx", "sb-xxxxxxxxx"]
+    vpc_id                      = "vpc-xxxxxxxx"
+    snapshot_identifier         = "rds:production-2015-06-26-06-05"
+    auto_minor_version_upgrade  = "true"
+    allow_major_version_upgrade = "false"
+    apply_immediately           = "false"
+    maintenance_window          = "Mon:03:00-Mon:04:00"
+    skip_final_snapshot         = "false"
+    copy_tags_to_snapshot       = "true"
+    backup_retention_period     = 7
+    backup_window               = "22:00-03:00"
 
-      db_parameter                = [
-        { name  = "myisam_sort_buffer_size"   value = "1048576" },
-        { name  = "sort_buffer_size"          value = "2097152" },
-      ]
-    
-      db_options                  = [
-        { option_name = "MARIADB_AUDIT_PLUGIN"
-            option_settings = [
-              { name = "SERVER_AUDIT_EVENTS"           value = "CONNECT" },
-              { name = "SERVER_AUDIT_FILE_ROTATIONS"   value = "37" }
-            ]
-        }
-      ]
+    db_parameter                = [
+      { name  = "myisam_sort_buffer_size"   value = "1048576" },
+      { name  = "sort_buffer_size"          value = "2097152" },
+    ]
+
+    db_options                  = [
+      { option_name = "MARIADB_AUDIT_PLUGIN"
+          option_settings = [
+            { name = "SERVER_AUDIT_EVENTS"           value = "CONNECT" },
+            { name = "SERVER_AUDIT_FILE_ROTATIONS"   value = "37" }
+          ]
+      }
+    ]
 }
 ```
 
@@ -135,6 +136,7 @@ Available targets:
 | database_password | (Required unless a snapshot_identifier or replicate_source_db is provided) Password for the master DB user | string | `` | no |
 | database_port | Database port (_e.g._ `3306` for `MySQL`). Used in the DB Security Group to allow access to the DB instance from the provided `security_group_ids` | string | - | yes |
 | database_user | (Required unless a `snapshot_identifier` or `replicate_source_db` is provided) Username for the master DB user | string | `` | no |
+| db_options | A list of DB options to apply with an option group.  Depends on DB engine | list | `<list>` | no |
 | db_parameter | A list of DB parameters to apply. Note that parameters may differ from a DB family to another | list | `<list>` | no |
 | db_parameter_group | Parameter group, depends on DB engine used | string | - | yes |
 | delimiter | Delimiter to be used between `name`, `namespace`, `stage` and `attributes` | string | `-` | no |
@@ -146,12 +148,13 @@ Available targets:
 | host_name | The DB host name created in Route53 | string | `db` | no |
 | instance_class | Class of RDS instance | string | - | yes |
 | iops | The amount of provisioned IOPS. Setting this implies a storage_type of 'io1'. Default is 0 if rds storage type is not 'io1' | string | `0` | no |
+| license_model | License model for this DB.  Optional, but required for some DB Engines. Valid values: license-included | bring-your-own-license | general-public-license | string | `` | no |
 | maintenance_window | The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi' UTC | string | `Mon:03:00-Mon:04:00` | no |
-| major_engine_version | Similar to engine_version, but specifies the major version of the engine (i.e, 5.7) | string | `` | yes |
+| major_engine_version | Database MAJOR engine version, depends on engine type | string | - | yes |
 | multi_az | Set to true if multi AZ deployment must be supported | string | `false` | no |
 | name | The Name of the application or solution  (e.g. `bastion` or `portal`) | string | - | yes |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
-| option_group_name | Name of the option group to associate | string | `` | no |
+| option_group_name | Name of the DB option group to associate | string | `` | no |
 | parameter_group_name | Name of the DB parameter group to associate | string | `` | no |
 | publicly_accessible | Determines if database can be publicly available (NOT recommended) | string | `false` | no |
 | security_group_ids | he IDs of the security groups from which to allow `ingress` traffic to the DB instance | list | `<list>` | no |
