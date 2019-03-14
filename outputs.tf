@@ -28,6 +28,11 @@ output "parameter_group_id" {
   description = "ID of the Parameter Group"
 }
 
+output "option_group_id" {
+  value       = "${join("", aws_db_option_group.default.*.id)}"
+  description = "ID of the Option Group"
+}
+
 output "hostname" {
   value       = "${module.dns_host_name.hostname}"
   description = "DNS host name of the instance"

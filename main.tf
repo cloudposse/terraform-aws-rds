@@ -33,6 +33,8 @@ resource "aws_db_instance" "default" {
   vpc_security_group_ids      = ["${join("", aws_security_group.default.*.id)}"]
   db_subnet_group_name        = "${join("", aws_db_subnet_group.default.*.name)}"
   parameter_group_name        = "${length(var.parameter_group_name) > 0 ? var.parameter_group_name : join("", aws_db_parameter_group.default.*.name)}"
+  option_group_name           = "${length(var.option_group_name) > 0 ? var.option_group_name : join("", aws_db_option_group.default.*.name)}"
+  license_model               = "${var.license_model}"
   multi_az                    = "${var.multi_az}"
   storage_type                = "${var.storage_type}"
   iops                        = "${var.iops}"
@@ -56,6 +58,19 @@ resource "aws_db_parameter_group" "default" {
   family    = "${var.db_parameter_group}"
   tags      = "${module.label.tags}"
   parameter = "${var.db_parameter}"
+}
+
+resource "aws_db_option_group" "default" {
+  count                = "${(length(var.option_group_name) == 0 && var.enabled == "true") ? 1 : 0}"
+  name                 = "${module.label.id}"
+  engine_name          = "${var.engine}"
+  major_engine_version = "${var.major_engine_version}"
+  tags                 = "${module.label.tags}"
+  option               = "${var.db_options}"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_db_subnet_group" "default" {
