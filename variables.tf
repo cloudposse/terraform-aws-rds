@@ -107,6 +107,7 @@ variable "engine_version" {
 variable "major_engine_version" {
   type        = "string"
   description = "Database MAJOR engine version, depends on engine type"
+  default     = ""
 
   # https://docs.aws.amazon.com/cli/latest/reference/rds/create-option-group.html
 }
