@@ -30,6 +30,7 @@ resource "aws_db_instance" "default" {
   instance_class              = "${var.instance_class}"
   allocated_storage           = "${var.allocated_storage}"
   storage_encrypted           = "${var.storage_encrypted}"
+  kms_key_id                  = "${var.kms_key_id}"
   vpc_security_group_ids      = ["${join("", aws_security_group.default.*.id)}"]
   db_subnet_group_name        = "${join("", aws_db_subnet_group.default.*.name)}"
   parameter_group_name        = "${length(var.parameter_group_name) > 0 ? var.parameter_group_name : join("", aws_db_parameter_group.default.*.name)}"

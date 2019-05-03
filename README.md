@@ -52,6 +52,11 @@ The module will create:
 
 ## Usage
 
+
+**IMPORTANT:** The `master` branch is used in `source` just as an example. In your code, do not pin to `master` because there may be breaking changes between releases.
+Instead pin to the release tag (e.g. `?ref=tags/x.y.z`) of one of our [latest releases](https://github.com/cloudposse/terraform-aws-rds/releases).
+
+
 ```hcl
 module "rds_instance" {
     source                      = "git::https://github.com/cloudposse/terraform-aws-rds.git?ref=master"
@@ -148,6 +153,7 @@ Available targets:
 | host_name | The DB host name created in Route53 | string | `db` | no |
 | instance_class | Class of RDS instance | string | - | yes |
 | iops | The amount of provisioned IOPS. Setting this implies a storage_type of 'io1'. Default is 0 if rds storage type is not 'io1' | string | `0` | no |
+| kms_key_id | Existing KMS key id to use for encrypt storage. | string | `` | no |
 | license_model | License model for this DB.  Optional, but required for some DB Engines. Valid values: license-included | bring-your-own-license | general-public-license | string | `` | no |
 | maintenance_window | The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi' UTC | string | `Mon:03:00-Mon:04:00` | no |
 | major_engine_version | Database MAJOR engine version, depends on engine type | string | `` | no |
