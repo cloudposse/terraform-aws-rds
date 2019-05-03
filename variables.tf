@@ -252,8 +252,8 @@ variable "option_group_name" {
   default     = ""
 }
 
-variable "kms_key_id" {
+variable "kms_key_arn" {
   type        = "string"
-  description = "Existing KMS key id to use for encrypt storage."
+  description = "Existing KMS key arn to use for encrypt storage."
   default     = ""
 }
