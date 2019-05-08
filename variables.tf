@@ -251,3 +251,9 @@ variable "option_group_name" {
   description = "Name of the DB option group to associate"
   default     = ""
 }
+
+variable "kms_key_arn" {
+  type        = "string"
+  description = "The ARN of the existing KMS key to encrypt storage."
+  default     = ""
+}
