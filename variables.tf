@@ -254,6 +254,6 @@ variable "option_group_name" {
 
 variable "kms_key_arn" {
   type        = "string"
-  description = "Existing KMS key arn to use for encrypt storage."
+  description = "The ARN of the existing KMS key to encrypt storage."
   default     = ""
 }
