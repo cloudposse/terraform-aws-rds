@@ -132,6 +132,7 @@ Available targets:
 | allocated_storage | The allocated storage in GBs | string | - | yes |
 | allow_major_version_upgrade | Allow major version upgrade | string | `false` | no |
 | apply_immediately | Specifies whether any database modifications are applied immediately, or during the next maintenance window | string | `false` | no |
+| associate_security_group_ids | The IDs of the existing security groups to associate with the DB instance | list | `<list>` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
 | auto_minor_version_upgrade | Allow automated minor version upgrade (e.g. from Postgres 9.5.3 to Postgres 9.5.4) | string | `true` | no |
 | backup_retention_period | Backup retention period in days. Must be > 0 to enable backups | string | `0` | no |
@@ -164,7 +165,6 @@ Available targets:
 | parameter_group_name | Name of the DB parameter group to associate | string | `` | no |
 | publicly_accessible | Determines if database can be publicly available (NOT recommended) | string | `false` | no |
 | security_group_ids | The IDs of the security groups from which to allow `ingress` traffic to the DB instance | list | `<list>` | no |
-| server_security_group_ids | The IDs of the security groups which should be added to the DB instance. i.e. to allow other security groups to target this instance indirectly | list | `<list>` | no |
 | skip_final_snapshot | If true (default), no snapshot will be made before deleting DB | string | `true` | no |
 | snapshot_identifier | Snapshot identifier e.g: rds:production-2015-06-26-06-05. If specified, the module create cluster from the snapshot | string | `` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
