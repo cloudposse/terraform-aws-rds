@@ -31,7 +31,7 @@ resource "aws_db_instance" "default" {
   allocated_storage           = "${var.allocated_storage}"
   storage_encrypted           = "${var.storage_encrypted}"
   kms_key_id                  = "${var.kms_key_arn}"
-  vpc_security_group_ids      = ["${join("", aws_security_group.default.*.id)}"]
+  vpc_security_group_ids      = ["${compact(concat(list(join("", aws_security_group.default.*.id)), var.associate_security_group_ids))}"]
   db_subnet_group_name        = "${join("", aws_db_subnet_group.default.*.name)}"
   parameter_group_name        = "${length(var.parameter_group_name) > 0 ? var.parameter_group_name : join("", aws_db_parameter_group.default.*.name)}"
   option_group_name           = "${length(var.option_group_name) > 0 ? var.option_group_name : join("", aws_db_option_group.default.*.name)}"
