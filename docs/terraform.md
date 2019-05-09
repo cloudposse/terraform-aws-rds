@@ -36,7 +36,8 @@
 | option_group_name | Name of the DB option group to associate | string | `` | no |
 | parameter_group_name | Name of the DB parameter group to associate | string | `` | no |
 | publicly_accessible | Determines if database can be publicly available (NOT recommended) | string | `false` | no |
-| security_group_ids | he IDs of the security groups from which to allow `ingress` traffic to the DB instance | list | `<list>` | no |
+| security_group_ids | The IDs of the security groups from which to allow `ingress` traffic to the DB instance | list | `<list>` | no |
+| server_security_group_ids | The IDs of the security groups which should be added to the DB instance. i.e. to allow other security groups to target this instance indirectly | list | `<list>` | no |
 | skip_final_snapshot | If true (default), no snapshot will be made before deleting DB | string | `true` | no |
 | snapshot_identifier | Snapshot identifier e.g: rds:production-2015-06-26-06-05. If specified, the module create cluster from the snapshot | string | `` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
