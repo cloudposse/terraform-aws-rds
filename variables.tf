@@ -39,7 +39,7 @@ variable "security_group_ids" {
 variable "server_security_group_ids" {
   type        = "list"
   default     = []
-  description = "The IDs of the security groups which should be added to the DB instance. i.e. to allow other security groups to target this instance indirectly"
+  description = "The IDs of the existing security groups to associate with the DB instance"
 }
 
 variable "database_name" {
