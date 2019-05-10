@@ -50,6 +50,7 @@ resource "aws_db_instance" "default" {
   backup_retention_period     = "${var.backup_retention_period}"
   backup_window               = "${var.backup_window}"
   tags                        = "${module.label.tags}"
+  deletion_protection         = "${var.deletion_protection}"
   final_snapshot_identifier   = "${length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id}"
 }
 
