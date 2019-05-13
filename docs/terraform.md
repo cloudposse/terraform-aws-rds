@@ -18,6 +18,7 @@
 | db_options | A list of DB options to apply with an option group.  Depends on DB engine | list | `<list>` | no |
 | db_parameter | A list of DB parameters to apply. Note that parameters may differ from a DB family to another | list | `<list>` | no |
 | db_parameter_group | Parameter group, depends on DB engine used | string | - | yes |
+| deletion_protection | Set to true to enable deletion protection on the RDS instance | string | `false` | no |
 | delimiter | Delimiter to be used between `name`, `namespace`, `stage` and `attributes` | string | `-` | no |
 | dns_zone_id | The ID of the DNS Zone in Route53 where a new DNS record will be created for the DB host name | string | `` | no |
 | enabled | Set to false to prevent the module from creating any resources | string | `true` | no |

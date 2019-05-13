@@ -63,6 +63,12 @@ variable "database_port" {
   description = "Database port (_e.g._ `3306` for `MySQL`). Used in the DB Security Group to allow access to the DB instance from the provided `security_group_ids`"
 }
 
+variable "deletion_protection" {
+  type        = "string"
+  description = "Set to true to enable deletion protection on the RDS instance"
+  default     = "false"
+}
+
 variable "multi_az" {
   type        = "string"
   description = "Set to true if multi AZ deployment must be supported"
