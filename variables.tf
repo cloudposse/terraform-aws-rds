@@ -281,7 +281,7 @@ variable "monitoring_role_arn" {
   default     = ""
 }
 
-variable "enabled_cloudwatch_log_exports" {
+variable "enabled_cloudwatch_logs_exports" {
   type        = "list"
   description = "Types of logging to send to cloudwatch"
   default     = []
