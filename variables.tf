@@ -269,3 +269,20 @@ variable "kms_key_arn" {
   description = "The ARN of the existing KMS key to encrypt storage."
   default     = ""
 }
+
+variable "monitoring_interval" {
+  description = "The interval in seconds enhanced monitoring metrics are sent to cloudwatch"
+  default     = 0
+}
+
+variable "monitoring_role_arn" {
+  type        = "string"
+  description = "The role arn used to allow logging access to cloudwatch"
+  default     = ""
+}
+
+variable "enabled_cloudwatch_log_exports" {
+  type        = "list"
+  description = "Types of logging to send to cloudwatch"
+  default     = []
+}
