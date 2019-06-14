@@ -223,7 +223,7 @@ variable "tags" {
 }
 
 variable "db_parameter" {
-  type        = list(string)
+  type        = list(map(string))
   default     = []
   description = "A list of DB parameters to apply. Note that parameters may differ from a DB family to another"
 }
