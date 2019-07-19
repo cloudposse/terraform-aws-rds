@@ -18,6 +18,11 @@ module "final_snapshot_label" {
   tags       = "${var.tags}"
 }
 
+locals {
+  computed_major_engine_version = "${join(".", slice(split(".", var.engine_version), 0, 2))}"
+  major_engine_version          = "${var.major_engine_version == "" ? local.computed_major_engine_version : var.major_engine_version}"
+}
+
 resource "aws_db_instance" "default" {
   count                       = "${var.enabled == "true" ? 1 : 0}"
   identifier                  = "${module.label.id}"
@@ -66,7 +71,7 @@ resource "aws_db_option_group" "default" {
   count                = "${(length(var.option_group_name) == 0 && var.enabled == "true") ? 1 : 0}"
   name                 = "${module.label.id}"
   engine_name          = "${var.engine}"
-  major_engine_version = "${var.major_engine_version}"
+  major_engine_version = "${local.major_engine_version}"
   tags                 = "${module.label.tags}"
   option               = "${var.db_options}"
 
