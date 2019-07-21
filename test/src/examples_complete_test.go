@@ -40,13 +40,23 @@ func TestExamplesComplete(t *testing.T) {
 	// Verify we're getting back the outputs we expect
 	assert.Equal(t, []string{"172.16.128.0/18", "172.16.192.0/18"}, publicSubnetCidrs)
 
-	//// Run `terraform output` to get the value of an output variable
-	//clusterIdentifier := terraform.Output(t, terraformOptions, "cluster_identifier")
-	//// Verify we're getting back the outputs we expect
-	//assert.Equal(t, "eg-test-rds-cluster", clusterIdentifier)
-	//
-	//// Run `terraform output` to get the value of an output variable
-	//arn := terraform.Output(t, terraformOptions, "arn")
-	//// Verify we're getting back the outputs we expect
-	//assert.Equal(t, "arn:aws:rds:us-west-1:126450723953:cluster:eg-test-rds-cluster", arn)
+	// Run `terraform output` to get the value of an output variable
+	instanceId := terraform.Output(t, terraformOptions, "instance_id")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, "eg-test-rds-test", instanceId)
+
+	// Run `terraform output` to get the value of an output variable
+	optionGroupId := terraform.Output(t, terraformOptions, "option_group_id")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, "eg-test-rds-test", optionGroupId)
+
+	// Run `terraform output` to get the value of an output variable
+	parameterGroupId := terraform.Output(t, terraformOptions, "parameter_group_id")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, "eg-test-rds-test", parameterGroupId)
+
+	// Run `terraform output` to get the value of an output variable
+	subnetGroupId := terraform.Output(t, terraformOptions, "subnet_group_id")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, "eg-test-rds-test", subnetGroupId)
 }
