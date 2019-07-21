@@ -48,12 +48,14 @@ module "rds_instance" {
 
   db_parameter = [
     {
-      name  = "myisam_sort_buffer_size"
-      value = "1048576"
+      name         = "myisam_sort_buffer_size"
+      value        = "1048576"
+      apply_method = "immediate"
     },
     {
-      name  = "sort_buffer_size"
-      value = "2097152"
+      name         = "sort_buffer_size"
+      value        = "2097152"
+      apply_method = "immediate"
     }
   ]
 }
