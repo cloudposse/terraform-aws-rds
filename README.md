@@ -78,8 +78,7 @@ module "rds_instance" {
     engine_version              = "5.7.17"
     major_engine_version        = "5.7"
     instance_class              = "db.t2.medium"
-    db_parameter_group          = "mysql5.6"
-    parameter_group_name        = "mysql-5-6"
+    db_parameter_group          = "mysql5.7"
     option_group_name           = "mysql-options"
     publicly_accessible         = false
     subnet_ids                  = ["sb-xxxxxxxxx", "sb-xxxxxxxxx"]

@@ -34,7 +34,7 @@ major_engine_version = "5.7"
 
 instance_class = "db.t2.small"
 
-db_parameter_group = "mysql5.6"
+db_parameter_group = "mysql5.7"
 
 publicly_accessible = false
 
