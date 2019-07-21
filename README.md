@@ -3,7 +3,7 @@
 
 [![Cloud Posse][logo]](https://cpco.io/homepage)
 
-# terraform-aws-rds [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-rds-cluster?type=cf-1)](https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d1eb949a7e22e49dc7ea7c9) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-rds.svg)](https://github.com/cloudposse/terraform-aws-rds/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+# terraform-aws-rds [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-rds?type=cf-1)](https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d33e2a97ff4a883c72e9fc0) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-rds.svg)](https://github.com/cloudposse/terraform-aws-rds/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
 Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/) instances
@@ -155,7 +155,7 @@ Available targets:
 | host_name | The DB host name created in Route53 | string | `db` | no |
 | instance_class | Class of RDS instance | string | - | yes |
 | iops | The amount of provisioned IOPS. Setting this implies a storage_type of 'io1'. Default is 0 if rds storage type is not 'io1' | number | `0` | no |
-| kms_key_arn | The ARN of the existing KMS key to encrypt storage. | string | `` | no |
+| kms_key_arn | The ARN of the existing KMS key to encrypt storage | string | `` | no |
 | license_model | License model for this DB. Optional, but required for some DB Engines. Valid values: license-included | bring-your-own-license | general-public-license | string | `` | no |
 | maintenance_window | The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi' UTC | string | `Mon:03:00-Mon:04:00` | no |
 | major_engine_version | Database MAJOR engine version, depends on engine type | string | `` | no |
@@ -169,8 +169,8 @@ Available targets:
 | skip_final_snapshot | If true (default), no snapshot will be made before deleting DB | bool | `true` | no |
 | snapshot_identifier | Snapshot identifier e.g: rds:production-2019-06-26-06-05. If specified, the module create cluster from the snapshot | string | `` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | string | `` | no |
-| storage_encrypted | (Optional) Specifies whether the DB instance is encrypted. The default is false if not specified. | bool | `false` | no |
-| storage_type | One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD). | string | `standard` | no |
+| storage_encrypted | (Optional) Specifies whether the DB instance is encrypted. The default is false if not specified | bool | `false` | no |
+| storage_type | One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD) | string | `standard` | no |
 | subnet_ids | List of subnets for the DB | list(string) | - | yes |
 | tags | Additional tags (e.g. { BusinessUnit : ABC }) | map(string) | `<map>` | no |
 | vpc_id | VPC ID the DB instance will be created in | string | - | yes |

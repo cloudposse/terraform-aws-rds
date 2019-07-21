@@ -81,13 +81,13 @@ variable "multi_az" {
 
 variable "storage_type" {
   type        = string
-  description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD)."
+  description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD)"
   default     = "standard"
 }
 
 variable "storage_encrypted" {
   type        = bool
-  description = "(Optional) Specifies whether the DB instance is encrypted. The default is false if not specified."
+  description = "(Optional) Specifies whether the DB instance is encrypted. The default is false if not specified"
   default     = false
 }
 
@@ -282,6 +282,6 @@ variable "option_group_name" {
 
 variable "kms_key_arn" {
   type        = string
-  description = "The ARN of the existing KMS key to encrypt storage."
+  description = "The ARN of the existing KMS key to encrypt storage"
   default     = ""
 }
