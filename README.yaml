@@ -33,9 +33,9 @@ github_repo: cloudposse/terraform-aws-rds
 
 # Badges to display
 badges:
-  - name: "Build Status"
-    image: "https://travis-ci.org/cloudposse/terraform-aws-rds.svg?branch=master"
-    url: "https://travis-ci.org/cloudposse/terraform-aws-rds"
+  - name: "Codefresh Build Status"
+    image: "https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-rds-cluster?type=cf-1"
+    url: "https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d1eb949a7e22e49dc7ea7c9"
   - name: "Latest Release"
     image: "https://img.shields.io/github/release/cloudposse/terraform-aws-rds.svg"
     url: "https://github.com/cloudposse/terraform-aws-rds/releases/latest"
@@ -81,10 +81,10 @@ usage: |-
       database_user               = "admin"
       database_password           = "xxxxxxxxxxxx"
       database_port               = 3306
-      multi_az                    = "true"
+      multi_az                    = true
       storage_type                = "gp2"
-      allocated_storage           = "100"
-      storage_encrypted           = "true"
+      allocated_storage           = 100
+      storage_encrypted           = true
       engine                      = "mysql"
       engine_version              = "5.7.17"
       major_engine_version        = "5.7"
@@ -92,25 +92,25 @@ usage: |-
       db_parameter_group          = "mysql5.6"
       parameter_group_name        = "mysql-5-6"
       option_group_name           = "mysql-options"
-      publicly_accessible         = "false"
+      publicly_accessible         = false
       subnet_ids                  = ["sb-xxxxxxxxx", "sb-xxxxxxxxx"]
       vpc_id                      = "vpc-xxxxxxxx"
       snapshot_identifier         = "rds:production-2015-06-26-06-05"
-      auto_minor_version_upgrade  = "true"
-      allow_major_version_upgrade = "false"
-      apply_immediately           = "false"
+      auto_minor_version_upgrade  = true
+      allow_major_version_upgrade = false
+      apply_immediately           = false
       maintenance_window          = "Mon:03:00-Mon:04:00"
-      skip_final_snapshot         = "false"
-      copy_tags_to_snapshot       = "true"
+      skip_final_snapshot         = false
+      copy_tags_to_snapshot       = true
       backup_retention_period     = 7
       backup_window               = "22:00-03:00"
 
-      db_parameter                = [
+      db_parameter = [
         { name  = "myisam_sort_buffer_size"   value = "1048576" },
-        { name  = "sort_buffer_size"          value = "2097152" },
+        { name  = "sort_buffer_size"          value = "2097152" }
       ]
 
-      db_options                  = [
+      db_options = [
         { option_name = "MARIADB_AUDIT_PLUGIN"
             option_settings = [
               { name = "SERVER_AUDIT_EVENTS"           value = "CONNECT" },

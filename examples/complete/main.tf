@@ -1,5 +1,5 @@
 module "rds_instance" {
-  source                      = "git::https://github.com/cloudposse/terraform-aws-rds.git?ref=master"
+  source                      = "../../"
   namespace                   = "eg"
   stage                       = "prod"
   name                        = "app"
