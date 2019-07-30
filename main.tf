@@ -19,7 +19,7 @@ module "final_snapshot_label" {
 }
 
 locals {
-  computed_major_engine_version = "${join(".", slice(split(".", var.engine_version), 0, 2))}"
+  computed_major_engine_version = "${var.engine == "postgres" ? join(".", slice(split(".", var.engine_version), 0, 1)) : join(".", slice(split(".", var.engine_version), 0, 2))}"
   major_engine_version          = "${var.major_engine_version == "" ? local.computed_major_engine_version : var.major_engine_version}"
 }
 
