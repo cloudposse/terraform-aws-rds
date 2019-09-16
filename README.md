@@ -158,6 +158,7 @@ Available targets:
 | license_model | License model for this DB. Optional, but required for some DB Engines. Valid values: license-included | bring-your-own-license | general-public-license | string | `` | no |
 | maintenance_window | The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi' UTC | string | `Mon:03:00-Mon:04:00` | no |
 | major_engine_version | Database MAJOR engine version, depends on engine type | string | `` | no |
+| max_allocated_storage | The upper limit to which RDS can automatically scale the storage in GBs | number | `0` | no |
 | multi_az | Set to true if multi AZ deployment must be supported | bool | `false` | no |
 | name | The Name of the application or solution  (e.g. `bastion` or `portal`) | string | - | yes |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | `` | no |
@@ -323,21 +324,23 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 
 ### Contributors
 
-|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Sergey Vasilyev][s2504s_avatar]][s2504s_homepage]<br/>[Sergey Vasilyev][s2504s_homepage] | [![Valeriy][drama17_avatar]][drama17_homepage]<br/>[Valeriy][drama17_homepage] | [![Konstantin B][comeanother_avatar]][comeanother_homepage]<br/>[Konstantin B][comeanother_homepage] | [![drmikecrowe][drmikecrowe_avatar]][drmikecrowe_homepage]<br/>[drmikecrowe][drmikecrowe_homepage] |
-|---|---|---|---|---|---|
+|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Sergey Vasilyev][s2504s_avatar]][s2504s_homepage]<br/>[Sergey Vasilyev][s2504s_homepage] | [![Valeriy][drama17_avatar]][drama17_homepage]<br/>[Valeriy][drama17_homepage] | [![Konstantin B][comeanother_avatar]][comeanother_homepage]<br/>[Konstantin B][comeanother_homepage] | [![drmikecrowe][drmikecrowe_avatar]][drmikecrowe_homepage]<br/>[drmikecrowe][drmikecrowe_homepage] | [![Oscar Sullivan][osulli_avatar]][osulli_homepage]<br/>[Oscar Sullivan][osulli_homepage] |
+|---|---|---|---|---|---|---|
 
   [osterman_homepage]: https://github.com/osterman
-  [osterman_avatar]: https://github.com/osterman.png?size=150
+  [osterman_avatar]: https://img.cloudposse.com/150x150/https://github.com/osterman.png
   [aknysh_homepage]: https://github.com/aknysh
-  [aknysh_avatar]: https://github.com/aknysh.png?size=150
+  [aknysh_avatar]: https://img.cloudposse.com/150x150/https://github.com/aknysh.png
   [s2504s_homepage]: https://github.com/s2504s
-  [s2504s_avatar]: https://github.com/s2504s.png?size=150
+  [s2504s_avatar]: https://img.cloudposse.com/150x150/https://github.com/s2504s.png
   [drama17_homepage]: https://github.com/drama17
-  [drama17_avatar]: https://github.com/drama17.png?size=150
+  [drama17_avatar]: https://img.cloudposse.com/150x150/https://github.com/drama17.png
   [comeanother_homepage]: https://github.com/comeanother
-  [comeanother_avatar]: https://github.com/comeanother.png?size=150
+  [comeanother_avatar]: https://img.cloudposse.com/150x150/https://github.com/comeanother.png
   [drmikecrowe_homepage]: https://github.com/drmikecrowe
-  [drmikecrowe_avatar]: https://github.com/drmikecrowe.png?size=150
+  [drmikecrowe_avatar]: https://img.cloudposse.com/150x150/https://github.com/drmikecrowe.png
+  [osulli_homepage]: https://github.com/osulli
+  [osulli_avatar]: https://img.cloudposse.com/150x150/https://github.com/osulli.png
 
 
 

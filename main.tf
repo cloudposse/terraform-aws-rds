@@ -26,18 +26,19 @@ locals {
 }
 
 resource "aws_db_instance" "default" {
-  count             = var.enabled ? 1 : 0
-  identifier        = module.label.id
-  name              = var.database_name
-  username          = var.database_user
-  password          = var.database_password
-  port              = var.database_port
-  engine            = var.engine
-  engine_version    = var.engine_version
-  instance_class    = var.instance_class
-  allocated_storage = var.allocated_storage
-  storage_encrypted = var.storage_encrypted
-  kms_key_id        = var.kms_key_arn
+  count                 = var.enabled ? 1 : 0
+  identifier            = module.label.id
+  name                  = var.database_name
+  username              = var.database_user
+  password              = var.database_password
+  port                  = var.database_port
+  engine                = var.engine
+  engine_version        = var.engine_version
+  instance_class        = var.instance_class
+  allocated_storage     = var.allocated_storage
+  max_allocated_storage = var.max_allocated_storage
+  storage_encrypted     = var.storage_encrypted
+  kms_key_id            = var.kms_key_arn
 
   vpc_security_group_ids = compact(
     concat(
