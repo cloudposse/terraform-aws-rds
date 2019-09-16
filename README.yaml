@@ -65,7 +65,6 @@ introduction: |-
   * DB Security Group
   * DNS Record in Route53 for the DB endpoint
 
-
 # How to use this project
 usage: |-
   ```hcl
@@ -138,3 +137,5 @@ contributors:
     github: "comeanother"
   - name: "drmikecrowe"
     github: "drmikecrowe"
+  - name: "Oscar Sullivan"
+    github: "osulli"
