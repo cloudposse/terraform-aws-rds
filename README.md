@@ -181,6 +181,7 @@ Available targets:
 |------|-------------|
 | hostname | DNS host name of the instance |
 | instance_address | Address of the instance |
+| instance_arn | ARN of the instance |
 | instance_endpoint | DNS Endpoint of the instance |
 | instance_id | ID of the instance |
 | option_group_id | ID of the Option Group |
