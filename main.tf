@@ -67,6 +67,10 @@ resource "aws_db_instance" "default" {
   tags                        = module.label.tags
   deletion_protection         = var.deletion_protection
   final_snapshot_identifier   = length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id
+
+  lifecycle {
+    ignore_changes = ["password"]
+  }    
 }
 
 resource "aws_db_parameter_group" "default" {
