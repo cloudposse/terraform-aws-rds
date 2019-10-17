@@ -54,6 +54,7 @@ resource "aws_db_instance" "default" {
   multi_az                    = var.multi_az
   storage_type                = var.storage_type
   iops                        = var.iops
+  enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
   publicly_accessible         = var.publicly_accessible
   snapshot_identifier         = var.snapshot_identifier
   allow_major_version_upgrade = var.allow_major_version_upgrade
