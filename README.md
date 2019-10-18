@@ -131,7 +131,7 @@ Available targets:
 |------|-------------|:----:|:-----:|:-----:|
 | allocated_storage | The allocated storage in GBs | number | - | yes |
 | allow_major_version_upgrade | Allow major version upgrade | bool | `false` | no |
-| allowed_cidr_blocks | CIDRs to allow access to the DB instances via the created SG | list(string) | `<list>` | no |
+| allowed_cidr_blocks | The whitelisted CIDRs which to allow `ingress` traffic to the DB instance | list(string) | `<list>` | no |
 | apply_immediately | Specifies whether any database modifications are applied immediately, or during the next maintenance window | bool | `false` | no |
 | associate_security_group_ids | The IDs of the existing security groups to associate with the DB instance | list(string) | `<list>` | no |
 | attributes | Additional attributes (e.g. `1`) | list(string) | `<list>` | no |
