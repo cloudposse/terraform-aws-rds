@@ -130,6 +130,13 @@ resource "aws_security_group" "default" {
   vpc_id      = var.vpc_id
 
   ingress {
+    from_port   = var.database_port
+    to_port     = var.database_port
+    protocol    = "tcp"
+    cidr_blocks = var.allowed_cidr_blocks
+  }
+
+  ingress {
     from_port       = var.database_port
     to_port         = var.database_port
     protocol        = "tcp"
