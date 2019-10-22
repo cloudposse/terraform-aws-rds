@@ -1,5 +1,5 @@
 module "label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.14.1"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.15.0"
   enabled    = var.enabled
   namespace  = var.namespace
   name       = var.name
@@ -10,7 +10,7 @@ module "label" {
 }
 
 module "final_snapshot_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.14.1"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.15.0"
   enabled    = var.enabled
   namespace  = var.namespace
   name       = var.name
@@ -128,29 +128,40 @@ resource "aws_security_group" "default" {
   name        = module.label.id
   description = "Allow inbound traffic from the security groups"
   vpc_id      = var.vpc_id
+  tags        = module.label.tags
+}
 
-  ingress {
-    from_port   = var.database_port
-    to_port     = var.database_port
-    protocol    = "tcp"
-    cidr_blocks = var.allowed_cidr_blocks
-  }
+resource "aws_security_group_rule" "ingress_security_groups" {
+  count                    = var.enabled ? length(var.security_group_ids) : 0
+  description              = "Allow inbound traffic from existing Security Groups"
+  type                     = "ingress"
+  from_port                = var.database_port
+  to_port                  = var.database_port
+  protocol                 = "tcp"
+  source_security_group_id = var.security_group_ids[count.index]
+  security_group_id        = join("", aws_security_group.default.*.id)
+}
 
-  ingress {
-    from_port       = var.database_port
-    to_port         = var.database_port
-    protocol        = "tcp"
-    security_groups = var.security_group_ids
-  }
+resource "aws_security_group_rule" "ingress_cidr_blocks" {
+  count             = var.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+  description       = "Allow inbound traffic from CIDR blocks"
+  type              = "ingress"
+  from_port         = var.database_port
+  to_port           = var.database_port
+  protocol          = "tcp"
+  cidr_blocks       = var.allowed_cidr_blocks
+  security_group_id = join("", aws_security_group.default.*.id)
+}
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = module.label.tags
+resource "aws_security_group_rule" "egress" {
+  count             = var.enabled ? 1 : 0
+  description       = "Allow all egress traffic"
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = join("", aws_security_group.default.*.id)
 }
 
 module "dns_host_name" {
