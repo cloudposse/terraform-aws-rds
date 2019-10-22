@@ -131,6 +131,7 @@ Available targets:
 |------|-------------|:----:|:-----:|:-----:|
 | allocated_storage | The allocated storage in GBs | string | - | yes |
 | allow_major_version_upgrade | Allow major version upgrade | string | `false` | no |
+| allowed_cidr_blocks | The whitelisted CIDRs which to allow `ingress` traffic to the DB instance | list | `<list>` | no |
 | apply_immediately | Specifies whether any database modifications are applied immediately, or during the next maintenance window | string | `false` | no |
 | associate_security_group_ids | The IDs of the existing security groups to associate with the DB instance | list | `<list>` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
@@ -328,17 +329,17 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 |---|---|---|---|---|---|
 
   [osterman_homepage]: https://github.com/osterman
-  [osterman_avatar]: https://github.com/osterman.png?size=150
+  [osterman_avatar]: https://img.cloudposse.com/150x150/https://github.com/osterman.png
   [aknysh_homepage]: https://github.com/aknysh
-  [aknysh_avatar]: https://github.com/aknysh.png?size=150
+  [aknysh_avatar]: https://img.cloudposse.com/150x150/https://github.com/aknysh.png
   [s2504s_homepage]: https://github.com/s2504s
-  [s2504s_avatar]: https://github.com/s2504s.png?size=150
+  [s2504s_avatar]: https://img.cloudposse.com/150x150/https://github.com/s2504s.png
   [drama17_homepage]: https://github.com/drama17
-  [drama17_avatar]: https://github.com/drama17.png?size=150
+  [drama17_avatar]: https://img.cloudposse.com/150x150/https://github.com/drama17.png
   [comeanother_homepage]: https://github.com/comeanother
-  [comeanother_avatar]: https://github.com/comeanother.png?size=150
+  [comeanother_avatar]: https://img.cloudposse.com/150x150/https://github.com/comeanother.png
   [drmikecrowe_homepage]: https://github.com/drmikecrowe
-  [drmikecrowe_avatar]: https://github.com/drmikecrowe.png?size=150
+  [drmikecrowe_avatar]: https://img.cloudposse.com/150x150/https://github.com/drmikecrowe.png
 
 
 

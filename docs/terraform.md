@@ -4,6 +4,7 @@
 |------|-------------|:----:|:-----:|:-----:|
 | allocated_storage | The allocated storage in GBs | string | - | yes |
 | allow_major_version_upgrade | Allow major version upgrade | string | `false` | no |
+| allowed_cidr_blocks | The whitelisted CIDRs which to allow `ingress` traffic to the DB instance | list | `<list>` | no |
 | apply_immediately | Specifies whether any database modifications are applied immediately, or during the next maintenance window | string | `false` | no |
 | associate_security_group_ids | The IDs of the existing security groups to associate with the DB instance | list | `<list>` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
