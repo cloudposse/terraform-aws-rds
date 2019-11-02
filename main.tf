@@ -67,6 +67,10 @@ resource "aws_db_instance" "default" {
   tags                        = module.label.tags
   deletion_protection         = var.deletion_protection
   final_snapshot_identifier   = length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id
+
+  performance_insights_enabled          = var.performance_insights_enabled
+  performance_insights_kms_key_id       = var.performance_insights_enabled ? var.performance_insights_kms_key_id : null
+  performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
 }
 
 resource "aws_db_parameter_group" "default" {

@@ -39,6 +39,9 @@
 | namespace | Namespace (e.g. `eg` or `cp`) | string | `` | no |
 | option_group_name | Name of the DB option group to associate | string | `` | no |
 | parameter_group_name | Name of the DB parameter group to associate | string | `` | no |
+| performance_insights_enabled | Specifies whether Performance Insights are enabled. | bool | `false` | no |
+| performance_insights_kms_key_id | The ARN for the KMS key to encrypt Performance Insights data. Once KMS key is set, it can never be changed. | string | `null` | no |
+| performance_insights_retention_period | The amount of time in days to retain Performance Insights data. Either 7 (7 days) or 731 (2 years). | number | `7` | no |
 | publicly_accessible | Determines if database can be publicly available (NOT recommended) | bool | `false` | no |
 | security_group_ids | The IDs of the security groups from which to allow `ingress` traffic to the DB instance | list(string) | `<list>` | no |
 | skip_final_snapshot | If true (default), no snapshot will be made before deleting DB | bool | `true` | no |
