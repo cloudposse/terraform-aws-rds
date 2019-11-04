@@ -74,7 +74,7 @@ resource "random_string" "default" {
 
 resource "aws_db_parameter_group" "default" {
   count     = "${(length(var.parameter_group_name) == 0 && var.enabled == "true") ? 1 : 0}"
-  name      = "${module.label.id}${random_string.default.result}"
+  name      = "${module.label.id}${var.delimiter}${random_string.default.result}"
   family    = "${var.db_parameter_group}"
   tags      = "${module.label.tags}"
   parameter = "${var.db_parameter}"
