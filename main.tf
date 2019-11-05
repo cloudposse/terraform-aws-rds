@@ -86,7 +86,7 @@ resource "aws_db_parameter_group" "default" {
 
 resource "aws_db_option_group" "default" {
   count                = "${(length(var.option_group_name) == 0 && var.enabled == "true") ? 1 : 0}"
-  name                 = "${module.label.id}${var.delimiter}${random_string.default.result}"
+  name                 = "${module.label.id}${var.delimiter}${join("", random_string.default.*.result)}"
   engine_name          = "${var.engine}"
   major_engine_version = "${local.major_engine_version}"
   tags                 = "${module.label.tags}"
