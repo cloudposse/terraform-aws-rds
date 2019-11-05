@@ -63,6 +63,7 @@ resource "aws_db_instance" "default" {
 }
 
 resource "random_string" "default" {
+  count   = "${var.enabled == "true" ? 1 : 0}"
   length  = 20
   special = false
   upper   = false
