@@ -315,3 +315,9 @@ variable "performance_insights_retention_period" {
   default     = 7
   description = "The amount of time in days to retain Performance Insights data. Either 7 (7 days) or 731 (2 years)."
 }
+
+variable "enabled_cloudwatch_logs_exports" {
+  type        = list(string)
+  default     = []
+  description = "List of log types to enable for exporting to CloudWatch logs. If omitted, no logs will be exported. Valid values (depending on engine): alert, audit, error, general, listener, slowquery, trace, postgresql (PostgreSQL), upgrade (PostgreSQL)."
+}
