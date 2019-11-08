@@ -19,7 +19,10 @@ module "final_snapshot_label" {
 }
 
 locals {
-  computed_major_engine_version = "${var.engine == "postgres" ? join(".", slice(split(".", var.engine_version), 0, 1)) : join(".", slice(split(".", var.engine_version), 0, 2))}"
+  versions                      = "${split(".", var.engine_version)}"
+  major_version                 = "${element(local.versions,0)}"
+  minor_version                 = "${length(local.versions) > 1 ? format(".%s", element(local.versions,1)) : ""}"
+  computed_major_engine_version = "${local.major_version}${(var.engine != "postgres" || local.major_version < 10) ? local.minor_version : ""}"
   major_engine_version          = "${var.major_engine_version == "" ? local.computed_major_engine_version : var.major_engine_version}"
 }
 
@@ -59,17 +62,32 @@ resource "aws_db_instance" "default" {
   final_snapshot_identifier   = "${length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id}"
 }
 
+resource "random_string" "default" {
+  count   = "${var.enabled == "true" ? 1 : 0}"
+  length  = 20
+  special = false
+  upper   = false
+
+  keepers {
+    engine_version = "${var.engine_version}"
+  }
+}
+
 resource "aws_db_parameter_group" "default" {
   count     = "${(length(var.parameter_group_name) == 0 && var.enabled == "true") ? 1 : 0}"
-  name      = "${module.label.id}"
+  name      = "${module.label.id}${var.delimiter}${join("", random_string.default.*.result)}"
   family    = "${var.db_parameter_group}"
   tags      = "${module.label.tags}"
   parameter = "${var.db_parameter}"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_db_option_group" "default" {
   count                = "${(length(var.option_group_name) == 0 && var.enabled == "true") ? 1 : 0}"
-  name                 = "${module.label.id}"
+  name                 = "${module.label.id}${var.delimiter}${join("", random_string.default.*.result)}"
   engine_name          = "${var.engine}"
   major_engine_version = "${local.major_engine_version}"
   tags                 = "${module.label.tags}"
