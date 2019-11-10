@@ -154,3 +154,14 @@ module "dns_host_name" {
   zone_id = var.dns_zone_id
   records = coalescelist(aws_db_instance.default.*.address, [""])
 }
+
+resource "aws_security_group_rule" "ingress_cidr_blocks" {
+  count             = var.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+  description       = "Allow inbound traffic from CIDR blocks"
+  type              = "ingress"
+  from_port         = var.database_port
+  to_port           = var.database_port
+  protocol          = "tcp"
+  cidr_blocks       = var.allowed_cidr_blocks
+  security_group_id = join("", aws_security_group.default.*.id)
+}

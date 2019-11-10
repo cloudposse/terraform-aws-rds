@@ -291,3 +291,9 @@ variable "kms_key_arn" {
   description = "The ARN of the existing KMS key to encrypt storage"
   default     = ""
 }
+
+variable "allowed_cidr_blocks" {
+  type        = list(string)
+  default     = []
+  description = "The whitelisted CIDRs which to allow `ingress` traffic to the DB instance"
+}
