@@ -1,5 +1,5 @@
 module "label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.14.1"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.15.0"
   enabled    = var.enabled
   namespace  = var.namespace
   name       = var.name
@@ -10,7 +10,7 @@ module "label" {
 }
 
 module "final_snapshot_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.14.1"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.15.0"
   enabled    = var.enabled
   namespace  = var.namespace
   name       = var.name
@@ -54,7 +54,6 @@ resource "aws_db_instance" "default" {
   multi_az                    = var.multi_az
   storage_type                = var.storage_type
   iops                        = var.iops
-  enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
   publicly_accessible         = var.publicly_accessible
   snapshot_identifier         = var.snapshot_identifier
   allow_major_version_upgrade = var.allow_major_version_upgrade
@@ -68,6 +67,11 @@ resource "aws_db_instance" "default" {
   tags                        = module.label.tags
   deletion_protection         = var.deletion_protection
   final_snapshot_identifier   = length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id
+
+  enabled_cloudwatch_logs_exports       = var.enabled_cloudwatch_logs_exports
+  performance_insights_enabled          = var.performance_insights_enabled
+  performance_insights_kms_key_id       = var.performance_insights_enabled ? var.performance_insights_kms_key_id : null
+  performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
 }
 
 resource "aws_db_parameter_group" "default" {
@@ -129,30 +133,18 @@ resource "aws_security_group" "default" {
   name        = module.label.id
   description = "Allow inbound traffic from the security groups"
   vpc_id      = var.vpc_id
-
-  ingress {
-    from_port       = var.database_port
-    to_port         = var.database_port
-    protocol        = "tcp"
-    security_groups = var.security_group_ids
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = module.label.tags
+  tags        = module.label.tags
 }
 
-module "dns_host_name" {
-  source  = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.3.0"
-  enabled = length(var.dns_zone_id) > 0 && var.enabled ? true : false
-  name    = var.host_name
-  zone_id = var.dns_zone_id
-  records = coalescelist(aws_db_instance.default.*.address, [""])
+resource "aws_security_group_rule" "ingress_security_groups" {
+  count                    = var.enabled ? length(var.security_group_ids) : 0
+  description              = "Allow inbound traffic from existing Security Groups"
+  type                     = "ingress"
+  from_port                = var.database_port
+  to_port                  = var.database_port
+  protocol                 = "tcp"
+  source_security_group_id = var.security_group_ids[count.index]
+  security_group_id        = join("", aws_security_group.default.*.id)
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
@@ -164,4 +156,23 @@ resource "aws_security_group_rule" "ingress_cidr_blocks" {
   protocol          = "tcp"
   cidr_blocks       = var.allowed_cidr_blocks
   security_group_id = join("", aws_security_group.default.*.id)
+}
+
+resource "aws_security_group_rule" "egress" {
+  count             = var.enabled ? 1 : 0
+  description       = "Allow all egress traffic"
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = join("", aws_security_group.default.*.id)
+}
+
+module "dns_host_name" {
+  source  = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.3.0"
+  enabled = length(var.dns_zone_id) > 0 && var.enabled ? true : false
+  name    = var.host_name
+  zone_id = var.dns_zone_id
+  records = coalescelist(aws_db_instance.default.*.address, [""])
 }
