@@ -162,6 +162,7 @@ Available targets:
 | multi_az | Set to true if multi AZ deployment must be supported | bool | `false` | no |
 | name | The Name of the application or solution  (e.g. `bastion` or `portal`) | string | - | yes |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | `` | no |
+| ca_cert_identifier | The identifier of the CA certificate for the DB instance | string | no |
 | option_group_name | Name of the DB option group to associate | string | `` | no |
 | parameter_group_name | Name of the DB parameter group to associate | string | `` | no |
 | publicly_accessible | Determines if database can be publicly available (NOT recommended) | bool | `false` | no |
