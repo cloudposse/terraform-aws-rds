@@ -328,3 +328,10 @@ variable "enabled_cloudwatch_logs_exports" {
   default     = []
   description = "List of log types to enable for exporting to CloudWatch logs. If omitted, no logs will be exported. Valid values (depending on engine): alert, audit, error, general, listener, slowquery, trace, postgresql (PostgreSQL), upgrade (PostgreSQL)."
 }
+
+
+variable "ca_cert_identifier" {
+  type        = string
+  default     = "The identifier of the CA certificate for the DB instance"
+  default     = "rds-ca-2019"
+}

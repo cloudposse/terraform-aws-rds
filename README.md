@@ -212,6 +212,7 @@ Available targets:
 | performance_insights_retention_period | The amount of time in days to retain Performance Insights data. Either 7 (7 days) or 731 (2 years). | number | `7` | no |
 | publicly_accessible | Determines if database can be publicly available (NOT recommended) | bool | `false` | no |
 | security_group_ids | The IDs of the security groups from which to allow `ingress` traffic to the DB instance | list(string) | `<list>` | no |
+| ca_cert_identifier | The identifier of the CA certificate for the DB instance | string | rds-ca-2019 | no |
 | skip_final_snapshot | If true (default), no snapshot will be made before deleting DB | bool | `true` | no |
 | snapshot_identifier | Snapshot identifier e.g: rds:production-2019-06-26-06-05. If specified, the module create cluster from the snapshot | string | `` | no |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | string | `` | no |
