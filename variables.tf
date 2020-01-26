@@ -1,24 +1,49 @@
 variable "namespace" {
   type        = string
-  description = "Namespace (e.g. `eg` or `cp`)"
   default     = ""
+  description = "Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp'"
+}
+
+variable "environment" {
+  type        = string
+  default     = ""
+  description = "Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT'"
 }
 
 variable "stage" {
   type        = string
-  description = "Stage (e.g. `prod`, `dev`, `staging`)"
   default     = ""
+  description = "Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release'"
 }
 
 variable "name" {
   type        = string
-  description = "The Name of the application or solution  (e.g. `bastion` or `portal`)"
+  default     = ""
+  description = "Solution name, e.g. 'app' or 'jenkins'"
 }
 
 variable "enabled" {
   type        = bool
-  description = "Set to false to prevent the module from creating any resources"
   default     = true
+  description = "Set to false to prevent the module from creating any resources"
+}
+
+variable "delimiter" {
+  type        = string
+  default     = "-"
+  description = "Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`"
+}
+
+variable "attributes" {
+  type        = list(string)
+  default     = []
+  description = "Additional attributes (e.g. `1`)"
+}
+
+variable "tags" {
+  type        = map(string)
+  default     = {}
+  description = "Additional tags (e.g. `map('BusinessUnit','XYZ')`"
 }
 
 variable "dns_zone_id" {
@@ -39,6 +64,12 @@ variable "security_group_ids" {
   description = "The IDs of the security groups from which to allow `ingress` traffic to the DB instance"
 }
 
+variable "allowed_cidr_blocks" {
+  type        = list(string)
+  default     = []
+  description = "The whitelisted CIDRs which to allow `ingress` traffic to the DB instance"
+}
+
 variable "associate_security_group_ids" {
   type        = list(string)
   default     = []
@@ -48,13 +79,6 @@ variable "associate_security_group_ids" {
 variable "database_name" {
   type        = string
   description = "The name of the database to create when the DB instance is created"
-}
-
-variable "ca_cert_identifier" {
-  type        = string
-  description = "The identifier of the CA certificate for the DB instance"
-  default     = "rds-ca-2019"
-    
 }
 
 variable "database_user" {
@@ -223,24 +247,6 @@ variable "backup_window" {
   default     = "22:00-03:00"
 }
 
-variable "delimiter" {
-  type        = string
-  default     = "-"
-  description = "Delimiter to be used between `name`, `namespace`, `stage` and `attributes`"
-}
-
-variable "attributes" {
-  type        = list(string)
-  default     = []
-  description = "Additional attributes (e.g. `1`)"
-}
-
-variable "tags" {
-  type        = map(string)
-  default     = {}
-  description = "Additional tags (e.g. { BusinessUnit : ABC })"
-}
-
 variable "db_parameter" {
   type = list(object({
     apply_method = string
@@ -299,8 +305,33 @@ variable "kms_key_arn" {
   default     = ""
 }
 
-variable "allowed_cidr_blocks" {
+variable "performance_insights_enabled" {
+  type        = bool
+  default     = false
+  description = "Specifies whether Performance Insights are enabled."
+}
+
+variable "performance_insights_kms_key_id" {
+  type        = string
+  default     = null
+  description = "The ARN for the KMS key to encrypt Performance Insights data. Once KMS key is set, it can never be changed."
+}
+
+variable "performance_insights_retention_period" {
+  type        = number
+  default     = 7
+  description = "The amount of time in days to retain Performance Insights data. Either 7 (7 days) or 731 (2 years)."
+}
+
+variable "enabled_cloudwatch_logs_exports" {
   type        = list(string)
   default     = []
-  description = "The whitelisted CIDRs which to allow `ingress` traffic to the DB instance"
+  description = "List of log types to enable for exporting to CloudWatch logs. If omitted, no logs will be exported. Valid values (depending on engine): alert, audit, error, general, listener, slowquery, trace, postgresql (PostgreSQL), upgrade (PostgreSQL)."
+}
+
+variable "ca_cert_identifier" {
+  type        = string
+  description = "The identifier of the CA certificate for the DB instance"
+  default     = "rds-ca-2019"
+    
 }

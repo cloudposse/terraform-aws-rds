@@ -1,23 +1,25 @@
 module "label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.15.0"
-  enabled    = var.enabled
-  namespace  = var.namespace
-  name       = var.name
-  stage      = var.stage
-  delimiter  = var.delimiter
-  attributes = var.attributes
-  tags       = var.tags
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
+  enabled     = var.enabled
+  namespace   = var.namespace
+  name        = var.name
+  stage       = var.stage
+  environment = var.environment
+  delimiter   = var.delimiter
+  attributes  = var.attributes
+  tags        = var.tags
 }
 
 module "final_snapshot_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.15.0"
-  enabled    = var.enabled
-  namespace  = var.namespace
-  name       = var.name
-  stage      = var.stage
-  delimiter  = var.delimiter
-  attributes = compact(concat(var.attributes, ["final", "snapshot"]))
-  tags       = var.tags
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
+  enabled     = var.enabled
+  namespace   = var.namespace
+  name        = var.name
+  stage       = var.stage
+  environment = var.environment
+  delimiter   = var.delimiter
+  attributes  = compact(concat(var.attributes, ["final", "snapshot"]))
+  tags        = var.tags
 }
 
 locals {
@@ -51,6 +53,7 @@ resource "aws_db_instance" "default" {
   parameter_group_name        = length(var.parameter_group_name) > 0 ? var.parameter_group_name : join("", aws_db_parameter_group.default.*.name)
   option_group_name           = length(var.option_group_name) > 0 ? var.option_group_name : join("", aws_db_option_group.default.*.name)
   license_model               = var.license_model
+  ca_cert_identifier          = var.ca_cert_identifier
   multi_az                    = var.multi_az
   storage_type                = var.storage_type
   iops                        = var.iops
@@ -67,7 +70,7 @@ resource "aws_db_instance" "default" {
   tags                        = module.label.tags
   deletion_protection         = var.deletion_protection
   final_snapshot_identifier   = length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id
-  ca_cert_identifier          = var.ca_cert_identifier
+
   enabled_cloudwatch_logs_exports       = var.enabled_cloudwatch_logs_exports
   performance_insights_enabled          = var.performance_insights_enabled
   performance_insights_kms_key_id       = var.performance_insights_enabled ? var.performance_insights_kms_key_id : null
@@ -174,5 +177,4 @@ module "dns_host_name" {
   enabled = length(var.dns_zone_id) > 0 && var.enabled ? true : false
   name    = var.host_name
   zone_id = var.dns_zone_id
-  records = coalescelist(aws_db_instance.default.*.address, [""])
-}
+  records 
