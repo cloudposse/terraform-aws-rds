@@ -105,6 +105,7 @@ module "rds_instance" {
     dns_zone_id                 = "Z89FN1IW975KPE"
     host_name                   = "db"
     security_group_ids          = ["sg-xxxxxxxx"]
+    ca_cert_identifier          = "rds-ca-2019"
     allowed_cidr_blocks         = ["XXX.XXX.XXX.XXX/32"]
     database_name               = "wordpress"
     database_user               = "admin"
@@ -177,6 +178,7 @@ Available targets:
 | auto_minor_version_upgrade | Allow automated minor version upgrade (e.g. from Postgres 9.5.3 to Postgres 9.5.4) | bool | `true` | no |
 | backup_retention_period | Backup retention period in days. Must be > 0 to enable backups | number | `0` | no |
 | backup_window | When AWS can perform DB snapshots, can't overlap with maintenance window | string | `22:00-03:00` | no |
+| ca_cert_identifier | The identifier of the CA certificate for the DB instance | string | `rds-ca-2019` | no |
 | copy_tags_to_snapshot | Copy tags from DB to a snapshot | bool | `true` | no |
 | database_name | The name of the database to create when the DB instance is created | string | - | yes |
 | database_password | (Required unless a snapshot_identifier or replicate_source_db is provided) Password for the master DB user | string | `` | no |
@@ -376,8 +378,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 
 ### Contributors
 
-|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Sergey Vasilyev][s2504s_avatar]][s2504s_homepage]<br/>[Sergey Vasilyev][s2504s_homepage] | [![Valeriy][drama17_avatar]][drama17_homepage]<br/>[Valeriy][drama17_homepage] | [![Konstantin B][comeanother_avatar]][comeanother_homepage]<br/>[Konstantin B][comeanother_homepage] | [![drmikecrowe][drmikecrowe_avatar]][drmikecrowe_homepage]<br/>[drmikecrowe][drmikecrowe_homepage] | [![Oscar Sullivan][osulli_avatar]][osulli_homepage]<br/>[Oscar Sullivan][osulli_homepage] |
-|---|---|---|---|---|---|---|
+|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Sergey Vasilyev][s2504s_avatar]][s2504s_homepage]<br/>[Sergey Vasilyev][s2504s_homepage] | [![Valeriy][drama17_avatar]][drama17_homepage]<br/>[Valeriy][drama17_homepage] | [![Konstantin B][comeanother_avatar]][comeanother_homepage]<br/>[Konstantin B][comeanother_homepage] | [![drmikecrowe][drmikecrowe_avatar]][drmikecrowe_homepage]<br/>[drmikecrowe][drmikecrowe_homepage] | [![Oscar Sullivan][osulli_avatar]][osulli_homepage]<br/>[Oscar Sullivan][osulli_homepage] | [![Federico Márquez][fedemzcor_avatar]][fedemzcor_homepage]<br/>[Federico Márquez][fedemzcor_homepage] |
+|---|---|---|---|---|---|---|---|
 
   [osterman_homepage]: https://github.com/osterman
   [osterman_avatar]: https://img.cloudposse.com/150x150/https://github.com/osterman.png
@@ -393,6 +395,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
   [drmikecrowe_avatar]: https://img.cloudposse.com/150x150/https://github.com/drmikecrowe.png
   [osulli_homepage]: https://github.com/osulli
   [osulli_avatar]: https://img.cloudposse.com/150x150/https://github.com/osulli.png
+  [fedemzcor_homepage]: https://github.com/fedemzcor
+  [fedemzcor_avatar]: https://img.cloudposse.com/150x150/https://github.com/fedemzcor.png
 
 [![README Footer][readme_footer_img]][readme_footer_link]
 [![Beacon][beacon]][website]

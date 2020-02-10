@@ -11,6 +11,7 @@
 | auto_minor_version_upgrade | Allow automated minor version upgrade (e.g. from Postgres 9.5.3 to Postgres 9.5.4) | bool | `true` | no |
 | backup_retention_period | Backup retention period in days. Must be > 0 to enable backups | number | `0` | no |
 | backup_window | When AWS can perform DB snapshots, can't overlap with maintenance window | string | `22:00-03:00` | no |
+| ca_cert_identifier | The identifier of the CA certificate for the DB instance | string | `rds-ca-2019` | no |
 | copy_tags_to_snapshot | Copy tags from DB to a snapshot | bool | `true` | no |
 | database_name | The name of the database to create when the DB instance is created | string | - | yes |
 | database_password | (Required unless a snapshot_identifier or replicate_source_db is provided) Password for the master DB user | string | `` | no |
