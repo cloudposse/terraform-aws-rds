@@ -75,6 +75,8 @@ resource "aws_db_instance" "default" {
   performance_insights_enabled          = var.performance_insights_enabled
   performance_insights_kms_key_id       = var.performance_insights_enabled ? var.performance_insights_kms_key_id : null
   performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
+
+  monitoring_interval = var.monitoring_interval
 }
 
 resource "aws_db_parameter_group" "default" {

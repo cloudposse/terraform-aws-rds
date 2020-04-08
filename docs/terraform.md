@@ -37,6 +37,7 @@
 | maintenance_window | The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi' UTC | string | `Mon:03:00-Mon:04:00` | no |
 | major_engine_version | Database MAJOR engine version, depends on engine type | string | `` | no |
 | max_allocated_storage | The upper limit to which RDS can automatically scale the storage in GBs | number | `0` | no |
+| monitoring_interval | The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. To disable collecting Enhanced Monitoring metrics, specify 0. Valid Values are 0, 1, 5, 10, 15, 30, 60. | string | `0` | no |
 | multi_az | Set to true if multi AZ deployment must be supported | bool | `false` | no |
 | name | Solution name, e.g. 'app' or 'jenkins' | string | `` | no |
 | namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | string | `` | no |
