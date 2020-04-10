@@ -339,3 +339,9 @@ variable "monitoring_interval" {
   description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. To disable collecting Enhanced Monitoring metrics, specify 0. Valid Values are 0, 1, 5, 10, 15, 30, 60."
   default     = "0"
 }
+
+variable "enable_http_endpoint" {
+  type        = bool
+  default     = false
+  description = "Whether to enable the HTTP endpoint for console querying"
+}
