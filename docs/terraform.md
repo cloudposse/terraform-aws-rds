@@ -24,6 +24,7 @@
 | delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes` | string | `-` | no |
 | dns_zone_id | The ID of the DNS Zone in Route53 where a new DNS record will be created for the DB host name | string | `` | no |
 | enabled | Set to false to prevent the module from creating any resources | bool | `true` | no |
+| enable_http_endpoint | Set to true to enable HTTP endpoint querying for serverless clusters | bool | `false` | no |
 | enabled_cloudwatch_logs_exports | List of log types to enable for exporting to CloudWatch logs. If omitted, no logs will be exported. Valid values (depending on engine): alert, audit, error, general, listener, slowquery, trace, postgresql (PostgreSQL), upgrade (PostgreSQL). | list(string) | `<list>` | no |
 | engine | Database engine type | string | - | yes |
 | engine_version | Database engine version, depends on engine type | string | - | yes |
