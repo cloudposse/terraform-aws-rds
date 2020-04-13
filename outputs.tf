@@ -1,3 +1,8 @@
+output "instance_arn" {
+  value       = "${join("", aws_db_instance.default.*.arn)}"
+  description = "ARN of the instance"
+}
+
 output "instance_id" {
   value       = "${join("", aws_db_instance.default.*.id)}"
   description = "ID of the instance"
