@@ -223,6 +223,7 @@ Available targets:
 | subnet_ids | List of subnets for the DB | list(string) | - | yes |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | map(string) | `<map>` | no |
 | vpc_id | VPC ID the DB instance will be created in | string | - | yes |
+| iam_database_authentication_enabled | Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled | boolean | false | no |
 
 ## Outputs
 
