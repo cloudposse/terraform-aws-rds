@@ -1,60 +1,34 @@
----
-#
-# This is the canonical configuration for the `README.md`
-# Run `make readme` to rebuild the `README.md`
-#
-
-# Name of this project
 name: terraform-aws-rds
-
-# Tags of this project
 tags:
-  - aws
-  - terraform
-  - terraform-modules
-  - databases
-  - rds
-  - aws-rds
-  - postgres
-  - mysql
-
-# Categories of this project
+- aws
+- terraform
+- terraform-modules
+- databases
+- rds
+- aws-rds
+- postgres
+- mysql
 categories:
-  - terraform-modules/databases
-
-# Logo for this project
-#logo: docs/logo.png
-
-# License of this project
-license: "APACHE2"
-
-# Canonical GitHub repo
+- terraform-modules/databases
+license: APACHE2
 github_repo: cloudposse/terraform-aws-rds
-
-# Badges to display
 badges:
-  - name: "Codefresh Build Status"
-    image: "https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-rds?type=cf-1"
-    url: "https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d33e2a97ff4a883c72e9fc0"
-  - name: "Latest Release"
-    image: "https://img.shields.io/github/release/cloudposse/terraform-aws-rds.svg"
-    url: "https://github.com/cloudposse/terraform-aws-rds/releases/latest"
-  - name: "Slack Community"
-    image: "https://slack.cloudposse.com/badge.svg"
-    url: "https://slack.cloudposse.com"
-
+- name: Latest Release
+  image: https://img.shields.io/github/release/cloudposse/terraform-aws-rds.svg
+  url: https://github.com/cloudposse/terraform-aws-rds/releases/latest
+- name: Slack Community
+  image: https://slack.cloudposse.com/badge.svg
+  url: https://slack.cloudposse.com
 related:
-  - name: "terraform-aws-rds-cluster"
-    description: "Terraform module to provision an RDS Aurora cluster for MySQL or Postgres"
-    url: "https://github.com/cloudposse/terraform-aws-rds-cluster"
-  - name: "terraform-aws-rds-cloudwatch-sns-alarms"
-    description: "Terraform module that configures important RDS alerts using CloudWatch and sends them to an SNS topic"
-    url: "https://github.com/cloudposse/terraform-aws-rds-cloudwatch-sns-alarms"
-
-# Short description of this project
-description: |-
-  Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/) instances
-
+- name: terraform-aws-rds-cluster
+  description: Terraform module to provision an RDS Aurora cluster for MySQL or Postgres
+  url: https://github.com/cloudposse/terraform-aws-rds-cluster
+- name: terraform-aws-rds-cloudwatch-sns-alarms
+  description: Terraform module that configures important RDS alerts using CloudWatch
+    and sends them to an SNS topic
+  url: https://github.com/cloudposse/terraform-aws-rds-cloudwatch-sns-alarms
+description: Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/)
+  instances
 introduction: |-
   The module will create:
 
@@ -64,8 +38,6 @@ introduction: |-
   * DB Subnet Group
   * DB Security Group
   * DNS Record in Route53 for the DB endpoint
-
-# How to use this project
 usage: |-
   ```hcl
   module "rds_instance" {
@@ -120,26 +92,23 @@ usage: |-
       ]
   }
   ```
-
 include:
-  - "docs/targets.md"
-  - "docs/terraform.md"
-
-# Contributors to this project
+- docs/targets.md
+- docs/terraform.md
 contributors:
-  - name: "Erik Osterman"
-    github: "osterman"
-  - name: "Andriy Knysh"
-    github: "aknysh"
-  - name: "Sergey Vasilyev"
-    github: "s2504s"
-  - name: "Valeriy"
-    github: "drama17"
-  - name: "Konstantin B"
-    github: "comeanother"
-  - name: "drmikecrowe"
-    github: "drmikecrowe"
-  - name: "Oscar Sullivan"
-    github: "osulli"
-  - name: "Federico Márquez"
-    github: "fedemzcor"
+- name: Erik Osterman
+  github: osterman
+- name: Andriy Knysh
+  github: aknysh
+- name: Sergey Vasilyev
+  github: s2504s
+- name: Valeriy
+  github: drama17
+- name: Konstantin B
+  github: comeanother
+- name: drmikecrowe
+  github: drmikecrowe
+- name: Oscar Sullivan
+  github: osulli
+- name: Federico Márquez
+  github: fedemzcor
