@@ -345,3 +345,8 @@ variable "enable_http_endpoint" {
   default     = false
   description = "Whether to enable the HTTP endpoint for console querying"
 }
+
+variable "iam_database_authentication_enabled" {
+  description = "Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled"
+  default     = false
+}

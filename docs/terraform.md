@@ -31,6 +31,7 @@
 | environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | string | `` | no |
 | final_snapshot_identifier | Final snapshot identifier e.g.: some-db-final-snapshot-2019-06-26-06-05 | string | `` | no |
 | host_name | The DB host name created in Route53 | string | `db` | no |
+| iam_database_authentication_enabled | Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled | string | `false` | no |
 | instance_class | Class of RDS instance | string | - | yes |
 | iops | The amount of provisioned IOPS. Setting this implies a storage_type of 'io1'. Default is 0 if rds storage type is not 'io1' | number | `0` | no |
 | kms_key_arn | The ARN of the existing KMS key to encrypt storage | string | `` | no |
