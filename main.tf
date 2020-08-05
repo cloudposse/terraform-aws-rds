@@ -125,6 +125,7 @@ resource "aws_security_group" "default" {
     to_port         = var.database_port
     protocol        = "tcp"
     security_groups = var.security_group_ids
+    cidr_blocks     = var.cidr_blocks
   }
 
   egress {
