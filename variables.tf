@@ -164,7 +164,7 @@ variable "major_engine_version" {
 
 variable "license_model" {
   type        = string
-  description = "License model for this DB. Optional, but required for some DB Engines. Valid values: license-included | bring-your-own-license | general-public-license"
+  description = "License model for this DB. Optional, but required for some DB Engines. Valid values: `license-included`, `bring-your-own-license`, or `general-public-license`"
   default     = ""
 }
 
