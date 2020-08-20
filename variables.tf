@@ -114,6 +114,12 @@ variable "major_engine_version" {
   # https://docs.aws.amazon.com/cli/latest/reference/rds/create-option-group.html
 }
 
+variable "charset_name" {
+  type = string
+  description = "The character set name to use for DB encoding. [Oracle & Microsoft SQL only](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#character_set_name). For other engines use `db_parameter`"
+  default = null
+}
+
 variable "license_model" {
   type        = string
   description = "License model for this DB. Optional, but required for some DB Engines. Valid values: license-included | bring-your-own-license | general-public-license"
