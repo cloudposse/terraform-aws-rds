@@ -287,3 +287,8 @@ variable "enabled_cloudwatch_logs_exports" {
   default     = []
 }
 
+variable "performance_insights_enabled" {
+  type        = string
+  description = "enabling performance insights"
+  default     = "false"
+}

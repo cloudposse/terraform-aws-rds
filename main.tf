@@ -60,6 +60,7 @@ resource "aws_db_instance" "default" {
   enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
   monitoring_interval             = var.monitoring_interval
   monitoring_role_arn             = var.monitoring_role_arn
+  performance_insights_enabled    = var.performance_insights_enabled
 }
 
 resource "aws_db_parameter_group" "default" {
