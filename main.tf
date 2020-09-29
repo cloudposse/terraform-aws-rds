@@ -78,6 +78,7 @@ resource "aws_db_instance" "default" {
   performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
 
   monitoring_interval = var.monitoring_interval
+  monitoring_role_arn = var.monitoring_role_arn
 }
 
 resource "aws_db_parameter_group" "default" {
