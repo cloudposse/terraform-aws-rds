@@ -147,6 +147,7 @@ Available targets:
 
 ```
 <!-- markdownlint-restore -->
+<!-- markdownlint-disable -->
 ## Requirements
 
 | Name | Version |
@@ -203,6 +204,7 @@ Available targets:
 | major\_engine\_version | Database MAJOR engine version, depends on engine type | `string` | `""` | no |
 | max\_allocated\_storage | The upper limit to which RDS can automatically scale the storage in GBs | `number` | `0` | no |
 | monitoring\_interval | The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. To disable collecting Enhanced Monitoring metrics, specify 0. Valid Values are 0, 1, 5, 10, 15, 30, 60. | `string` | `"0"` | no |
+| monitoring\_role\_arn | The ARN for the IAM role that permits RDS to send enhanced monitoring metrics to CloudWatch Logs | `string` | `null` | no |
 | multi\_az | Set to true if multi AZ deployment must be supported | `bool` | `false` | no |
 | name | Solution name, e.g. 'app' or 'jenkins' | `string` | `""` | no |
 | namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `""` | no |
@@ -236,6 +238,7 @@ Available targets:
 | security\_group\_id | ID of the Security Group |
 | subnet\_group\_id | ID of the Subnet Group |
 
+<!-- markdownlint-restore -->
 
 
 
