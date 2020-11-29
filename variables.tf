@@ -340,12 +340,11 @@ variable "monitoring_interval" {
   default     = "0"
 }
 
-variable "monitorin_role_arn" {
+variable "monitoring_role_arn" {
   type        = string
-  description = "The ARN for the role which has permissions to monitor RDS instances. Must be set if `monitoring_interval` is set."
-  default     = ""
+  description = "The ARN for the IAM role that permits RDS to send enhanced monitoring metrics to CloudWatch Logs"
+  default     = null
 }
-
 
 variable "iam_database_authentication_enabled" {
   description = "Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled"
