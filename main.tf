@@ -11,7 +11,7 @@ locals {
 }
 
 resource "aws_db_instance" "default" {
-  count                 = var.enabled ? 1 : 0
+  count                 = module.this.enabled ? 1 : 0
   identifier            = module.this.id
   name                  = var.database_name
   username              = var.database_user
@@ -55,7 +55,7 @@ resource "aws_db_instance" "default" {
   final_snapshot_identifier   = length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id
 
   iam_database_authentication_enabled   = var.iam_database_authentication_enabled
-  enabled_cloudwatch_logs_exports       = var.enabled_cloudwatch_logs_exports
+  enabled_cloudwatch_logs_exports       = module.this.enabled_cloudwatch_logs_exports
   performance_insights_enabled          = var.performance_insights_enabled
   performance_insights_kms_key_id       = var.performance_insights_enabled ? var.performance_insights_kms_key_id : null
   performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
@@ -65,7 +65,7 @@ resource "aws_db_instance" "default" {
 }
 
 resource "aws_db_parameter_group" "default" {
-  count  = length(var.parameter_group_name) == 0 && var.enabled ? 1 : 0
+  count  = length(var.parameter_group_name) == 0 && module.this.enabled ? 1 : 0
   name   = module.this.id
   family = var.db_parameter_group
   tags   = module.this.tags
@@ -81,7 +81,7 @@ resource "aws_db_parameter_group" "default" {
 }
 
 resource "aws_db_option_group" "default" {
-  count                = length(var.option_group_name) == 0 && var.enabled ? 1 : 0
+  count                = length(var.option_group_name) == 0 && module.this.enabled ? 1 : 0
   name                 = module.this.id
   engine_name          = var.engine
   major_engine_version = local.major_engine_version
@@ -112,14 +112,14 @@ resource "aws_db_option_group" "default" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  count      = var.enabled ? 1 : 0
+  count      = module.this.enabled ? 1 : 0
   name       = module.this.id
   subnet_ids = var.subnet_ids
   tags       = module.this.tags
 }
 
 resource "aws_security_group" "default" {
-  count       = var.enabled ? 1 : 0
+  count       = module.this.enabled ? 1 : 0
   name        = module.this.id
   description = "Allow inbound traffic from the security groups"
   vpc_id      = var.vpc_id
@@ -127,7 +127,7 @@ resource "aws_security_group" "default" {
 }
 
 resource "aws_security_group_rule" "ingress_security_groups" {
-  count                    = var.enabled ? length(var.security_group_ids) : 0
+  count                    = module.this.enabled ? length(var.security_group_ids) : 0
   description              = "Allow inbound traffic from existing Security Groups"
   type                     = "ingress"
   from_port                = var.database_port
@@ -138,7 +138,7 @@ resource "aws_security_group_rule" "ingress_security_groups" {
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
-  count             = var.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+  count             = module.this.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
   description       = "Allow inbound traffic from CIDR blocks"
   type              = "ingress"
   from_port         = var.database_port
@@ -149,7 +149,7 @@ resource "aws_security_group_rule" "ingress_cidr_blocks" {
 }
 
 resource "aws_security_group_rule" "egress" {
-  count             = var.enabled ? 1 : 0
+  count             = module.this.enabled ? 1 : 0
   description       = "Allow all egress traffic"
   type              = "egress"
   from_port         = 0
