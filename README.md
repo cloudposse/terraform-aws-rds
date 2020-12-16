@@ -87,7 +87,9 @@ The table below correctly indicates which inputs are required.
 
 ```hcl
 module "rds_instance" {
-    source                      = "git::https://github.com/cloudposse/terraform-aws-rds.git?ref=master"
+    source = "cloudposse/rds/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version = "x.x.x"
     namespace                   = "eg"
     stage                       = "prod"
     name                        = "app"
@@ -161,7 +163,7 @@ Available targets:
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.0 |
+| terraform | >= 0.12.26 |
 | aws | >= 2.0 |
 | null | >= 2.0 |
 | template | >= 2.0 |
@@ -197,13 +199,13 @@ Available targets:
 | db\_parameter | A list of DB parameters to apply. Note that parameters may differ from a DB family to another | <pre>list(object({<br>    apply_method = string<br>    name         = string<br>    value        = string<br>  }))</pre> | `[]` | no |
 | db\_parameter\_group | Parameter group, depends on DB engine used | `string` | n/a | yes |
 | deletion\_protection | Set to true to enable deletion protection on the RDS instance | `bool` | `false` | no |
-| delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes` | `string` | `"-"` | no |
+| delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | dns\_zone\_id | The ID of the DNS Zone in Route53 where a new DNS record will be created for the DB host name | `string` | `""` | no |
-| enabled | Set to false to prevent the module from creating any resources | `bool` | `true` | no |
+| enabled | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
 | enabled\_cloudwatch\_logs\_exports | List of log types to enable for exporting to CloudWatch logs. If omitted, no logs will be exported. Valid values (depending on engine): alert, audit, error, general, listener, slowquery, trace, postgresql (PostgreSQL), upgrade (PostgreSQL). | `list(string)` | `[]` | no |
 | engine | Database engine type | `string` | n/a | yes |
 | engine\_version | Database engine version, depends on engine type | `string` | n/a | yes |
-| environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | `string` | `""` | no |
+| environment | Environment, e.g. 'uw2', 'us-west-2', OR 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
 | final\_snapshot\_identifier | Final snapshot identifier e.g.: some-db-final-snapshot-2019-06-26-06-05 | `string` | `""` | no |
 | host\_name | The DB host name created in Route53 | `string` | `"db"` | no |
 | iam\_database\_authentication\_enabled | Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled | `bool` | `false` | no |
@@ -219,8 +221,8 @@ Available targets:
 | monitoring\_interval | The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. To disable collecting Enhanced Monitoring metrics, specify 0. Valid Values are 0, 1, 5, 10, 15, 30, 60. | `string` | `"0"` | no |
 | monitoring\_role\_arn | The ARN for the IAM role that permits RDS to send enhanced monitoring metrics to CloudWatch Logs | `string` | `null` | no |
 | multi\_az | Set to true if multi AZ deployment must be supported | `bool` | `false` | no |
-| name | Solution name, e.g. 'app' or 'jenkins' | `string` | `""` | no |
-| namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `""` | no |
+| name | Solution name, e.g. 'app' or 'jenkins' | `string` | `null` | no |
+| namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `null` | no |
 | option\_group\_name | Name of the DB option group to associate | `string` | `""` | no |
 | parameter\_group\_name | Name of the DB parameter group to associate | `string` | `""` | no |
 | performance\_insights\_enabled | Specifies whether Performance Insights are enabled. | `bool` | `false` | no |
@@ -231,7 +233,7 @@ Available targets:
 | security\_group\_ids | The IDs of the security groups from which to allow `ingress` traffic to the DB instance | `list(string)` | `[]` | no |
 | skip\_final\_snapshot | If true (default), no snapshot will be made before deleting DB | `bool` | `true` | no |
 | snapshot\_identifier | Snapshot identifier e.g: rds:production-2019-06-26-06-05. If specified, the module create cluster from the snapshot | `string` | `""` | no |
-| stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `""` | no |
+| stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | storage\_encrypted | (Optional) Specifies whether the DB instance is encrypted. The default is false if not specified | `bool` | `false` | no |
 | storage\_type | One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD) | `string` | `"standard"` | no |
 | subnet\_ids | List of subnets for the DB | `list(string)` | n/a | yes |
