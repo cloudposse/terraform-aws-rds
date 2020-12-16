@@ -55,7 +55,7 @@ resource "aws_db_instance" "default" {
   final_snapshot_identifier   = length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id
 
   iam_database_authentication_enabled   = var.iam_database_authentication_enabled
-  enabled_cloudwatch_logs_exports       = module.this.enabled_cloudwatch_logs_exports
+  enabled_cloudwatch_logs_exports       = var.enabled_cloudwatch_logs_exports
   performance_insights_enabled          = var.performance_insights_enabled
   performance_insights_kms_key_id       = var.performance_insights_enabled ? var.performance_insights_kms_key_id : null
   performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
