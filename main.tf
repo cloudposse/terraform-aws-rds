@@ -1,25 +1,8 @@
-module "label" {
-  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
-  enabled     = var.enabled
-  namespace   = var.namespace
-  name        = var.name
-  stage       = var.stage
-  environment = var.environment
-  delimiter   = var.delimiter
-  attributes  = var.attributes
-  tags        = var.tags
-}
-
 module "final_snapshot_label" {
-  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
-  enabled     = var.enabled
-  namespace   = var.namespace
-  name        = var.name
-  stage       = var.stage
-  environment = var.environment
-  delimiter   = var.delimiter
-  attributes  = compact(concat(var.attributes, ["final", "snapshot"]))
-  tags        = var.tags
+  source     = "cloudposse/label/null"
+  version    = "0.22.0"
+  attributes = ["final", "snapshot"]
+  context    = module.this.context
 }
 
 locals {
@@ -28,8 +11,8 @@ locals {
 }
 
 resource "aws_db_instance" "default" {
-  count                 = var.enabled ? 1 : 0
-  identifier            = module.label.id
+  count                 = module.this.enabled ? 1 : 0
+  identifier            = module.this.id
   name                  = var.database_name
   username              = var.database_user
   password              = var.database_password
@@ -67,7 +50,7 @@ resource "aws_db_instance" "default" {
   copy_tags_to_snapshot       = var.copy_tags_to_snapshot
   backup_retention_period     = var.backup_retention_period
   backup_window               = var.backup_window
-  tags                        = module.label.tags
+  tags                        = module.this.tags
   deletion_protection         = var.deletion_protection
   final_snapshot_identifier   = length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id
 
@@ -82,10 +65,10 @@ resource "aws_db_instance" "default" {
 }
 
 resource "aws_db_parameter_group" "default" {
-  count  = length(var.parameter_group_name) == 0 && var.enabled ? 1 : 0
-  name   = module.label.id
+  count  = length(var.parameter_group_name) == 0 && module.this.enabled ? 1 : 0
+  name   = module.this.id
   family = var.db_parameter_group
-  tags   = module.label.tags
+  tags   = module.this.tags
 
   dynamic "parameter" {
     for_each = var.db_parameter
@@ -98,11 +81,11 @@ resource "aws_db_parameter_group" "default" {
 }
 
 resource "aws_db_option_group" "default" {
-  count                = length(var.option_group_name) == 0 && var.enabled ? 1 : 0
-  name                 = module.label.id
+  count                = length(var.option_group_name) == 0 && module.this.enabled ? 1 : 0
+  name                 = module.this.id
   engine_name          = var.engine
   major_engine_version = local.major_engine_version
-  tags                 = module.label.tags
+  tags                 = module.this.tags
 
   dynamic "option" {
     for_each = var.db_options
@@ -129,22 +112,22 @@ resource "aws_db_option_group" "default" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  count      = var.enabled ? 1 : 0
-  name       = module.label.id
+  count      = module.this.enabled ? 1 : 0
+  name       = module.this.id
   subnet_ids = var.subnet_ids
-  tags       = module.label.tags
+  tags       = module.this.tags
 }
 
 resource "aws_security_group" "default" {
-  count       = var.enabled ? 1 : 0
-  name        = module.label.id
+  count       = module.this.enabled ? 1 : 0
+  name        = module.this.id
   description = "Allow inbound traffic from the security groups"
   vpc_id      = var.vpc_id
-  tags        = module.label.tags
+  tags        = module.this.tags
 }
 
 resource "aws_security_group_rule" "ingress_security_groups" {
-  count                    = var.enabled ? length(var.security_group_ids) : 0
+  count                    = module.this.enabled ? length(var.security_group_ids) : 0
   description              = "Allow inbound traffic from existing Security Groups"
   type                     = "ingress"
   from_port                = var.database_port
@@ -155,7 +138,7 @@ resource "aws_security_group_rule" "ingress_security_groups" {
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
-  count             = var.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+  count             = module.this.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
   description       = "Allow inbound traffic from CIDR blocks"
   type              = "ingress"
   from_port         = var.database_port
@@ -166,7 +149,7 @@ resource "aws_security_group_rule" "ingress_cidr_blocks" {
 }
 
 resource "aws_security_group_rule" "egress" {
-  count             = var.enabled ? 1 : 0
+  count             = module.this.enabled ? 1 : 0
   description       = "Allow all egress traffic"
   type              = "egress"
   from_port         = 0
@@ -177,9 +160,11 @@ resource "aws_security_group_rule" "egress" {
 }
 
 module "dns_host_name" {
-  source  = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.7.0"
-  enabled = length(var.dns_zone_id) > 0 && var.enabled ? true : false
+  source  = "cloudposse/route53-cluster-hostname/aws"
+  version = "0.8.0"
+  enabled = length(var.dns_zone_id) > 0 && module.this.enabled
   name    = var.host_name
   zone_id = var.dns_zone_id
   records = coalescelist(aws_db_instance.default.*.address, [""])
+  context = module.this.context
 }

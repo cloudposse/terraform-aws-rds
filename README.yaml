@@ -41,7 +41,9 @@ introduction: |-
 usage: |-
   ```hcl
   module "rds_instance" {
-      source                      = "git::https://github.com/cloudposse/terraform-aws-rds.git?ref=master"
+      source = "cloudposse/rds/aws"
+      # Cloud Posse recommends pinning every module to a specific version
+      # version = "x.x.x"
       namespace                   = "eg"
       stage                       = "prod"
       name                        = "app"
