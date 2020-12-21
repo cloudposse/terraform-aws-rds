@@ -160,11 +160,11 @@ resource "aws_security_group_rule" "egress" {
 }
 
 module "dns_host_name" {
-  source  = "cloudposse/route53-cluster-hostname/aws"
-  version = "0.8.0"
-  enabled = length(var.dns_zone_id) > 0 && module.this.enabled
-  name    = var.host_name
-  zone_id = var.dns_zone_id
-  records = coalescelist(aws_db_instance.default.*.address, [""])
-  context = module.this.context
+  source    = "cloudposse/route53-cluster-hostname/aws"
+  version   = "0.8.0"
+  enabled   = length(var.dns_zone_id) > 0 && module.this.enabled
+  host_name = var.host_name
+  zone_id   = var.dns_zone_id
+  records   = coalescelist(aws_db_instance.default.*.address, [""])
+  context   = module.this.context
 }
