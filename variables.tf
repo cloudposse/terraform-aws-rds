@@ -130,7 +130,7 @@ variable "instance_class" {
 # We're "cloning" default ones, but we need to specify which should be copied
 variable "db_parameter_group" {
   type        = string
-  description = "Parameter group, depends on DB engine used"
+  description = "The DB parameter group family name. The value depends on DB engine used. See [DBParameterGroupFamily](https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_CreateDBParameterGroup.html#API_CreateDBParameterGroup_RequestParameters) for instructions on how to retrieve applicable value."
   # "mysql5.6"
   # "postgres9.5"
 }
