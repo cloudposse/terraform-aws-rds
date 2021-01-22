@@ -71,7 +71,7 @@ variable "storage_type" {
 variable "storage_encrypted" {
   type        = bool
   description = "(Optional) Specifies whether the DB instance is encrypted. The default is false if not specified"
-  default     = false
+  default     = true
 }
 
 variable "iops" {
