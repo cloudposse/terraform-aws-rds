@@ -37,6 +37,7 @@ resource "aws_db_instance" "default" {
   parameter_group_name        = length(var.parameter_group_name) > 0 ? var.parameter_group_name : join("", aws_db_parameter_group.default.*.name)
   option_group_name           = length(var.option_group_name) > 0 ? var.option_group_name : join("", aws_db_option_group.default.*.name)
   license_model               = var.license_model
+  availability_zone           = var.availability_zone
   multi_az                    = var.multi_az
   storage_type                = var.storage_type
   iops                        = var.iops

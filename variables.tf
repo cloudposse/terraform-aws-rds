@@ -56,6 +56,12 @@ variable "deletion_protection" {
   default     = false
 }
 
+variable "availability_zone" {
+  type        = string
+  description = "(Optional) The AZ for the RDS instance"
+  default     = null
+}
+
 variable "multi_az" {
   type        = bool
   description = "Set to true if multi AZ deployment must be supported"
