@@ -24,23 +24,23 @@ module "subnets" {
 }
 
 module "rds_instance" {
-  source              = "../../"
-  namespace           = var.namespace
-  stage               = var.stage
-  name                = var.name
-  database_name       = var.database_name
-  database_user       = var.database_user
-  database_password   = var.database_password
-  database_port       = var.database_port
-  multi_az            = var.multi_az
-  storage_type        = var.storage_type
-  allocated_storage   = var.allocated_storage
-  storage_encrypted   = var.storage_encrypted
-  engine              = var.engine
-  engine_version      = var.engine_version
-  instance_class      = var.instance_class
-  db_parameter_group  = var.db_parameter_group
-  
+  source             = "../../"
+  namespace          = var.namespace
+  stage              = var.stage
+  name               = var.name
+  database_name      = var.database_name
+  database_user      = var.database_user
+  database_password  = var.database_password
+  database_port      = var.database_port
+  multi_az           = var.multi_az
+  storage_type       = var.storage_type
+  allocated_storage  = var.allocated_storage
+  storage_encrypted  = var.storage_encrypted
+  engine             = var.engine
+  engine_version     = var.engine_version
+  instance_class     = var.instance_class
+  db_parameter_group = var.db_parameter_group
+
   publicly_accessible = var.publicly_accessible
   allowed_cidr_blocks = ["172.16.0.0/16"]
   vpc_id              = module.vpc.vpc_id
