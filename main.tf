@@ -1,6 +1,6 @@
 module "final_snapshot_label" {
   source     = "cloudposse/label/null"
-  version    = "0.22.1"
+  version    = "0.23.0"
   attributes = ["final", "snapshot"]
   context    = module.this.context
 }
@@ -161,7 +161,7 @@ resource "aws_security_group_rule" "egress" {
 
 module "dns_host_name" {
   source   = "cloudposse/route53-cluster-hostname/aws"
-  version  = "0.10.0"
+  version  = "0.11.0"
   enabled  = length(var.dns_zone_id) > 0 && module.this.enabled
   dns_name = var.host_name
   zone_id  = var.dns_zone_id
