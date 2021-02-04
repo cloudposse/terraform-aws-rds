@@ -1,6 +1,6 @@
 module "final_snapshot_label" {
   source     = "cloudposse/label/null"
-  version    = "0.24.0"
+  version    = "0.24.1"
   attributes = ["final", "snapshot"]
   context    = module.this.context
 }
