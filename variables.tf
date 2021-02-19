@@ -230,7 +230,7 @@ variable "db_options" {
 variable "snapshot_identifier" {
   type        = string
   description = "Snapshot identifier e.g: rds:production-2019-06-26-06-05. If specified, the module create cluster from the snapshot"
-  default     = ""
+  default     = null
 }
 
 variable "final_snapshot_identifier" {
