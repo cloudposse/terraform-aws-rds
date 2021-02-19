@@ -14,6 +14,25 @@
 |------|---------|
 | aws | >= 2.0 |
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| dns_host_name | cloudposse/route53-cluster-hostname/aws | 0.12.0 |
+| final_snapshot_label | cloudposse/label/null | 0.24.1 |
+| this | cloudposse/label/null | 0.24.1 |
+
+## Resources
+
+| Name |
+|------|
+| [aws_db_instance](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/db_instance) |
+| [aws_db_option_group](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/db_option_group) |
+| [aws_db_parameter_group](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/db_parameter_group) |
+| [aws_db_subnet_group](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/db_subnet_group) |
+| [aws_security_group_rule](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/security_group_rule) |
+| [aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/security_group) |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -74,7 +93,7 @@
 | regex\_replace\_chars | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
 | security\_group\_ids | The IDs of the security groups from which to allow `ingress` traffic to the DB instance | `list(string)` | `[]` | no |
 | skip\_final\_snapshot | If true (default), no snapshot will be made before deleting DB | `bool` | `true` | no |
-| snapshot\_identifier | Snapshot identifier e.g: rds:production-2019-06-26-06-05. If specified, the module create cluster from the snapshot | `string` | `""` | no |
+| snapshot\_identifier | Snapshot identifier e.g: rds:production-2019-06-26-06-05. If specified, the module create cluster from the snapshot | `string` | `null` | no |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | storage\_encrypted | (Optional) Specifies whether the DB instance is encrypted. The default is false if not specified | `bool` | `true` | no |
 | storage\_type | One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD) | `string` | `"standard"` | no |
@@ -95,5 +114,4 @@
 | parameter\_group\_id | ID of the Parameter Group |
 | security\_group\_id | ID of the Security Group |
 | subnet\_group\_id | ID of the Subnet Group |
-
 <!-- markdownlint-restore -->
