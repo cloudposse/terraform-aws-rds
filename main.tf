@@ -62,13 +62,26 @@ resource "aws_db_instance" "default" {
 
   monitoring_interval = var.monitoring_interval
   monitoring_role_arn = var.monitoring_role_arn
+
+  depends_on = [
+    aws_db_subnet_group.default,
+    aws_db_security_group.default,
+    aws_db_parameter_group.default,
+    aws_db_option_group.default
+  ]
+
+  lifecycle {
+    ignore_changes = [
+      snapshot_identifier, # if created from a snapshot, will be non-null at creation, but null afterwards
+    ]
+  }
 }
 
 resource "aws_db_parameter_group" "default" {
-  count  = length(var.parameter_group_name) == 0 && module.this.enabled ? 1 : 0
-  name   = module.this.id
-  family = var.db_parameter_group
-  tags   = module.this.tags
+  count       = length(var.parameter_group_name) == 0 && module.this.enabled ? 1 : 0
+  name_prefix = "${module.this.id}${module.this.delimiter}"
+  family      = var.db_parameter_group
+  tags        = module.this.tags
 
   dynamic "parameter" {
     for_each = var.db_parameter
@@ -78,11 +91,15 @@ resource "aws_db_parameter_group" "default" {
       value        = parameter.value.value
     }
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_db_option_group" "default" {
   count                = length(var.option_group_name) == 0 && module.this.enabled ? 1 : 0
-  name                 = module.this.id
+  name_prefix          = "${module.this.id}${module.this.delimiter}"
   engine_name          = var.engine
   major_engine_version = local.major_engine_version
   tags                 = module.this.tags
