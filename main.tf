@@ -65,7 +65,7 @@ resource "aws_db_instance" "default" {
 
   depends_on = [
     aws_db_subnet_group.default,
-    aws_db_security_group.default,
+    aws_security_group.default,
     aws_db_parameter_group.default,
     aws_db_option_group.default
   ]
