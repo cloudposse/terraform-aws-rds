@@ -26,12 +26,12 @@
 
 | Name |
 |------|
-| [aws_db_instance](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/db_instance) |
-| [aws_db_option_group](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/db_option_group) |
-| [aws_db_parameter_group](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/db_parameter_group) |
-| [aws_db_subnet_group](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/db_subnet_group) |
-| [aws_security_group_rule](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/security_group_rule) |
-| [aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/security_group) |
+| [aws_db_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance) |
+| [aws_db_option_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_option_group) |
+| [aws_db_parameter_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_parameter_group) |
+| [aws_db_subnet_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group) |
+| [aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) |
+| [aws_security_group_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) |
 
 ## Inputs
 
