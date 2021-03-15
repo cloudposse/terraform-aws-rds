@@ -37,6 +37,12 @@ variable "multi_az" {
   description = "Set to true if multi AZ deployment must be supported"
 }
 
+variable "availability_zone" {
+  type        = string
+  default     = null
+  description = "The AZ for the RDS instance. Specify either `subnet_ids` or `availability_zone`. If `availability_zone` is provided, the instance will be placed into the default VPC or EC2-Classic"
+}
+
 variable "storage_type" {
   type        = string
   description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD)"

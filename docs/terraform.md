@@ -45,6 +45,7 @@
 | associate\_security\_group\_ids | The IDs of the existing security groups to associate with the DB instance | `list(string)` | `[]` | no |
 | attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
 | auto\_minor\_version\_upgrade | Allow automated minor version upgrade (e.g. from Postgres 9.5.3 to Postgres 9.5.4) | `bool` | `true` | no |
+| availability\_zone | The AZ for the RDS instance. Specify either `subnet_ids` or `availability_zone`. If `availability_zone` is provided, the instance will be placed into the default VPC or EC2-Classic | `string` | `null` | no |
 | backup\_retention\_period | Backup retention period in days. Must be > 0 to enable backups | `number` | `0` | no |
 | backup\_window | When AWS can perform DB snapshots, can't overlap with maintenance window | `string` | `"22:00-03:00"` | no |
 | ca\_cert\_identifier | The identifier of the CA certificate for the DB instance | `string` | `"rds-ca-2019"` | no |
@@ -97,7 +98,7 @@
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | storage\_encrypted | (Optional) Specifies whether the DB instance is encrypted. The default is false if not specified | `bool` | `true` | no |
 | storage\_type | One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD) | `string` | `"standard"` | no |
-| subnet\_ids | List of subnets for the DB | `list(string)` | n/a | yes |
+| subnet\_ids | List of subnets for the DB. DB instance will be created in the VPC associated with the DB subnet group provisioned using the subnet IDs. Specify either `subnet_ids` or `availability_zone` | `list(string)` | `[]` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
 | vpc\_id | VPC ID the DB instance will be created in | `string` | n/a | yes |
 

@@ -11,7 +11,8 @@ locals {
 }
 
 resource "aws_db_instance" "default" {
-  count                 = module.this.enabled ? 1 : 0
+  count = module.this.enabled ? 1 : 0
+
   identifier            = module.this.id
   name                  = var.database_name
   username              = var.database_user
@@ -32,8 +33,10 @@ resource "aws_db_instance" "default" {
     )
   )
 
+  db_subnet_group_name = length(var.subnet_ids) > 0 ? join("", aws_db_subnet_group.default.*.name) : null
+  availability_zone    = length(var.subnet_ids) == 0 ? var.availability_zone : null
+
   ca_cert_identifier          = var.ca_cert_identifier
-  db_subnet_group_name        = join("", aws_db_subnet_group.default.*.name)
   parameter_group_name        = length(var.parameter_group_name) > 0 ? var.parameter_group_name : join("", aws_db_parameter_group.default.*.name)
   option_group_name           = length(var.option_group_name) > 0 ? var.option_group_name : join("", aws_db_option_group.default.*.name)
   license_model               = var.license_model
@@ -62,13 +65,27 @@ resource "aws_db_instance" "default" {
 
   monitoring_interval = var.monitoring_interval
   monitoring_role_arn = var.monitoring_role_arn
+
+  depends_on = [
+    aws_db_subnet_group.default,
+    aws_security_group.default,
+    aws_db_parameter_group.default,
+    aws_db_option_group.default
+  ]
+
+  lifecycle {
+    ignore_changes = [
+      snapshot_identifier, # if created from a snapshot, will be non-null at creation, but null afterwards
+    ]
+  }
 }
 
 resource "aws_db_parameter_group" "default" {
-  count  = length(var.parameter_group_name) == 0 && module.this.enabled ? 1 : 0
-  name   = module.this.id
-  family = var.db_parameter_group
-  tags   = module.this.tags
+  count = length(var.parameter_group_name) == 0 && module.this.enabled ? 1 : 0
+
+  name_prefix = "${module.this.id}${module.this.delimiter}"
+  family      = var.db_parameter_group
+  tags        = module.this.tags
 
   dynamic "parameter" {
     for_each = var.db_parameter
@@ -78,11 +95,16 @@ resource "aws_db_parameter_group" "default" {
       value        = parameter.value.value
     }
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_db_option_group" "default" {
-  count                = length(var.option_group_name) == 0 && module.this.enabled ? 1 : 0
-  name                 = module.this.id
+  count = length(var.option_group_name) == 0 && module.this.enabled ? 1 : 0
+
+  name_prefix          = "${module.this.id}${module.this.delimiter}"
   engine_name          = var.engine
   major_engine_version = local.major_engine_version
   tags                 = module.this.tags
@@ -112,14 +134,16 @@ resource "aws_db_option_group" "default" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  count      = module.this.enabled ? 1 : 0
+  count = module.this.enabled && length(var.subnet_ids) > 0 ? 1 : 0
+
   name       = module.this.id
   subnet_ids = var.subnet_ids
   tags       = module.this.tags
 }
 
 resource "aws_security_group" "default" {
-  count       = module.this.enabled ? 1 : 0
+  count = module.this.enabled ? 1 : 0
+
   name        = module.this.id
   description = "Allow inbound traffic from the security groups"
   vpc_id      = var.vpc_id
@@ -127,7 +151,8 @@ resource "aws_security_group" "default" {
 }
 
 resource "aws_security_group_rule" "ingress_security_groups" {
-  count                    = module.this.enabled ? length(var.security_group_ids) : 0
+  count = module.this.enabled ? length(var.security_group_ids) : 0
+
   description              = "Allow inbound traffic from existing Security Groups"
   type                     = "ingress"
   from_port                = var.database_port
@@ -138,7 +163,8 @@ resource "aws_security_group_rule" "ingress_security_groups" {
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
-  count             = module.this.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+  count = module.this.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+
   description       = "Allow inbound traffic from CIDR blocks"
   type              = "ingress"
   from_port         = var.database_port
@@ -160,11 +186,13 @@ resource "aws_security_group_rule" "egress" {
 }
 
 module "dns_host_name" {
-  source   = "cloudposse/route53-cluster-hostname/aws"
-  version  = "0.12.0"
+  source  = "cloudposse/route53-cluster-hostname/aws"
+  version = "0.12.0"
+
   enabled  = length(var.dns_zone_id) > 0 && module.this.enabled
   dns_name = var.host_name
   zone_id  = var.dns_zone_id
   records  = coalescelist(aws_db_instance.default.*.address, [""])
-  context  = module.this.context
+
+  context = module.this.context
 }
