@@ -1,7 +1,10 @@
 package test
 
 import (
+	"math/rand"
+	"strconv"
 	"testing"
+	"time"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
@@ -11,12 +14,20 @@ import (
 func TestExamplesComplete(t *testing.T) {
 	t.Parallel()
 
+	rand.Seed(time.Now().UnixNano())
+
+	randId := strconv.Itoa(rand.Intn(100000))
+	attributes := []string{randId}
+
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
 		TerraformDir: "../../examples/complete",
 		Upgrade:      true,
 		// Variables to pass to our Terraform code using -var-file options
 		VarFiles: []string{"fixtures.us-east-2.tfvars"},
+		Vars: map[string]interface{}{
+			"attributes": attributes,
+		},
 	}
 
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
@@ -43,20 +54,20 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	instanceId := terraform.Output(t, terraformOptions, "instance_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-rds-test", instanceId)
+	assert.Equal(t, "eg-test-rds-test-"+randId, instanceId)
 
 	// Run `terraform output` to get the value of an output variable
 	optionGroupId := terraform.Output(t, terraformOptions, "option_group_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-rds-test", optionGroupId)
+	assert.Contains(t, optionGroupId, "eg-test-rds-test")
 
 	// Run `terraform output` to get the value of an output variable
 	parameterGroupId := terraform.Output(t, terraformOptions, "parameter_group_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-rds-test", parameterGroupId)
+	assert.Contains(t, parameterGroupId, "eg-test-rds-test")
 
 	// Run `terraform output` to get the value of an output variable
 	subnetGroupId := terraform.Output(t, terraformOptions, "subnet_group_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-rds-test", subnetGroupId)
+	assert.Equal(t, "eg-test-rds-test-"+randId, subnetGroupId)
 }
