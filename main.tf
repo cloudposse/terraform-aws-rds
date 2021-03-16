@@ -8,6 +8,13 @@ module "final_snapshot_label" {
 locals {
   computed_major_engine_version = var.engine == "postgres" ? join(".", slice(split(".", var.engine_version), 0, 1)) : join(".", slice(split(".", var.engine_version), 0, 2))
   major_engine_version          = var.major_engine_version == "" ? local.computed_major_engine_version : var.major_engine_version
+
+  subnet_ids_provided           = var.subnet_ids != null && length(var.subnet_ids) > 0
+  db_subnet_group_name_provided = var.db_subnet_group_name != null && var.db_subnet_group_name != ""
+
+  db_subnet_group_name = local.db_subnet_group_name_provided ? var.db_subnet_group_name : (
+    local.subnet_ids_provided ? join("", aws_db_subnet_group.default.*.name) : null
+  )
 }
 
 resource "aws_db_instance" "default" {
@@ -33,8 +40,8 @@ resource "aws_db_instance" "default" {
     )
   )
 
-  db_subnet_group_name = length(var.subnet_ids) > 0 ? join("", aws_db_subnet_group.default.*.name) : null
-  availability_zone    = length(var.subnet_ids) == 0 ? var.availability_zone : null
+  db_subnet_group_name = local.db_subnet_group_name
+  availability_zone    = var.availability_zone
 
   ca_cert_identifier          = var.ca_cert_identifier
   parameter_group_name        = length(var.parameter_group_name) > 0 ? var.parameter_group_name : join("", aws_db_parameter_group.default.*.name)
@@ -134,7 +141,7 @@ resource "aws_db_option_group" "default" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  count = module.this.enabled && length(var.subnet_ids) > 0 ? 1 : 0
+  count = module.this.enabled && local.subnet_ids_provided && !local.db_subnet_group_name_provided ? 1 : 0
 
   name       = module.this.id
   subnet_ids = var.subnet_ids

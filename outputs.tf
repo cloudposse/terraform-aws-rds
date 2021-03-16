@@ -20,7 +20,7 @@ output "instance_endpoint" {
 
 output "subnet_group_id" {
   value       = join("", aws_db_subnet_group.default.*.id)
-  description = "ID of the Subnet Group"
+  description = "ID of the created Subnet Group"
 }
 
 output "security_group_id" {

@@ -142,7 +142,7 @@ variable "publicly_accessible" {
 }
 
 variable "subnet_ids" {
-  description = "List of subnets for the DB. DB instance will be created in the VPC associated with the DB subnet group provisioned using the subnet IDs. Specify either `subnet_ids` or `availability_zone`"
+  description = "List of subnet IDs for the DB. DB instance will be created in the VPC associated with the DB subnet group provisioned using the subnet IDs. Specify one of `subnet_ids`, `db_subnet_group_name` or `availability_zone`"
   type        = list(string)
   default     = []
 }
@@ -150,7 +150,13 @@ variable "subnet_ids" {
 variable "availability_zone" {
   type        = string
   default     = null
-  description = "The AZ for the RDS instance. Specify either `subnet_ids` or `availability_zone`. If `availability_zone` is provided, the instance will be placed into the default VPC or EC2-Classic"
+  description = "The AZ for the RDS instance. Specify one of `subnet_ids`, `db_subnet_group_name` or `availability_zone`. If `availability_zone` is provided, the instance will be placed into the default VPC or EC2 Classic"
+}
+
+variable "db_subnet_group_name" {
+  type        = string
+  default     = null
+  description = "Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group. Specify one of `subnet_ids`, `db_subnet_group_name` or `availability_zone`"
 }
 
 variable "vpc_id" {
