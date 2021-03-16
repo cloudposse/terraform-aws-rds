@@ -26,25 +26,26 @@ module "subnets" {
 }
 
 module "rds_instance" {
-  source              = "../../"
-  database_name       = var.database_name
-  database_user       = var.database_user
-  database_password   = var.database_password
-  database_port       = var.database_port
-  multi_az            = var.multi_az
-  storage_type        = var.storage_type
-  allocated_storage   = var.allocated_storage
-  storage_encrypted   = var.storage_encrypted
-  engine              = var.engine
-  engine_version      = var.engine_version
-  instance_class      = var.instance_class
-  db_parameter_group  = var.db_parameter_group
-  publicly_accessible = var.publicly_accessible
-  vpc_id              = module.vpc.vpc_id
-  subnet_ids          = module.subnets.private_subnet_ids
-  security_group_ids  = [module.vpc.vpc_default_security_group_id]
-  apply_immediately   = var.apply_immediately
-  availability_zone   = var.availability_zone
+  source               = "../../"
+  database_name        = var.database_name
+  database_user        = var.database_user
+  database_password    = var.database_password
+  database_port        = var.database_port
+  multi_az             = var.multi_az
+  storage_type         = var.storage_type
+  allocated_storage    = var.allocated_storage
+  storage_encrypted    = var.storage_encrypted
+  engine               = var.engine
+  engine_version       = var.engine_version
+  instance_class       = var.instance_class
+  db_parameter_group   = var.db_parameter_group
+  publicly_accessible  = var.publicly_accessible
+  vpc_id               = module.vpc.vpc_id
+  subnet_ids           = module.subnets.private_subnet_ids
+  security_group_ids   = [module.vpc.vpc_default_security_group_id]
+  apply_immediately    = var.apply_immediately
+  availability_zone    = var.availability_zone
+  db_subnet_group_name = var.db_subnet_group_name
 
   db_parameter = [
     {
