@@ -15,6 +15,8 @@ locals {
   db_subnet_group_name = local.db_subnet_group_name_provided ? var.db_subnet_group_name : (
     local.subnet_ids_provided ? join("", aws_db_subnet_group.default.*.name) : null
   )
+
+  availability_zone = var.multi_az ? null : var.availability_zone
 }
 
 resource "aws_db_instance" "default" {
@@ -41,7 +43,7 @@ resource "aws_db_instance" "default" {
   )
 
   db_subnet_group_name = local.db_subnet_group_name
-  availability_zone    = var.availability_zone
+  availability_zone    = local.availability_zone
 
   ca_cert_identifier          = var.ca_cert_identifier
   parameter_group_name        = length(var.parameter_group_name) > 0 ? var.parameter_group_name : join("", aws_db_parameter_group.default.*.name)
