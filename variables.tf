@@ -297,7 +297,7 @@ variable "enabled_cloudwatch_logs_exports" {
 variable "ca_cert_identifier" {
   type        = string
   description = "The identifier of the CA certificate for the DB instance"
-  default     = "rds-ca-2019"
+  default     = null
 }
 
 variable "monitoring_interval" {
