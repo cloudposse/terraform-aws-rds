@@ -29,6 +29,7 @@ resource "aws_db_instance" "default" {
   port                  = var.database_port
   engine                = var.engine
   engine_version        = var.engine_version
+  character_set_name    = var.charset_name
   instance_class        = var.instance_class
   allocated_storage     = var.allocated_storage
   max_allocated_storage = var.max_allocated_storage

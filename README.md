@@ -159,6 +159,42 @@ module "rds_instance" {
     ]
 }
 ```
+### Character Sets
+
+If you wish to create the database in a specific character set you can use one of the following options depending
+on your database engine of choice.
+
+For Oracle and Microsoft SQL you can specify charset name as an input variable
+to this module. For example, for Microsoft SQL, you could use:
+```hcl
+module "rds_instance" {
+  ...
+  charset_name                   = "Korean_Wansung_CI_AS"
+  ...
+}
+```
+
+For `mysql` and `mariadb` engines character set of the database can be defined via `db_parameter`. In this example
+the database is created with `utf8mb4` (character set) and utf8mb4_unicode_ci (collation):
+
+```hcl
+module "rds_instance" {
+  ...
+  db_parameter = [
+    {
+      name = "character_set_server"
+      value = "utf8mb4"
+      apply_method = "immediate"
+    },
+    {
+      name = "collation_server"
+      value = "utf8mb4_unicode_ci"
+      apply_method = "immediate"
+    }
+  ]
+  ...
+}
+```
 
 
 
@@ -230,6 +266,7 @@ Available targets:
 | <a name="input_backup_retention_period"></a> [backup\_retention\_period](#input\_backup\_retention\_period) | Backup retention period in days. Must be > 0 to enable backups | `number` | `0` | no |
 | <a name="input_backup_window"></a> [backup\_window](#input\_backup\_window) | When AWS can perform DB snapshots, can't overlap with maintenance window | `string` | `"22:00-03:00"` | no |
 | <a name="input_ca_cert_identifier"></a> [ca\_cert\_identifier](#input\_ca\_cert\_identifier) | The identifier of the CA certificate for the DB instance | `string` | `null` | no |
+| <a name="input_charset_name"></a> [charset\_name](#input\_charset\_name) | The character set name to use for DB encoding. [Oracle & Microsoft SQL only](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#character_set_name). For other engines use `db_parameter` | `string` | `null` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
 | <a name="input_copy_tags_to_snapshot"></a> [copy\_tags\_to\_snapshot](#input\_copy\_tags\_to\_snapshot) | Copy tags from DB to a snapshot | `bool` | `true` | no |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | The name of the database to create when the DB instance is created | `string` | n/a | yes |
