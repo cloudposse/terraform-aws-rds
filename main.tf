@@ -19,7 +19,7 @@ locals {
   )
 
   availability_zone = var.multi_az ? null : var.availability_zone
-  
+
   create_user     = local.enabled && length(var.database_user) == 0
   create_password = local.enabled && length(var.database_password) == 0
 
@@ -80,7 +80,7 @@ resource "aws_ssm_parameter" "database_password" {
   key_id      = var.kms_alias_name_ssm
   overwrite   = true
 }
-  
+
 resource "aws_db_instance" "default" {
   count = local.enabled ? 1 : 0
 
