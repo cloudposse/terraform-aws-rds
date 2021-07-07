@@ -15,7 +15,7 @@ output "instance_endpoint" {
 
 output "subnet_group_id" {
   value       = module.rds_instance.subnet_group_id
-  description = "ID of the created Subnet Group"
+  description = "ID of the Subnet Group"
 }
 
 output "security_group_id" {

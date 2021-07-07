@@ -7,6 +7,21 @@ variable "availability_zones" {
   type = list(string)
 }
 
+variable "namespace" {
+  type        = string
+  description = "Namespace (e.g. `eg` or `cp`)"
+}
+
+variable "stage" {
+  type        = string
+  description = "Stage (e.g. `prod`, `dev`, `staging`, `infra`)"
+}
+
+variable "name" {
+  type        = string
+  description = "Name  (e.g. `app` or `cluster`)"
+}
+
 variable "database_name" {
   type        = string
   description = "The name of the database to create when the DB instance is created"
@@ -35,18 +50,6 @@ variable "deletion_protection" {
 variable "multi_az" {
   type        = bool
   description = "Set to true if multi AZ deployment must be supported"
-}
-
-variable "availability_zone" {
-  type        = string
-  default     = null
-  description = "The AZ for the RDS instance. Specify one of `subnet_ids`, `db_subnet_group_name` or `availability_zone`. If `availability_zone` is provided, the instance will be placed into the default VPC or EC2 Classic"
-}
-
-variable "db_subnet_group_name" {
-  type        = string
-  default     = null
-  description = "Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group. Specify one of `subnet_ids`, `db_subnet_group_name` or `availability_zone`"
 }
 
 variable "storage_type" {
@@ -108,3 +111,22 @@ variable "apply_immediately" {
   type        = bool
   description = "Specifies whether any database modifications are applied immediately, or during the next maintenance window"
 }
+
+variable "subnet_ids" {
+  description = "A list of VPC subnet IDs"
+  default     = []
+  type        = list(string)
+}
+
+variable "security_group_ids" {
+  description = "List of VPC security groups to associate"
+  default     = []
+  type        = list(string)
+}
+
+variable "vpc_id" {
+  type        = string
+  default     = ""
+  description = "VPC ID the DB instance will be created in"
+}
+
