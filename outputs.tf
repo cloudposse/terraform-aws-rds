@@ -47,3 +47,13 @@ output "resource_id" {
   value       = join("", aws_db_instance.default.*.resource_id)
   description = "The RDS Resource ID of this instance."
 }
+
+output "instance_user" {
+  value       = local.database_user
+  description = "RDS Username for the master DB user"
+}
+
+output "instance_password_ssm_key" {
+  value       = local.ssm_enabled ? local.ssm_key_password : null
+  description = "SSM key of RDS password for the master DB user"
+}

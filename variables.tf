@@ -33,16 +33,44 @@ variable "database_name" {
   description = "The name of the database to create when the DB instance is created"
 }
 
+# Don't use `admin`
+# Read more: <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Limits.html>
+# ("MasterUsername admin cannot be used as it is a reserved word used by the engine")
 variable "database_user" {
   type        = string
-  default     = ""
   description = "(Required unless a `snapshot_identifier` or `replicate_source_db` is provided) Username for the master DB user"
+  default     = ""
+
+  validation {
+    condition = (
+      length(var.database_user) == 0 ||
+      (var.database_user != "admin" &&
+        length(var.database_user) >= 1 &&
+      length(var.database_user) <= 16)
+    )
+    error_message = "Per the RDS API, admin cannot be used as it is a reserved word used by the engine. Master username must be between 1 and 16 characters. If null is provided then a random string will be used."
+  }
 }
 
+# Must be longer than 8 chars
+# Read more: <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Limits.html>
+# ("The parameter MasterUserPassword is not a valid password because it is shorter than 8 characters")
 variable "database_password" {
   type        = string
-  default     = ""
   description = "(Required unless a snapshot_identifier or replicate_source_db is provided) Password for the master DB user"
+  default     = ""
+
+  # "sensitive" required Terraform 0.14 or later
+  #  sensitive   = true
+
+  validation {
+    condition = (
+      length(var.database_password) == 0 ||
+      (length(var.database_password) >= 8 &&
+      length(var.database_password) <= 128)
+    )
+    error_message = "Per the RDS API, master password must be between 8 and 128 characters. If null is provided then a random password will be used."
+  }
 }
 
 variable "database_port" {
@@ -320,4 +348,33 @@ variable "monitoring_role_arn" {
 variable "iam_database_authentication_enabled" {
   description = "Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled"
   default     = false
+}
+
+variable "ssm_enabled" {
+  type        = bool
+  default     = false
+  description = "If `true` create SSM keys for the database user and password."
+}
+
+variable "ssm_key_format" {
+  type        = string
+  default     = "/rds/%v/%v"
+  description = "SSM path prefix. The first value will use the `var.database_name` and then the appropriate ssm key like `var.ssm_key_user`"
+}
+
+variable "ssm_key_user" {
+  type        = string
+  default     = "admin/db_user"
+  description = "The SSM key to save the user. See `var.ssm_path_format`."
+}
+
+variable "ssm_key_password" {
+  type        = string
+  default     = "admin/db_password"
+  description = "The SSM key to save the password. See `var.ssm_path_format`."
+}
+
+variable "kms_alias_name_ssm" {
+  default     = "alias/aws/ssm"
+  description = "KMS alias name for SSM"
 }

@@ -12,9 +12,9 @@ deletion_protection = false
 
 database_name = "test_db"
 
-database_user = "admin"
+database_user = "db_user"
 
-database_password = "admin_password"
+database_password = "db_password"
 
 database_port = 3306
 

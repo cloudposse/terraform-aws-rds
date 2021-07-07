@@ -6,6 +6,8 @@ module "final_snapshot_label" {
 }
 
 locals {
+  enabled = module.this.enabled
+
   computed_major_engine_version = var.engine == "postgres" ? join(".", slice(split(".", var.engine_version), 0, 1)) : join(".", slice(split(".", var.engine_version), 0, 2))
   major_engine_version          = var.major_engine_version == "" ? local.computed_major_engine_version : var.major_engine_version
 
@@ -17,15 +19,75 @@ locals {
   )
 
   availability_zone = var.multi_az ? null : var.availability_zone
+  
+  create_user     = local.enabled && length(var.database_user) == 0
+  create_password = local.enabled && length(var.database_password) == 0
+
+  ssm_enabled           = local.enabled && var.ssm_enabled
+  ssm_key_user          = format(var.ssm_key_format, var.database_name, var.ssm_key_user)
+  ssm_key_password      = format(var.ssm_key_format, var.database_name, var.ssm_key_password)
+  ssm_key_user_desc     = "RDS Username for the master DB user"
+  ssm_key_password_desc = "RDS Password for the master DB user"
+
+  database_user     = local.create_user ? join("", random_pet.database_user.*.id) : var.database_user
+  database_password = local.create_password ? join("", random_password.database_password.*.result) : var.database_password
 }
 
+resource "random_pet" "database_user" {
+  count = local.create_user ? 1 : 0
+
+  # word length
+  length = 3
+
+  keepers = {
+    db_name = var.database_name
+  }
+}
+
+resource "random_password" "database_password" {
+  count = local.create_password ? 1 : 0
+
+  # character length
+  length = 33
+
+  # Leave special characters out to avoid quoting and other issues.
+  # Special characters have no additional security compared to increasing length.
+  special          = false
+  override_special = "!#$%^&*()<>-_"
+
+  keepers = {
+    db_name = var.database_name
+  }
+}
+
+resource "aws_ssm_parameter" "database_user" {
+  count = local.ssm_enabled ? 1 : 0
+
+  name        = local.ssm_key_user
+  value       = local.database_user
+  description = local.ssm_key_user_desc
+  type        = "String"
+  overwrite   = true
+}
+
+resource "aws_ssm_parameter" "database_password" {
+  count = local.ssm_enabled ? 1 : 0
+
+  name        = local.ssm_key_password
+  value       = local.database_password
+  description = local.ssm_key_password_desc
+  type        = "SecureString"
+  key_id      = var.kms_alias_name_ssm
+  overwrite   = true
+}
+  
 resource "aws_db_instance" "default" {
-  count = module.this.enabled ? 1 : 0
+  count = local.enabled ? 1 : 0
 
   identifier            = module.this.id
   name                  = var.database_name
-  username              = var.database_user
-  password              = var.database_password
+  username              = local.database_user
+  password              = local.database_password
   port                  = var.database_port
   engine                = var.engine
   engine_version        = var.engine_version
@@ -91,7 +153,7 @@ resource "aws_db_instance" "default" {
 }
 
 resource "aws_db_parameter_group" "default" {
-  count = length(var.parameter_group_name) == 0 && module.this.enabled ? 1 : 0
+  count = length(var.parameter_group_name) == 0 && local.enabled ? 1 : 0
 
   name_prefix = "${module.this.id}${module.this.delimiter}"
   family      = var.db_parameter_group
@@ -112,7 +174,7 @@ resource "aws_db_parameter_group" "default" {
 }
 
 resource "aws_db_option_group" "default" {
-  count = length(var.option_group_name) == 0 && module.this.enabled ? 1 : 0
+  count = length(var.option_group_name) == 0 && local.enabled ? 1 : 0
 
   name_prefix          = "${module.this.id}${module.this.delimiter}"
   engine_name          = var.engine
@@ -144,7 +206,7 @@ resource "aws_db_option_group" "default" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  count = module.this.enabled && local.subnet_ids_provided && ! local.db_subnet_group_name_provided ? 1 : 0
+  count = local.enabled && local.subnet_ids_provided && ! local.db_subnet_group_name_provided ? 1 : 0
 
   name       = module.this.id
   subnet_ids = var.subnet_ids
@@ -152,7 +214,7 @@ resource "aws_db_subnet_group" "default" {
 }
 
 resource "aws_security_group" "default" {
-  count = module.this.enabled ? 1 : 0
+  count = local.enabled ? 1 : 0
 
   name        = module.this.id
   description = "Allow inbound traffic from the security groups"
@@ -161,7 +223,7 @@ resource "aws_security_group" "default" {
 }
 
 resource "aws_security_group_rule" "ingress_security_groups" {
-  count = module.this.enabled ? length(var.security_group_ids) : 0
+  count = local.enabled ? length(var.security_group_ids) : 0
 
   description              = "Allow inbound traffic from existing Security Groups"
   type                     = "ingress"
@@ -173,7 +235,7 @@ resource "aws_security_group_rule" "ingress_security_groups" {
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
-  count = module.this.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+  count = local.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
 
   description       = "Allow inbound traffic from CIDR blocks"
   type              = "ingress"
@@ -185,7 +247,7 @@ resource "aws_security_group_rule" "ingress_cidr_blocks" {
 }
 
 resource "aws_security_group_rule" "egress" {
-  count             = module.this.enabled ? 1 : 0
+  count             = local.enabled ? 1 : 0
   description       = "Allow all egress traffic"
   type              = "egress"
   from_port         = 0
@@ -199,7 +261,7 @@ module "dns_host_name" {
   source  = "cloudposse/route53-cluster-hostname/aws"
   version = "0.12.0"
 
-  enabled  = length(var.dns_zone_id) > 0 && module.this.enabled
+  enabled  = length(var.dns_zone_id) > 0 && local.enabled
   dns_name = var.host_name
   zone_id  = var.dns_zone_id
   records  = coalescelist(aws_db_instance.default.*.address, [""])
