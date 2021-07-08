@@ -251,8 +251,10 @@ Available targets:
 | [aws_security_group_rule.egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ingress_cidr_blocks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ingress_security_groups](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_ssm_parameter.database_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
-| [aws_ssm_parameter.database_user](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.rds_database_hostname](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.rds_database_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.rds_database_port](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.rds_database_user](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [random_password.database_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_pet.database_user](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) | resource |
 
@@ -322,8 +324,11 @@ Available targets:
 | <a name="input_skip_final_snapshot"></a> [skip\_final\_snapshot](#input\_skip\_final\_snapshot) | If true (default), no snapshot will be made before deleting DB | `bool` | `true` | no |
 | <a name="input_snapshot_identifier"></a> [snapshot\_identifier](#input\_snapshot\_identifier) | Snapshot identifier e.g: rds:production-2019-06-26-06-05. If specified, the module create cluster from the snapshot | `string` | `null` | no |
 | <a name="input_ssm_enabled"></a> [ssm\_enabled](#input\_ssm\_enabled) | If `true` create SSM keys for the database user and password. | `bool` | `false` | no |
-| <a name="input_ssm_key_format"></a> [ssm\_key\_format](#input\_ssm\_key\_format) | SSM path prefix. The first value will use the `var.database_name` and then the appropriate ssm key like `var.ssm_key_user` | `string` | `"/rds/%v/%v"` | no |
+| <a name="input_ssm_key_format"></a> [ssm\_key\_format](#input\_ssm\_key\_format) | SSM path format. The values will will be used in the following order: `var.ssm_key_prefix`, `var.database_name`, `var.ssm_key_*` | `string` | `"/%v/%v/%v"` | no |
+| <a name="input_ssm_key_hostname"></a> [ssm\_key\_hostname](#input\_ssm\_key\_hostname) | The SSM key to save the hostname. See `var.ssm_path_format`. | `string` | `"admin/db_hostname"` | no |
 | <a name="input_ssm_key_password"></a> [ssm\_key\_password](#input\_ssm\_key\_password) | The SSM key to save the password. See `var.ssm_path_format`. | `string` | `"admin/db_password"` | no |
+| <a name="input_ssm_key_port"></a> [ssm\_key\_port](#input\_ssm\_key\_port) | The SSM key to save the port. See `var.ssm_path_format`. | `string` | `"admin/db_port"` | no |
+| <a name="input_ssm_key_prefix"></a> [ssm\_key\_prefix](#input\_ssm\_key\_prefix) | SSM path prefix. Omit the leading forward slash `/`. | `string` | `"rds"` | no |
 | <a name="input_ssm_key_user"></a> [ssm\_key\_user](#input\_ssm\_key\_user) | The SSM key to save the user. See `var.ssm_path_format`. | `string` | `"admin/db_user"` | no |
 | <a name="input_stage"></a> [stage](#input\_stage) | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | <a name="input_storage_encrypted"></a> [storage\_encrypted](#input\_storage\_encrypted) | (Optional) Specifies whether the DB instance is encrypted. The default is false if not specified | `bool` | `true` | no |
@@ -341,10 +346,10 @@ Available targets:
 | <a name="output_instance_arn"></a> [instance\_arn](#output\_instance\_arn) | ARN of the instance |
 | <a name="output_instance_endpoint"></a> [instance\_endpoint](#output\_instance\_endpoint) | DNS Endpoint of the instance |
 | <a name="output_instance_id"></a> [instance\_id](#output\_instance\_id) | ID of the instance |
-| <a name="output_instance_password_ssm_key"></a> [instance\_password\_ssm\_key](#output\_instance\_password\_ssm\_key) | SSM key of RDS password for the master DB user |
 | <a name="output_instance_user"></a> [instance\_user](#output\_instance\_user) | RDS Username for the master DB user |
 | <a name="output_option_group_id"></a> [option\_group\_id](#output\_option\_group\_id) | ID of the Option Group |
 | <a name="output_parameter_group_id"></a> [parameter\_group\_id](#output\_parameter\_group\_id) | ID of the Parameter Group |
+| <a name="output_rds_database_ssm_key_prefix"></a> [rds\_database\_ssm\_key\_prefix](#output\_rds\_database\_ssm\_key\_prefix) | SSM prefix |
 | <a name="output_resource_id"></a> [resource\_id](#output\_resource\_id) | The RDS Resource ID of this instance. |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | ID of the Security Group |
 | <a name="output_subnet_group_id"></a> [subnet\_group\_id](#output\_subnet\_group\_id) | ID of the created Subnet Group |

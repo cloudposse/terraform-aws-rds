@@ -23,13 +23,7 @@ locals {
   create_user     = local.enabled && length(var.database_user) == 0
   create_password = local.enabled && length(var.database_password) == 0
 
-  ssm_enabled           = local.enabled && var.ssm_enabled
-  ssm_key_user          = format(var.ssm_key_format, var.database_name, var.ssm_key_user)
-  ssm_key_password      = format(var.ssm_key_format, var.database_name, var.ssm_key_password)
-  ssm_key_user_desc     = "RDS Username for the master DB user"
-  ssm_key_password_desc = "RDS Password for the master DB user"
-
-  database_user     = local.create_user ? join("", random_pet.database_user.*.id) : var.database_user
+  database_user     = local.create_user ? substr(join("", random_pet.database_user.*.id), 0, 16) : var.database_user
   database_password = local.create_password ? join("", random_password.database_password.*.result) : var.database_password
 }
 
@@ -37,7 +31,9 @@ resource "random_pet" "database_user" {
   count = local.create_user ? 1 : 0
 
   # word length
-  length = 3
+  length = 5
+
+  separator = ""
 
   keepers = {
     db_name = var.database_name
@@ -58,27 +54,6 @@ resource "random_password" "database_password" {
   keepers = {
     db_name = var.database_name
   }
-}
-
-resource "aws_ssm_parameter" "database_user" {
-  count = local.ssm_enabled ? 1 : 0
-
-  name        = local.ssm_key_user
-  value       = local.database_user
-  description = local.ssm_key_user_desc
-  type        = "String"
-  overwrite   = true
-}
-
-resource "aws_ssm_parameter" "database_password" {
-  count = local.ssm_enabled ? 1 : 0
-
-  name        = local.ssm_key_password
-  value       = local.database_password
-  description = local.ssm_key_password_desc
-  type        = "SecureString"
-  key_id      = var.kms_alias_name_ssm
-  overwrite   = true
 }
 
 resource "aws_db_instance" "default" {
