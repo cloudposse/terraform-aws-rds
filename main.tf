@@ -66,6 +66,7 @@ resource "aws_db_instance" "default" {
   tags                        = module.this.tags
   deletion_protection         = var.deletion_protection
   final_snapshot_identifier   = length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id
+  replicate_source_db         = var.replicate_source_db
 
   iam_database_authentication_enabled   = var.iam_database_authentication_enabled
   enabled_cloudwatch_logs_exports       = var.enabled_cloudwatch_logs_exports
