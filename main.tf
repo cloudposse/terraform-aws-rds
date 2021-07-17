@@ -22,13 +22,13 @@ resource "aws_db_instance" "default" {
   count             = var.enabled == "true" ? 1 : 0
   identifier        = module.label.id
   name              = var.database_name
-  username          = var.snapshot_identifier == "" ? var.database_user: ""
-  password          = var.snapshot_identifier == "" ? var.database_password: ""
+  username          = var.snapshot_identifier == "" ? var.database_user: null
+  password          = var.snapshot_identifier == "" ? var.database_password: null
   port              = var.database_port
-  engine            = var.snapshot_identifier == "" ? var.engine: ""
-  engine_version    = var.snapshot_identifier == "" ? var.engine_version: ""
+  engine            = var.snapshot_identifier == "" ? var.engine: null
+  engine_version    = var.snapshot_identifier == "" ? var.engine_version: null
   instance_class    = var.instance_class
-  allocated_storage = var.snapshot_identifier == "" ? var.allocated_storage: ""
+  allocated_storage = var.snapshot_identifier == "" ? var.allocated_storage: null
   storage_encrypted = var.storage_encrypted
   kms_key_id        = var.kms_key_arn
   vpc_security_group_ids = compact(
