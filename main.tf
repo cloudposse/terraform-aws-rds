@@ -21,14 +21,14 @@ module "final_snapshot_label" {
 resource "aws_db_instance" "default" {
   count             = var.enabled == "true" ? 1 : 0
   identifier        = module.label.id
-  name              = var.snapshot_identifier == "" && var.replicate_source_db ? var.database_name : null
-  username          = var.snapshot_identifier == "" && var.replicate_source_db ? var.database_user : null
-  password          = var.snapshot_identifier == "" && var.replicate_source_db ? var.database_password : null
+  name              = var.snapshot_identifier == "" && var.replicate_source_db == "" ? var.database_name : null
+  username          = var.snapshot_identifier == "" && var.replicate_source_db == "" ? var.database_user : null
+  password          = var.snapshot_identifier == "" && var.replicate_source_db == "" ? var.database_password : null
   port              = var.database_port
-  engine            = var.snapshot_identifier == "" && var.replicate_source_db ? var.engine : null
-  engine_version    = var.snapshot_identifier == "" && var.replicate_source_db ? var.engine_version : null
+  engine            = var.snapshot_identifier == "" && var.replicate_source_db == "" ? var.engine : null
+  engine_version    = var.snapshot_identifier == "" && var.replicate_source_db == "" ? var.engine_version : null
   instance_class    = var.instance_class
-  allocated_storage = var.snapshot_identifier == "" && var.replicate_source_db ? var.allocated_storage : null
+  allocated_storage = var.snapshot_identifier == "" && var.replicate_source_db == "" ? var.allocated_storage : null
   storage_encrypted = var.storage_encrypted
   kms_key_id        = var.kms_key_arn
   vpc_security_group_ids = compact(
