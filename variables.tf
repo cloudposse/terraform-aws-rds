@@ -83,6 +83,7 @@ variable "iops" {
 variable "allocated_storage" {
   type        = number
   description = "The allocated storage in GBs"
+  default     = null
 }
 
 variable "max_allocated_storage" {
@@ -94,6 +95,7 @@ variable "max_allocated_storage" {
 variable "engine" {
   type        = string
   description = "Database engine type"
+  default     = null
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
   # - mysql
   # - postgres
