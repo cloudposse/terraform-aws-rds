@@ -246,6 +246,12 @@ variable "snapshot_identifier" {
   default     = ""
 }
 
+variable "replicate_source_db" {
+  type        = string
+  description = "replica identifier e.g: rds:production-app. If specified this instance becomes a repica database"
+  default     = ""
+}
+
 variable "final_snapshot_identifier" {
   type        = string
   description = "Final snapshot identifier e.g.: some-db-final-snapshot-2015-06-26-06-05"
