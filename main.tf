@@ -52,12 +52,12 @@ resource "aws_db_instance" "default" {
   apply_immediately               = var.apply_immediately
   maintenance_window              = var.maintenance_window
   skip_final_snapshot             = var.skip_final_snapshot
-  copy_tags_to_snapshot           = var.copy_tags_to_snapshot
-  backup_retention_period         = var.backup_retention_period
-  backup_window                   = var.backup_window
+  copy_tags_to_snapshot           = var.replicate_source_db == "" ? var.copy_tags_to_snapshot : null
+  backup_retention_period         = var.replicate_source_db == "" ? var.backup_retention_period : null
+  backup_window                   = var.replicate_source_db == "" ? var.backup_window : null
   tags                            = module.label.tags
   deletion_protection             = var.deletion_protection
-  final_snapshot_identifier       = length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id
+  final_snapshot_identifier       = var.replicate_source_db == "" ? length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id : null
   enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
   monitoring_interval             = var.monitoring_interval
   monitoring_role_arn             = var.monitoring_role_arn
