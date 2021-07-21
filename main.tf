@@ -53,7 +53,7 @@ resource "aws_db_instance" "default" {
   maintenance_window              = var.maintenance_window
   skip_final_snapshot             = var.skip_final_snapshot
   copy_tags_to_snapshot           = var.replicate_source_db == "" ? var.copy_tags_to_snapshot : null
-  backup_retention_period         = var.replicate_source_db == "" ? var.backup_retention_period : 0
+  backup_retention_period         = var.replicate_source_db == "" ? var.backup_retention_period : null
   backup_window                   = var.replicate_source_db == "" ? var.backup_window : null
   tags                            = module.label.tags
   deletion_protection             = var.deletion_protection
