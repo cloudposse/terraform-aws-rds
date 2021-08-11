@@ -111,6 +111,7 @@ variable "iops" {
 variable "allocated_storage" {
   type        = number
   description = "The allocated storage in GBs"
+  default     = null
 }
 
 variable "max_allocated_storage" {
@@ -122,6 +123,7 @@ variable "max_allocated_storage" {
 variable "engine" {
   type        = string
   description = "Database engine type"
+  default     = null
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
   # - mysql
   # - postgres
@@ -348,4 +350,10 @@ variable "monitoring_role_arn" {
 variable "iam_database_authentication_enabled" {
   description = "Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled"
   default     = false
+}
+
+variable "replicate_source_db" {
+  type        = string
+  description = "Specifies that this resource is a Replicate database, and to use this value as the source database. This correlates to the `identifier` of another Amazon RDS Database to replicate (if replicating within a single region) or ARN of the Amazon RDS Database to replicate (if replicating cross-region). Note that if you are creating a cross-region replica of an encrypted database you will also need to specify a `kms_key_id`. See [DB Instance Replication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Replication.html) and [Working with PostgreSQL and MySQL Read Replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html) for more information on using Replication."
+  default     = null
 }
