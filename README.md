@@ -106,59 +106,61 @@ The table below correctly indicates which inputs are required.
 
 ```hcl
 module "rds_instance" {
-    source = "cloudposse/rds/aws"
-    # Cloud Posse recommends pinning every module to a specific version
-    # version = "x.x.x"
-    namespace                   = "eg"
-    stage                       = "prod"
-    name                        = "app"
-    dns_zone_id                 = "Z89FN1IW975KPE"
-    host_name                   = "db"
-    security_group_ids          = ["sg-xxxxxxxx"]
-    ca_cert_identifier          = "rds-ca-2019"
-    allowed_cidr_blocks         = ["XXX.XXX.XXX.XXX/32"]
-    database_name               = "wordpress"
-    database_user               = "admin"
-    database_password           = "xxxxxxxxxxxx"
-    database_port               = 3306
-    multi_az                    = true
-    storage_type                = "gp2"
-    allocated_storage           = 100
-    storage_encrypted           = true
-    engine                      = "mysql"
-    engine_version              = "5.7.17"
-    major_engine_version        = "5.7"
-    instance_class              = "db.t2.medium"
-    db_parameter_group          = "mysql5.7"
-    option_group_name           = "mysql-options"
-    publicly_accessible         = false
-    subnet_ids                  = ["sb-xxxxxxxxx", "sb-xxxxxxxxx"]
-    vpc_id                      = "vpc-xxxxxxxx"
-    snapshot_identifier         = "rds:production-2015-06-26-06-05"
-    auto_minor_version_upgrade  = true
-    allow_major_version_upgrade = false
-    apply_immediately           = false
-    maintenance_window          = "Mon:03:00-Mon:04:00"
-    skip_final_snapshot         = false
-    copy_tags_to_snapshot       = true
-    backup_retention_period     = 7
-    backup_window               = "22:00-03:00"
+  source = "cloudposse/rds/aws"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version = "x.x.x"
+  namespace                   = "eg"
+  stage                       = "prod"
+  name                        = "app"
+  dns_zone_id                 = "Z89FN1IW975KPE"
+  host_name                   = "db"
+  security_group_ids          = ["sg-xxxxxxxx"]
+  ca_cert_identifier          = "rds-ca-2019"
+  allowed_cidr_blocks         = ["XXX.XXX.XXX.XXX/32"]
+  database_name               = "wordpress"
+  database_user               = "admin"
+  database_password           = "xxxxxxxxxxxx"
+  database_port               = 3306
+  multi_az                    = true
+  storage_type                = "gp2"
+  allocated_storage           = 100
+  storage_encrypted           = true
+  engine                      = "mysql"
+  engine_version              = "5.7.17"
+  major_engine_version        = "5.7"
+  instance_class              = "db.t2.medium"
+  db_parameter_group          = "mysql5.7"
+  option_group_name           = "mysql-options"
+  publicly_accessible         = false
+  subnet_ids                  = ["sb-xxxxxxxxx", "sb-xxxxxxxxx"]
+  vpc_id                      = "vpc-xxxxxxxx"
+  snapshot_identifier         = "rds:production-2015-06-26-06-05"
+  auto_minor_version_upgrade  = true
+  allow_major_version_upgrade = false
+  apply_immediately           = false
+  maintenance_window          = "Mon:03:00-Mon:04:00"
+  skip_final_snapshot         = false
+  copy_tags_to_snapshot       = true
+  backup_retention_period     = 7
+  backup_window               = "22:00-03:00"
 
-    db_parameter = [
-      { name  = "myisam_sort_buffer_size"   value = "1048576" },
-      { name  = "sort_buffer_size"          value = "2097152" }
-    ]
+  db_parameter = [
+    { name  = "myisam_sort_buffer_size"   value = "1048576" },
+    { name  = "sort_buffer_size"          value = "2097152" }
+  ]
 
-    db_options = [
-      { option_name = "MARIADB_AUDIT_PLUGIN"
-          option_settings = [
-            { name = "SERVER_AUDIT_EVENTS"           value = "CONNECT" },
-            { name = "SERVER_AUDIT_FILE_ROTATIONS"   value = "37" }
-          ]
-      }
-    ]
+  db_options = [
+    {
+      option_name = "MARIADB_AUDIT_PLUGIN"
+      option_settings = [
+        { name = "SERVER_AUDIT_EVENTS"           value = "CONNECT" },
+        { name = "SERVER_AUDIT_FILE_ROTATIONS"   value = "37" }
+      ]
+    }
+  ]
 }
 ```
+
 ### Character Sets
 
 If you wish to create the database in a specific character set you can use one of the following options depending
@@ -168,9 +170,9 @@ For Oracle and Microsoft SQL you can specify charset name as an input variable
 to this module. For example, for Microsoft SQL, you could use:
 ```hcl
 module "rds_instance" {
-  ...
+  # ...
   charset_name                   = "Korean_Wansung_CI_AS"
-  ...
+  # ...
 }
 ```
 
@@ -179,7 +181,7 @@ the database is created with `utf8mb4` (character set) and utf8mb4_unicode_ci (c
 
 ```hcl
 module "rds_instance" {
-  ...
+  # ...
   db_parameter = [
     {
       name = "character_set_server"
@@ -192,7 +194,7 @@ module "rds_instance" {
       apply_method = "immediate"
     }
   ]
-  ...
+  # ...
 }
 ```
 
@@ -500,8 +502,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 ### Contributors
 
 <!-- markdownlint-disable -->
-|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Sergey Vasilyev][s2504s_avatar]][s2504s_homepage]<br/>[Sergey Vasilyev][s2504s_homepage] | [![Valeriy][drama17_avatar]][drama17_homepage]<br/>[Valeriy][drama17_homepage] | [![Konstantin B][comeanother_avatar]][comeanother_homepage]<br/>[Konstantin B][comeanother_homepage] | [![drmikecrowe][drmikecrowe_avatar]][drmikecrowe_homepage]<br/>[drmikecrowe][drmikecrowe_homepage] | [![Oscar Sullivan][osulli_avatar]][osulli_homepage]<br/>[Oscar Sullivan][osulli_homepage] | [![Federico Márquez][fedemzcor_avatar]][fedemzcor_homepage]<br/>[Federico Márquez][fedemzcor_homepage] |
-|---|---|---|---|---|---|---|---|
+|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Sergey Vasilyev][s2504s_avatar]][s2504s_homepage]<br/>[Sergey Vasilyev][s2504s_homepage] | [![Valeriy][drama17_avatar]][drama17_homepage]<br/>[Valeriy][drama17_homepage] | [![Konstantin B][comeanother_avatar]][comeanother_homepage]<br/>[Konstantin B][comeanother_homepage] | [![drmikecrowe][drmikecrowe_avatar]][drmikecrowe_homepage]<br/>[drmikecrowe][drmikecrowe_homepage] | [![Oscar Sullivan][osulli_avatar]][osulli_homepage]<br/>[Oscar Sullivan][osulli_homepage] | [![Federico Márquez][fedemzcor_avatar]][fedemzcor_homepage]<br/>[Federico Márquez][fedemzcor_homepage] | [![RB][nitrocode_avatar]][nitrocode_homepage]<br/>[RB][nitrocode_homepage] |
+|---|---|---|---|---|---|---|---|---|
 <!-- markdownlint-restore -->
 
   [osterman_homepage]: https://github.com/osterman
@@ -520,6 +522,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
   [osulli_avatar]: https://img.cloudposse.com/150x150/https://github.com/osulli.png
   [fedemzcor_homepage]: https://github.com/fedemzcor
   [fedemzcor_avatar]: https://img.cloudposse.com/150x150/https://github.com/fedemzcor.png
+  [nitrocode_homepage]: https://github.com/nitrocode
+  [nitrocode_avatar]: https://img.cloudposse.com/150x150/https://github.com/nitrocode.png
 
 [![README Footer][readme_footer_img]][readme_footer_link]
 [![Beacon][beacon]][website]
