@@ -8,7 +8,7 @@ variable "kms_alias_name_ssm" {
 variable "ssm_parameters_enabled" {
   type        = bool
   default     = false
-  description = "If `true` create SSM keys for the database user and password."
+  description = "If `true` create SSM keys for the database information."
 }
 
 variable "ssm_key_format" {
