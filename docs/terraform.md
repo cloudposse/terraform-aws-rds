@@ -112,7 +112,7 @@
 | <a name="input_snapshot_identifier"></a> [snapshot\_identifier](#input\_snapshot\_identifier) | Snapshot identifier e.g: rds:production-2019-06-26-06-05. If specified, the module create cluster from the snapshot | `string` | `null` | no |
 | <a name="input_ssm_key_format"></a> [ssm\_key\_format](#input\_ssm\_key\_format) | SSM path format. The values will will be used in the following order: `var.ssm_key_prefix`, `module.this.name`, `var.ssm_key_*` | `string` | `"/%v/%v/%v"` | no |
 | <a name="input_ssm_key_prefix"></a> [ssm\_key\_prefix](#input\_ssm\_key\_prefix) | SSM path prefix. Omit the leading forward slash `/`. | `string` | `"rds"` | no |
-| <a name="input_ssm_parameters_enabled"></a> [ssm\_parameters\_enabled](#input\_ssm\_parameters\_enabled) | If `true` create SSM keys for the database user and password. | `bool` | `false` | no |
+| <a name="input_ssm_parameters_enabled"></a> [ssm\_parameters\_enabled](#input\_ssm\_parameters\_enabled) | If `true` create SSM keys for the database information. | `bool` | `false` | no |
 | <a name="input_stage"></a> [stage](#input\_stage) | ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | <a name="input_storage_encrypted"></a> [storage\_encrypted](#input\_storage\_encrypted) | (Optional) Specifies whether the DB instance is encrypted. The default is false if not specified | `bool` | `true` | no |
 | <a name="input_storage_type"></a> [storage\_type](#input\_storage\_type) | One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD) | `string` | `"standard"` | no |
