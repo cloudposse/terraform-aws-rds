@@ -12,6 +12,8 @@ locals {
   subnet_ids_provided           = var.subnet_ids != null && length(var.subnet_ids) > 0
   db_subnet_group_name_provided = var.db_subnet_group_name != null && var.db_subnet_group_name != ""
 
+  associate_security_group_ids_provided = var.associate_security_group_ids != null
+
   db_subnet_group_name = local.db_subnet_group_name_provided ? var.db_subnet_group_name : (
     local.subnet_ids_provided ? join("", aws_db_subnet_group.default.*.name) : null
   )
@@ -36,12 +38,8 @@ resource "aws_db_instance" "default" {
   storage_encrypted     = var.storage_encrypted
   kms_key_id            = var.kms_key_arn
 
-  vpc_security_group_ids = compact(
-    concat(
-      [join("", aws_security_group.default.*.id)],
-      var.associate_security_group_ids
-    )
-  )
+  vpc_security_group_ids = local.associate_security_group_ids_provided ? var.associate_security_group_ids : [join("", aws_security_group.default.*.id)]
+  
 
   db_subnet_group_name = local.db_subnet_group_name
   availability_zone    = local.availability_zone
@@ -153,7 +151,7 @@ resource "aws_db_subnet_group" "default" {
 }
 
 resource "aws_security_group" "default" {
-  count = module.this.enabled ? 1 : 0
+  count = module.this.enabled && ! local.associate_security_group_ids_provided ? 1 : 0
 
   name        = module.this.id
   description = "Allow inbound traffic from the security groups"
@@ -162,7 +160,7 @@ resource "aws_security_group" "default" {
 }
 
 resource "aws_security_group_rule" "ingress_security_groups" {
-  count = module.this.enabled ? length(var.security_group_ids) : 0
+  count = module.this.enabled && ! local.associate_security_group_ids_provided ? length(var.security_group_ids) : 0
 
   description              = "Allow inbound traffic from existing Security Groups"
   type                     = "ingress"
@@ -174,7 +172,7 @@ resource "aws_security_group_rule" "ingress_security_groups" {
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
-  count = module.this.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+  count = module.this.enabled && length(var.allowed_cidr_blocks) && ! local.associate_security_group_ids_provided > 0 ? 1 : 0
 
   description       = "Allow inbound traffic from CIDR blocks"
   type              = "ingress"
@@ -186,7 +184,7 @@ resource "aws_security_group_rule" "ingress_cidr_blocks" {
 }
 
 resource "aws_security_group_rule" "egress" {
-  count             = module.this.enabled ? 1 : 0
+  count             = module.this.enabled && ! local.associate_security_group_ids_provided ? 1 : 0
   description       = "Allow all egress traffic"
   type              = "egress"
   from_port         = 0
