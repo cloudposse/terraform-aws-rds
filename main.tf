@@ -91,9 +91,6 @@ resource "aws_db_option_group" "default" {
   engine_name          = var.engine
   major_engine_version = var.major_engine_version
   tags                 = module.label.tags
-  lifecycle {
-    ignore_changes = [option]
-  }
   dynamic "option" {
     for_each = var.db_options
     content {
@@ -115,6 +112,7 @@ resource "aws_db_option_group" "default" {
 
   lifecycle {
     create_before_destroy = true
+    ignore_changes        = [option]
   }
 }
 
