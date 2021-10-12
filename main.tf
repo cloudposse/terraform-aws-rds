@@ -72,6 +72,9 @@ resource "aws_db_parameter_group" "default" {
   name   = module.label.id
   family = var.db_parameter_group
   tags   = module.label.tags
+  lifecycle {
+    ignore_changes = [parameter]
+  }
   dynamic "parameter" {
     for_each = var.db_parameter
     content {
@@ -79,9 +82,6 @@ resource "aws_db_parameter_group" "default" {
       name         = parameter.value.name
       value        = parameter.value.value
     }
-  }
-  lifecycle {
-    ignore_changes = [parameter]
   }
 }
 
@@ -91,6 +91,9 @@ resource "aws_db_option_group" "default" {
   engine_name          = var.engine
   major_engine_version = var.major_engine_version
   tags                 = module.label.tags
+  lifecycle {
+    ignore_changes = [option]
+  }
   dynamic "option" {
     for_each = var.db_options
     content {
@@ -107,9 +110,6 @@ resource "aws_db_option_group" "default" {
           value = option_settings.value.value
         }
       }
-    }
-    lifecycle {
-      ignore_changes = [option]
     }
   }
 
