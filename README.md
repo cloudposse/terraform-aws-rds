@@ -234,7 +234,7 @@ Available targets:
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_dns_host_name"></a> [dns\_host\_name](#module\_dns\_host\_name) | cloudposse/route53-cluster-hostname/aws | 0.12.0 |
-| <a name="module_final_snapshot_label"></a> [final\_snapshot\_label](#module\_final\_snapshot\_label) | cloudposse/label/null | 0.24.1 |
+| <a name="module_final_snapshot_label"></a> [final\_snapshot\_label](#module\_final\_snapshot\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
 
 ## Resources
