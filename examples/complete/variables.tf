@@ -112,5 +112,5 @@ variable "apply_immediately" {
 variable "s3_integration_enabled" {
   type        = bool
   description = "Whether to enable or disable the RDS integration test for S3_INTEGRATION."
-  default = false
+  default     = false
 }

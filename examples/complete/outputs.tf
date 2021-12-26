@@ -51,6 +51,6 @@ output "vpc_cidr" {
 }
 
 output "role_associations" {
-  value = module.rds_instance.role_associations
+  value       = module.rds_instance.role_associations
   description = "Map of RDS Role Associations for the DB instance."
 }

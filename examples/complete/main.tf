@@ -80,7 +80,7 @@ locals {
   ]
   # Workaround for principal ARN in S3 Bucket policy not being known until apply
   s3_integration_bucket_arn = "arn:${join("", data.aws_partition.current.*.partition)}:s3:::${module.this.id}"
-  s3_integration_role_arn = "arn:${join("", data.aws_partition.current.*.partition)}:iam::${join("", data.aws_caller_identity.current.*.account_id)}:role/${module.this.id}"
+  s3_integration_role_arn   = "arn:${join("", data.aws_partition.current.*.partition)}:iam::${join("", data.aws_caller_identity.current.*.account_id)}:role/${module.this.id}"
 }
 
 data "aws_caller_identity" "current" {
@@ -103,22 +103,22 @@ data "aws_iam_policy_document" "bucket_policy" {
       local.s3_integration_bucket_arn,
       "${local.s3_integration_bucket_arn}/*"
     ]
-    effect    = "Allow"
+    effect = "Allow"
 
     principals {
       identifiers = [local.s3_integration_role_arn]
-      type = "AWS"
+      type        = "AWS"
     }
   }
 }
 
 module "s3_bucket" {
-  source = "cloudposse/s3-bucket/aws"
+  source  = "cloudposse/s3-bucket/aws"
   version = "0.44.1"
 
   enabled = local.s3_integration_enabled
 
-  acl = "private"
+  acl    = "private"
   policy = join("", data.aws_iam_policy_document.bucket_policy.*.json)
 
   context = module.this.context
@@ -136,7 +136,7 @@ data "aws_iam_policy_document" "role_policy" {
       local.s3_integration_bucket_arn,
       "${local.s3_integration_bucket_arn}/*"
     ]
-    effect    = "Allow"
+    effect = "Allow"
   }
 }
 
