@@ -49,3 +49,8 @@ output "private_subnet_cidrs" {
 output "vpc_cidr" {
   value = module.vpc.vpc_cidr_block
 }
+
+output "role_associations" {
+  value = module.rds_instance.role_associations
+  description = "Map of RDS Role Associations for the DB instance."
+}

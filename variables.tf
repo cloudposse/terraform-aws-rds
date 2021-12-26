@@ -329,3 +329,20 @@ variable "replicate_source_db" {
   description = "Specifies that this resource is a Replicate database, and to use this value as the source database. This correlates to the `identifier` of another Amazon RDS Database to replicate (if replicating within a single region) or ARN of the Amazon RDS Database to replicate (if replicating cross-region). Note that if you are creating a cross-region replica of an encrypted database you will also need to specify a `kms_key_id`. See [DB Instance Replication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Replication.html) and [Working with PostgreSQL and MySQL Read Replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html) for more information on using Replication."
   default     = null
 }
+
+variable "role_associations" {
+  type        = map(string)
+  description = <<-EOT
+  Map of Role Associations for the DB Instance.
+
+  The key is the name of the feature for association, and value is the IAM Role ARN to associate with the feature.
+
+  For example:
+  ```hcl
+  {
+    S3_INTEGRATION = "arn:aws:iam::123456789012:role/rds-s3-import-role"
+  }
+  ```
+  EOT
+  default     = {}
+}

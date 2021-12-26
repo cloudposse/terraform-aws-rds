@@ -4,7 +4,7 @@ provider "aws" {
 
 module "vpc" {
   source  = "cloudposse/vpc/aws"
-  version = "0.21.1"
+  version = "0.28.1"
 
   cidr_block = "172.16.0.0/16"
 
@@ -13,7 +13,7 @@ module "vpc" {
 
 module "subnets" {
   source  = "cloudposse/dynamic-subnets/aws"
-  version = "0.38.0"
+  version = "0.39.8"
 
   availability_zones   = var.availability_zones
   vpc_id               = module.vpc.vpc_id
@@ -37,6 +37,7 @@ module "rds_instance" {
   storage_encrypted    = var.storage_encrypted
   engine               = var.engine
   engine_version       = var.engine_version
+  major_engine_version = var.major_engine_version
   instance_class       = var.instance_class
   db_parameter_group   = var.db_parameter_group
   publicly_accessible  = var.publicly_accessible
@@ -46,8 +47,11 @@ module "rds_instance" {
   apply_immediately    = var.apply_immediately
   availability_zone    = var.availability_zone
   db_subnet_group_name = var.db_subnet_group_name
+  role_associations = local.s3_integration_enabled ? {
+    S3_INTEGRATION = module.role.arn
+  } : {}
 
-  db_parameter = [
+  db_parameter = local.s3_integration_enabled ? [] : [ # the S3 integration test relies on MySQL
     {
       name         = "myisam_sort_buffer_size"
       value        = "1048576"
@@ -58,6 +62,99 @@ module "rds_instance" {
       value        = "2097152"
       apply_method = "immediate"
     }
+  ]
+
+  context = module.this.context
+}
+
+# The remainder of this configuration has to do with creating an S3 integration.
+# This is to test var.role_associations.
+# See: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance_role_association
+# and https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/oracle-s3-integration.html
+locals {
+  s3_integration_enabled = module.this.enabled && var.s3_integration_enabled
+  s3_integration_actions = [
+    "s3:ListBucket",
+    "s3:GetObject",
+    "s3:PutObject"
+  ]
+  # Workaround for principal ARN in S3 Bucket policy not being known until apply
+  s3_integration_bucket_arn = "arn:${join("", data.aws_partition.current.*.partition)}:s3:::${module.this.id}"
+  s3_integration_role_arn = "arn:${join("", data.aws_partition.current.*.partition)}:iam::${join("", data.aws_caller_identity.current.*.account_id)}:role/${module.this.id}"
+}
+
+data "aws_caller_identity" "current" {
+  count = local.s3_integration_enabled ? 1 : 0
+}
+
+data "aws_partition" "current" {
+  count = local.s3_integration_enabled ? 1 : 0
+}
+
+data "aws_iam_policy_document" "bucket_policy" {
+  count = local.s3_integration_enabled ? 1 : 0
+
+  statement {
+    sid = "AllowIntegrationRoleS3Access"
+
+    actions = local.s3_integration_actions
+
+    resources = [
+      local.s3_integration_bucket_arn,
+      "${local.s3_integration_bucket_arn}/*"
+    ]
+    effect    = "Allow"
+
+    principals {
+      identifiers = [local.s3_integration_role_arn]
+      type = "AWS"
+    }
+  }
+}
+
+module "s3_bucket" {
+  source = "cloudposse/s3-bucket/aws"
+  version = "0.44.1"
+
+  enabled = local.s3_integration_enabled
+
+  acl = "private"
+  policy = join("", data.aws_iam_policy_document.bucket_policy.*.json)
+
+  context = module.this.context
+}
+
+data "aws_iam_policy_document" "role_policy" {
+  count = local.s3_integration_enabled ? 1 : 0
+
+  statement {
+    sid = "AllowS3Access"
+
+    actions = local.s3_integration_actions
+
+    resources = [
+      local.s3_integration_bucket_arn,
+      "${local.s3_integration_bucket_arn}/*"
+    ]
+    effect    = "Allow"
+  }
+}
+
+module "role" {
+  source  = "cloudposse/iam-role/aws"
+  version = "0.14.0"
+
+  enabled = local.s3_integration_enabled
+
+  policy_description = "Allow RDS Access to S3 (S3_INTEGRATION)."
+  role_description   = "Allow IAM Role assumed by RDS to perform S3 Actions (S3_INTEGRATION)."
+
+  principals = {
+    Service = ["rds.amazonaws.com"]
+  }
+
+  policy_documents = [
+    join("", data.aws_iam_policy_document.role_policy.*.json)
   ]
 
   context = module.this.context

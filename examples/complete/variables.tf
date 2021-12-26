@@ -108,3 +108,9 @@ variable "apply_immediately" {
   type        = bool
   description = "Specifies whether any database modifications are applied immediately, or during the next maintenance window"
 }
+
+variable "s3_integration_enabled" {
+  type        = bool
+  description = "Whether to enable or disable the RDS integration test for S3_INTEGRATION."
+  default = false
+}

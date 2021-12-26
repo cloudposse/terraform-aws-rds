@@ -47,3 +47,14 @@ output "resource_id" {
   value       = join("", aws_db_instance.default.*.resource_id)
   description = "The RDS Resource ID of this instance."
 }
+
+output "role_associations" {
+  value = local.enabled ? { for k, v in var.role_associations :
+    k => {
+      id           = aws_db_instance_role_association.default[k].id
+      role_arn     = aws_db_instance_role_association.default[k].role_arn
+      feature_name = aws_db_instance_role_association.default[k].feature_name
+    }
+  } : {}
+  description = "Map of RDS Role Associations for the DB instance."
+}
