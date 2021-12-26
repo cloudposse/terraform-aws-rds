@@ -180,5 +180,5 @@ func testExamplesS3Integration(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	roleAssociations := terraform.Output(t, terraformOptions, "role_associations")
 	// Verify we're getting back the outputs we expect
-	assert.Contains(t, "S3_INTEGRATION", roleAssociations)
+	assert.Contains(t, roleAssociations, "S3_INTEGRATION")
 }
