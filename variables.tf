@@ -340,7 +340,7 @@ variable "role_associations" {
   For example:
   ```hcl
   {
-    S3_INTEGRATION = "arn:aws:iam::123456789012:role/rds-s3-import-role"
+    S3_INTEGRATION = "arn:aws:iam::123456789012:role/rds-s3-integration-role"
   }
   ```
   EOT
