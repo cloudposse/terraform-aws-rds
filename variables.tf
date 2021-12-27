@@ -338,7 +338,7 @@ variable "role_associations" {
   The key is the name of the feature for association, and value is the IAM Role ARN to associate with the feature.
 
   For example:
-  ```hcl
+  ```
   {
     S3_INTEGRATION = "arn:aws:iam::123456789012:role/rds-s3-integration-role"
   }
