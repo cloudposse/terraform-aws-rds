@@ -113,8 +113,10 @@ data "aws_iam_policy_document" "bucket_policy" {
 }
 
 module "s3_bucket" {
-  source  = "cloudposse/s3-bucket/aws"
-  version = "0.44.1"
+  #source  = "cloudposse/s3-bucket/aws"
+  #version = "0.44.1"
+  # TODO: remove
+  source = "git@github.com:cloudposse/terraform-aws-s3-bucket.git?ref=fix/bucket-policy-list"
 
   enabled = local.s3_integration_enabled
 
