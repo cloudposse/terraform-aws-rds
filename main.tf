@@ -115,7 +115,7 @@ resource "aws_db_parameter_group" "default" {
 }
 
 resource "aws_db_option_group" "default" {
-  count = !local.is_postgres && length(var.option_group_name) == 0 && module.this.enabled ? 1 : 0
+  count = ! local.is_postgres && length(var.option_group_name) == 0 && module.this.enabled ? 1 : 0
 
   name_prefix          = "${module.this.id}${module.this.delimiter}"
   engine_name          = var.engine
@@ -147,7 +147,7 @@ resource "aws_db_option_group" "default" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  count = module.this.enabled && local.subnet_ids_provided && !local.db_subnet_group_name_provided ? 1 : 0
+  count = module.this.enabled && local.subnet_ids_provided && ! local.db_subnet_group_name_provided ? 1 : 0
 
   name       = module.this.id
   subnet_ids = var.subnet_ids
