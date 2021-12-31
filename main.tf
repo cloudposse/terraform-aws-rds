@@ -6,8 +6,10 @@ module "final_snapshot_label" {
 }
 
 locals {
-  computed_major_engine_version = var.engine == "postgres" ? join(".", slice(split(".", var.engine_version), 0, 1)) : join(".", slice(split(".", var.engine_version), 0, 2))
+  is_postgres                   = var.engine == "postgres" ? true : false
+  computed_major_engine_version = local.is_postgres ? join(".", slice(split(".", var.engine_version), 0, 1)) : join(".", slice(split(".", var.engine_version), 0, 2))
   major_engine_version          = var.major_engine_version == "" ? local.computed_major_engine_version : var.major_engine_version
+
 
   subnet_ids_provided           = var.subnet_ids != null && length(var.subnet_ids) > 0
   db_subnet_group_name_provided = var.db_subnet_group_name != null && var.db_subnet_group_name != ""
@@ -48,7 +50,7 @@ resource "aws_db_instance" "default" {
 
   ca_cert_identifier          = var.ca_cert_identifier
   parameter_group_name        = length(var.parameter_group_name) > 0 ? var.parameter_group_name : join("", aws_db_parameter_group.default.*.name)
-  option_group_name           = length(var.option_group_name) > 0 ? var.option_group_name : join("", aws_db_option_group.default.*.name)
+  option_group_name           = local.is_postgres ? null : length(var.option_group_name) > 0 ? var.option_group_name : join("", aws_db_option_group.default.*.name)
   license_model               = var.license_model
   multi_az                    = var.multi_az
   storage_type                = var.storage_type
@@ -113,7 +115,7 @@ resource "aws_db_parameter_group" "default" {
 }
 
 resource "aws_db_option_group" "default" {
-  count = length(var.option_group_name) == 0 && module.this.enabled ? 1 : 0
+  count = !local.is_postgres && length(var.option_group_name) == 0 && module.this.enabled ? 1 : 0
 
   name_prefix          = "${module.this.id}${module.this.delimiter}"
   engine_name          = var.engine
@@ -145,7 +147,7 @@ resource "aws_db_option_group" "default" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  count = module.this.enabled && local.subnet_ids_provided && ! local.db_subnet_group_name_provided ? 1 : 0
+  count = module.this.enabled && local.subnet_ids_provided && !local.db_subnet_group_name_provided ? 1 : 0
 
   name       = module.this.id
   subnet_ids = var.subnet_ids
