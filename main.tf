@@ -157,3 +157,45 @@ module "dns_host_name" {
   enabled   = length(var.dns_zone_id) > 0 && var.enabled == "true" ? "true" : "false"
 }
 
+################################################################################
+# Replica DB
+################################################################################
+
+module "replica" {
+  source = "git::https://github.com/betterworks/terraform-null-label.git?ref=tags/0.12.0"
+
+  identifier = "${module.label.id}-replica"
+
+  # Source database. For cross-region use db_instance_arn
+  replicate_source_db    = aws_db_instance.default.identifier
+  create_random_password = false
+
+  engine               = var.engine
+  engine_version       = var.major_engine_version
+  family               = var.db_parameter_group
+  major_engine_version = var.major_engine_version
+  instance_class       = var.instance_class
+
+  allocated_storage     = var.snapshot_identifier == "" && var.replicate_source_db == "" ? var.allocated_storage : null
+  
+  port = var.database_port
+
+  multi_az               = var.multi_az
+  vpc_security_group_ids = compact(
+    concat(
+      [join("", aws_security_group.default.*.id)],
+      var.associate_security_group_ids,
+    ),
+  )
+
+  maintenance_window              = var.maintenance_window
+  backup_window                   = var.replicate_source_db == "" ? var.backup_window : null
+  enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
+
+  backup_retention_period = var.replicate_source_db == "" ? var.backup_retention_period : null
+  skip_final_snapshot     = true
+  deletion_protection     = false
+  storage_encrypted       = false
+
+  tags = local.tags
+}
