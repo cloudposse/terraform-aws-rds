@@ -10,7 +10,7 @@
 # }
 resource "aws_db_instance" "replica" {
   count             = var.replica_count
-  identifier        = "${module.label.id}_replica_${count.index}"
+  identifier        = "${module.label.id}-replica_${count.index}"
   name              = null
   username          = null
   password          = null
