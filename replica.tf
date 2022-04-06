@@ -1,13 +1,13 @@
-module "replica_label" {
-  source                 = "git::https://github.com/betterworks/terraform-null-label.git?ref=tags/0.12.0"
-  namespace              = var.namespace
-  name                   = var.name
-  replica_count          = rds_replica_count
-  replica_instance_class = rds_replica_instance_class
-  stage                  = var.stage
-  attributes             = ["db", "master", "replica"]
-  enabled                = var.rds_replica_enabled ? "true" : "false"
-}
+# module "replica_label" {
+#   source                 = "git::https://github.com/betterworks/terraform-null-label.git?ref=tags/0.12.0"
+#   namespace              = var.namespace
+#   name                   = var.name
+#   replica_count          = rds_replica_count
+#   replica_instance_class = rds_replica_instance_class
+#   stage                  = var.stage
+#   attributes             = ["db", "master", "replica"]
+#   enabled                = var.rds_replica_enabled ? "true" : "false"
+# }
 resource "aws_db_instance" "replica" {
   count             = var.replica_count
   identifier        = "${module.label.id}_replica_${count.index}"
