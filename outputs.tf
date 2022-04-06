@@ -38,8 +38,4 @@ output "hostname" {
   description = "DNS host name of the instance"
 }
 
-output "rds_replica_connection_parameters" {
-  value       = "-h ${aws_db_instance.default_replica.address} -p ${aws_db_instance.default_replica.port} -U ${aws_db_instance.default_replica.username} postgres"
-  description = "RDS replica instance connection parameters"
-}
 
