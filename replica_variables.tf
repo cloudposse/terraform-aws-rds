@@ -1,7 +1,7 @@
 variable "replica_instance_class" {
   type        = string
+  default = "db.t3.micro"
   description = "Class of RDS instance"
-  # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 }
 
 variable "replica_count" {
