@@ -1,11 +1,12 @@
 module "replica_label" {
-  source     = "git::https://github.com/betterworks/terraform-null-label.git?ref=tags/0.12.0"
-  namespace  = var.namespace
-  name       = var.name
-  stage      = var.stage
-  delimiter  = var.delimiter
-  attributes = var.attributes
-  tags       = var.tags
+  source                 = "git::https://github.com/betterworks/terraform-null-label.git?ref=tags/0.12.0"
+  namespace              = var.namespace
+  name                   = var.name
+  replica_count          = rds_replica_count
+  replica_instance_class = rds_replica_instance_class
+  stage                  = var.stage
+  attributes             = ["db", "master", "replica"]
+  enabled                = var.rds_replica_enabled ? "true" : "false"
 }
 resource "aws_db_instance" "replica" {
   count             = var.replica_count
@@ -34,7 +35,7 @@ resource "aws_db_instance" "replica" {
   storage_type                    = var.storage_type
   iops                            = var.iops
   publicly_accessible             = var.publicly_accessible
-  replicate_source_db             = aws_db_instance.default.*.id
+  replicate_source_db             = aws_db_instance.default[0].id
   snapshot_identifier             = var.snapshot_identifier
   allow_major_version_upgrade     = var.allow_major_version_upgrade
   auto_minor_version_upgrade      = var.auto_minor_version_upgrade
@@ -56,93 +57,92 @@ resource "aws_db_instance" "replica" {
   }
 }
 
-# resource "aws_db_parameter_group" "default" {
-#   count  = length(var.parameter_group_name) == 0 && var.enabled == "true" ? 1 : 0
-#   name   = module.label.id
-#   family = var.db_parameter_group
-#   tags   = module.label.tags
-#   lifecycle {
-#     ignore_changes = [parameter]
-#   }
-#   dynamic "parameter" {
-#     for_each = var.db_parameter
-#     content {
-#       apply_method = lookup(parameter.value, "apply_method", null)
-#       name         = parameter.value.name
-#       value        = parameter.value.value
-#     }
-#   }
-# }
+resource "aws_db_parameter_group" "default" {
+  count  = length(var.parameter_group_name) == 0 && var.enabled == "true" ? 1 : 0
+  name   = module.label.id
+  family = var.db_parameter_group
+  tags   = module.label.tags
+  lifecycle {
+    ignore_changes = [parameter]
+  }
+  dynamic "parameter" {
+    for_each = var.db_parameter
+    content {
+      apply_method = lookup(parameter.value, "apply_method", null)
+      name         = parameter.value.name
+      value        = parameter.value.value
+    }
+  }
+}
 
-# resource "aws_db_option_group" "default" {
-#   count                = length(var.option_group_name) == 0 && var.enabled == "true" ? 1 : 0
-#   name                 = module.label.id
-#   engine_name          = var.engine
-#   major_engine_version = var.major_engine_version
-#   tags                 = module.label.tags
-#   dynamic "option" {
-#     for_each = var.db_options
-#     content {
-#       db_security_group_memberships  = lookup(option.value, "db_security_group_memberships", null)
-#       option_name                    = option.value.option_name
-#       port                           = lookup(option.value, "port", null)
-#       version                        = lookup(option.value, "version", null)
-#       vpc_security_group_memberships = lookup(option.value, "vpc_security_group_memberships", null)
+resource "aws_db_option_group" "default" {
+  count                = length(var.option_group_name) == 0 && var.enabled == "true" ? 1 : 0
+  name                 = module.label.id
+  engine_name          = var.engine
+  major_engine_version = var.major_engine_version
+  tags                 = module.label.tags
+  dynamic "option" {
+    for_each = var.db_options
+    content {
+      db_security_group_memberships  = lookup(option.value, "db_security_group_memberships", null)
+      option_name                    = option.value.option_name
+      port                           = lookup(option.value, "port", null)
+      version                        = lookup(option.value, "version", null)
+      vpc_security_group_memberships = lookup(option.value, "vpc_security_group_memberships", null)
 
-#       dynamic "option_settings" {
-#         for_each = lookup(option.value, "option_settings", [])
-#         content {
-#           name  = option_settings.value.name
-#           value = option_settings.value.value
-#         }
-#       }
-#     }
-#   }
+      dynamic "option_settings" {
+        for_each = lookup(option.value, "option_settings", [])
+        content {
+          name  = option_settings.value.name
+          value = option_settings.value.value
+        }
+      }
+    }
+  }
 
-#   lifecycle {
-#     create_before_destroy = true
-#     ignore_changes        = [option]
-#   }
-# }
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [option]
+  }
+}
 
-# resource "aws_db_subnet_group" "default" {
-#   count      = var.enabled == "true" ? 1 : 0
-#   name       = module.label.id
-#   subnet_ids = var.subnet_ids
-#   tags       = module.label.tags
-# }
+resource "aws_db_subnet_group" "default" {
+  count      = var.enabled == "true" ? 1 : 0
+  name       = module.label.id
+  subnet_ids = var.subnet_ids
+  tags       = module.label.tags
+}
 
-# resource "aws_security_group" "default" {
-#   count       = var.enabled == "true" ? 1 : 0
-#   name        = module.label.id
-#   description = "Allow inbound traffic from the security groups"
-#   vpc_id      = var.vpc_id
+resource "aws_security_group" "default" {
+  count       = var.enabled == "true" ? 1 : 0
+  name        = module.label.id
+  description = "Allow inbound traffic from the security groups"
+  vpc_id      = var.vpc_id
 
-#   ingress {
-#     from_port       = var.database_port
-#     to_port         = var.database_port
-#     protocol        = "tcp"
-#     security_groups = var.security_group_ids
-#     cidr_blocks     = var.cidr_blocks
-#   }
+  ingress {
+    from_port       = var.database_port
+    to_port         = var.database_port
+    protocol        = "tcp"
+    security_groups = var.security_group_ids
+    cidr_blocks     = var.cidr_blocks
+  }
 
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-#   tags = module.label.tags
-# }
+  tags = module.label.tags
+}
 
-# module "dns_host_name" {
-#   source    = "git::https://github.com/betterworks/terraform-aws-route53-cluster-hostname.git?ref=tags/0.3.0"
-#   namespace = var.namespace
-#   name      = var.host_name
-#   stage     = var.stage
-#   zone_id   = var.dns_zone_id
-#   records   = aws_db_instance.default.*.address
-#   enabled   = length(var.dns_zone_id) > 0 && var.enabled == "true" ? "true" : "false"
-# }
-
+module "dns_host_name" {
+  source    = "git::https://github.com/betterworks/terraform-aws-route53-cluster-hostname.git?ref=tags/0.3.0"
+  namespace = var.namespace
+  name      = var.host_name
+  stage     = var.stage
+  zone_id   = var.dns_zone_id
+  records   = aws_db_instance.default.*.address
+  enabled   = length(var.dns_zone_id) > 0 && var.enabled == "true" ? "true" : "false"
+}

@@ -9,3 +9,9 @@ variable "replica_count" {
   description = "no of read replica"
   default = "0"
 }
+
+variable "rds_replica_enabled" {
+  type        = bool
+  description = "Toggle for the rds primary replica instance"
+  default     = false
+}
