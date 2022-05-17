@@ -23,7 +23,7 @@ resource "aws_db_instance" "default" {
   count = module.this.enabled ? 1 : 0
 
   identifier            = module.this.id
-  name                  = var.database_name
+  db_name               = var.database_name
   username              = var.database_user
   password              = var.database_password
   port                  = var.database_port
