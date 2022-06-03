@@ -24,7 +24,7 @@ resource "aws_db_instance" "default" {
 
   identifier            = module.this.id
   name                  = var.database_name
-  username              = length(var.replicate_source_db) > 0 ? null : var.database_user
+  username              = try(length(var.replicate_source_db), 0) == 0 ? var.database_user : null
   password              = length(var.replicate_source_db) == 0 ? var.database_password : null
   port                  = var.database_port
   engine                = length(var.replicate_source_db) > 0 ? null : var.engine
