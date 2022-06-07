@@ -25,13 +25,13 @@ resource "aws_db_instance" "default" {
   identifier            = module.this.id
   name                  = var.database_name
   username              = try(length(var.replicate_source_db), 0) == 0 ? var.database_user : null
-  password              = length(var.replicate_source_db) == 0 ? var.database_password : null
+  password              = try(length(var.replicate_source_db), 0) == 0 ? var.database_password : null
   port                  = var.database_port
-  engine                = length(var.replicate_source_db) > 0 ? null : var.engine
-  engine_version        = length(var.replicate_source_db) > 0 ? null : var.engine_version
+  engine                = try(length(var.replicate_source_db), 0) == 0 ? var.engine : null
+  engine_version        = try(length(var.replicate_source_db), 0) == 0 ? var.engine_version : null
   character_set_name    = var.charset_name
   instance_class        = var.instance_class
-  allocated_storage     = length(var.replicate_source_db) > 0 ? null : var.allocated_storage
+  allocated_storage     = try(length(var.replicate_source_db), 0) == 0 ? var.allocated_storage : null
   max_allocated_storage = var.max_allocated_storage
   storage_encrypted     = var.storage_encrypted
   kms_key_id            = var.kms_key_arn
@@ -145,7 +145,7 @@ resource "aws_db_option_group" "default" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  count = module.this.enabled && local.subnet_ids_provided && ! local.db_subnet_group_name_provided ? 1 : 0
+  count = module.this.enabled && local.subnet_ids_provided && !local.db_subnet_group_name_provided ? 1 : 0
 
   name       = module.this.id
   subnet_ids = var.subnet_ids
