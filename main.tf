@@ -62,6 +62,12 @@ resource "aws_db_instance" "default" {
 
   monitoring_interval = var.monitoring_interval
   monitoring_role_arn = var.monitoring_role_arn
+
+  timeouts {
+    create = lookup(var.timeouts, "create", null)
+    update = lookup(var.timeouts, "update", null)
+    delete = lookup(var.timeouts, "delete", null)
+  }
 }
 
 resource "aws_db_parameter_group" "default" {
