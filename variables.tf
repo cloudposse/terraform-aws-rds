@@ -83,6 +83,7 @@ variable "iops" {
 variable "allocated_storage" {
   type        = number
   description = "The allocated storage in GBs"
+  default     = null
 }
 
 variable "max_allocated_storage" {
@@ -94,6 +95,7 @@ variable "max_allocated_storage" {
 variable "engine" {
   type        = string
   description = "Database engine type"
+  default     = null
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
   # - mysql
   # - postgres
@@ -112,6 +114,12 @@ variable "major_engine_version" {
   description = "Database MAJOR engine version, depends on engine type"
   default     = ""
   # https://docs.aws.amazon.com/cli/latest/reference/rds/create-option-group.html
+}
+
+variable "charset_name" {
+  type        = string
+  description = "The character set name to use for DB encoding. [Oracle & Microsoft SQL only](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#character_set_name). For other engines use `db_parameter`"
+  default     = null
 }
 
 variable "license_model" {
@@ -142,8 +150,21 @@ variable "publicly_accessible" {
 }
 
 variable "subnet_ids" {
-  description = "List of subnets for the DB"
+  description = "List of subnet IDs for the DB. DB instance will be created in the VPC associated with the DB subnet group provisioned using the subnet IDs. Specify one of `subnet_ids`, `db_subnet_group_name` or `availability_zone`"
   type        = list(string)
+  default     = []
+}
+
+variable "availability_zone" {
+  type        = string
+  default     = null
+  description = "The AZ for the RDS instance. Specify one of `subnet_ids`, `db_subnet_group_name` or `availability_zone`. If `availability_zone` is provided, the instance will be placed into the default VPC or EC2 Classic"
+}
+
+variable "db_subnet_group_name" {
+  type        = string
+  default     = null
+  description = "Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group. Specify one of `subnet_ids`, `db_subnet_group_name` or `availability_zone`"
 }
 
 variable "vpc_id" {
@@ -230,7 +251,7 @@ variable "db_options" {
 variable "snapshot_identifier" {
   type        = string
   description = "Snapshot identifier e.g: rds:production-2019-06-26-06-05. If specified, the module create cluster from the snapshot"
-  default     = ""
+  default     = null
 }
 
 variable "final_snapshot_identifier" {
@@ -284,7 +305,7 @@ variable "enabled_cloudwatch_logs_exports" {
 variable "ca_cert_identifier" {
   type        = string
   description = "The identifier of the CA certificate for the DB instance"
-  default     = "rds-ca-2019"
+  default     = null
 }
 
 variable "monitoring_interval" {
@@ -301,4 +322,10 @@ variable "monitoring_role_arn" {
 variable "iam_database_authentication_enabled" {
   description = "Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled"
   default     = false
+}
+
+variable "replicate_source_db" {
+  type        = string
+  description = "Specifies that this resource is a Replicate database, and to use this value as the source database. This correlates to the `identifier` of another Amazon RDS Database to replicate (if replicating within a single region) or ARN of the Amazon RDS Database to replicate (if replicating cross-region). Note that if you are creating a cross-region replica of an encrypted database you will also need to specify a `kms_key_id`. See [DB Instance Replication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Replication.html) and [Working with PostgreSQL and MySQL Read Replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html) for more information on using Replication."
+  default     = null
 }
