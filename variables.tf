@@ -332,6 +332,6 @@ variable "replicate_source_db" {
 
 variable "timezone" {
   type        = string
-  description = "Specifies the timezone of an MSSQL instance. Can only be set at instance creation. https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SQLServer.html#SQLServer.Concepts.General.TimeZone"
+  description = "Time zone of the DB instance. timezone is currently only supported by Microsoft SQL Server. The timezone can only be set on creation. See [MSSQL User Guide](http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SQLServer.html#SQLServer.Concepts.General.TimeZone) for more information."
   default     = null
 }
