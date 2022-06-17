@@ -10,6 +10,7 @@ variable "host_name" {
   description = "The DB host name created in Route53"
 }
 
+
 variable "security_group_ids" {
   type        = list(string)
   default     = []
@@ -322,6 +323,20 @@ variable "monitoring_role_arn" {
 variable "iam_database_authentication_enabled" {
   description = "Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled"
   default     = false
+}
+
+variable "timeouts" {
+  description = <<-EOT
+    Update Terraform resource management timeouts. Allows longer operations like
+    storage changes or upgrades. Can be overridden with even longer values, but be
+    aware that other CI timeouts might also need to be increased.
+  EOT
+  type        = map(string)
+  default = {
+    create = "60m"
+    update = "90m"
+    delete = "60m"
+  }
 }
 
 variable "replicate_source_db" {

@@ -84,6 +84,12 @@ resource "aws_db_instance" "default" {
     aws_db_option_group.default
   ]
 
+  timeouts {
+    create = lookup(var.timeouts, "create", null)
+    update = lookup(var.timeouts, "update", null)
+    delete = lookup(var.timeouts, "delete", null)
+  }
+
   lifecycle {
     ignore_changes = [
       snapshot_identifier, # if created from a snapshot, will be non-null at creation, but null afterwards
