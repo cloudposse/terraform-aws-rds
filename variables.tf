@@ -30,19 +30,20 @@ variable "associate_security_group_ids" {
 
 variable "database_name" {
   type        = string
+  default     = null
   description = "The name of the database to create when the DB instance is created"
 }
 
 variable "database_user" {
   type        = string
-  default     = ""
-  description = "(Required unless a `snapshot_identifier` or `replicate_source_db` is provided) Username for the master DB user"
+  default     = null
+  description = "Username for the primary DB user. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
 }
 
 variable "database_password" {
   type        = string
-  default     = ""
-  description = "(Required unless a snapshot_identifier or replicate_source_db is provided) Password for the master DB user"
+  default     = null
+  description = "Password for the primary DB user. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
 }
 
 variable "database_port" {
@@ -82,7 +83,7 @@ variable "iops" {
 
 variable "allocated_storage" {
   type        = number
-  description = "The allocated storage in GBs"
+  description = "The allocated storage in GBs. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
   default     = null
 }
 
@@ -94,7 +95,7 @@ variable "max_allocated_storage" {
 
 variable "engine" {
   type        = string
-  description = "Database engine type"
+  description = "Database engine type. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
   default     = null
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
   # - mysql
@@ -105,7 +106,7 @@ variable "engine" {
 
 variable "engine_version" {
   type        = string
-  description = "Database engine version, depends on engine type"
+  description = "Database engine version, depends on engine type. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
 }
 
@@ -327,5 +328,11 @@ variable "iam_database_authentication_enabled" {
 variable "replicate_source_db" {
   type        = string
   description = "Specifies that this resource is a Replicate database, and to use this value as the source database. This correlates to the `identifier` of another Amazon RDS Database to replicate (if replicating within a single region) or ARN of the Amazon RDS Database to replicate (if replicating cross-region). Note that if you are creating a cross-region replica of an encrypted database you will also need to specify a `kms_key_id`. See [DB Instance Replication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Replication.html) and [Working with PostgreSQL and MySQL Read Replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html) for more information on using Replication."
+  default     = null
+}
+
+variable "timezone" {
+  type        = string
+  description = "Time zone of the DB instance. timezone is currently only supported by Microsoft SQL Server. The timezone can only be set on creation. See [MSSQL User Guide](http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SQLServer.html#SQLServer.Concepts.General.TimeZone) for more information."
   default     = null
 }
