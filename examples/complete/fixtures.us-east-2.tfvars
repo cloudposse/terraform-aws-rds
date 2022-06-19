@@ -30,9 +30,9 @@ allocated_storage = 5
 
 engine = "mysql"
 
-engine_version = "5.7.17"
+engine_version = "5.7"
 
-major_engine_version = "5.7"
+major_engine_version = "5"
 
 instance_class = "db.t2.small"
 
