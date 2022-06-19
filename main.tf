@@ -24,14 +24,14 @@ resource "aws_db_instance" "default" {
 
   identifier            = module.this.id
   name                  = var.database_name
-  username              = var.database_user
-  password              = var.database_password
+  username              = try(length(var.replicate_source_db), 0) == 0 ? var.database_user : null
+  password              = try(length(var.replicate_source_db), 0) == 0 ? var.database_password : null
   port                  = var.database_port
-  engine                = var.engine
-  engine_version        = var.engine_version
+  engine                = try(length(var.replicate_source_db), 0) == 0 ? var.engine : null
+  engine_version        = try(length(var.replicate_source_db), 0) == 0 ? var.engine_version : null
   character_set_name    = var.charset_name
   instance_class        = var.instance_class
-  allocated_storage     = var.allocated_storage
+  allocated_storage     = try(length(var.replicate_source_db), 0) == 0 ? var.allocated_storage : null
   max_allocated_storage = var.max_allocated_storage
   storage_encrypted     = var.storage_encrypted
   kms_key_id            = var.kms_key_arn

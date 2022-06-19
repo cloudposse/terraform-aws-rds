@@ -30,19 +30,20 @@ variable "associate_security_group_ids" {
 
 variable "database_name" {
   type        = string
+  default     = null
   description = "The name of the database to create when the DB instance is created"
 }
 
 variable "database_user" {
   type        = string
-  default     = ""
-  description = "(Required unless a `snapshot_identifier` or `replicate_source_db` is provided) Username for the master DB user"
+  default     = null
+  description = "Username for the primary DB user. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
 }
 
 variable "database_password" {
   type        = string
-  default     = ""
-  description = "(Required unless a snapshot_identifier or replicate_source_db is provided) Password for the master DB user"
+  default     = null
+  description = "Password for the primary DB user. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
 }
 
 variable "database_port" {
@@ -82,7 +83,7 @@ variable "iops" {
 
 variable "allocated_storage" {
   type        = number
-  description = "The allocated storage in GBs"
+  description = "The allocated storage in GBs. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
   default     = null
 }
 
@@ -94,7 +95,7 @@ variable "max_allocated_storage" {
 
 variable "engine" {
   type        = string
-  description = "Database engine type"
+  description = "Database engine type. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
   default     = null
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
   # - mysql
@@ -105,7 +106,7 @@ variable "engine" {
 
 variable "engine_version" {
   type        = string
-  description = "Database engine version, depends on engine type"
+  description = "Database engine version, depends on engine type. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
 }
 
