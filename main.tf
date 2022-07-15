@@ -11,13 +11,13 @@ locals {
 
   subnet_ids_provided           = var.subnet_ids != null && length(var.subnet_ids) > 0
   db_subnet_group_name_provided = var.db_subnet_group_name != null && var.db_subnet_group_name != ""
-  is_replica = try(length(var.replicate_source_db), 0) > 0
+  is_replica                    = try(length(var.replicate_source_db), 0) > 0
 
   # Db Subnet group name should equal the name if provided
   # we then check if this is a replica, if it is, and no name is provided, this should be null, see https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#db_subnet_group_name
   # finally, if no name is provided, and it is not a replica, we check if subnets were provided.
   db_subnet_group_name = local.db_subnet_group_name_provided ? var.db_subnet_group_name : (
-    local.is_replica ? null :(
+    local.is_replica ? null : (
     local.subnet_ids_provided ? join("", aws_db_subnet_group.default.*.name) : null)
   )
 
