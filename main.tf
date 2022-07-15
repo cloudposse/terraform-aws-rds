@@ -11,9 +11,14 @@ locals {
 
   subnet_ids_provided           = var.subnet_ids != null && length(var.subnet_ids) > 0
   db_subnet_group_name_provided = var.db_subnet_group_name != null && var.db_subnet_group_name != ""
+  is_replica                    = try(length(var.replicate_source_db), 0) > 0
 
+  # Db Subnet group name should equal the name if provided
+  # we then check if this is a replica, if it is, and no name is provided, this should be null, see https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#db_subnet_group_name
+  # finally, if no name is provided, and it is not a replica, we check if subnets were provided.
   db_subnet_group_name = local.db_subnet_group_name_provided ? var.db_subnet_group_name : (
-    local.subnet_ids_provided ? join("", aws_db_subnet_group.default.*.name) : null
+    local.is_replica ? null : (
+    local.subnet_ids_provided ? join("", aws_db_subnet_group.default.*.name) : null)
   )
 
   availability_zone = var.multi_az ? null : var.availability_zone
@@ -24,14 +29,14 @@ resource "aws_db_instance" "default" {
 
   identifier            = module.this.id
   db_name               = var.database_name
-  username              = try(length(var.replicate_source_db), 0) == 0 ? var.database_user : null
-  password              = try(length(var.replicate_source_db), 0) == 0 ? var.database_password : null
+  username              = local.is_replica ? null : var.database_user
+  password              = local.is_replica ? null : var.database_password
   port                  = var.database_port
-  engine                = try(length(var.replicate_source_db), 0) == 0 ? var.engine : null
-  engine_version        = try(length(var.replicate_source_db), 0) == 0 ? var.engine_version : null
+  engine                = local.is_replica ? null : var.engine
+  engine_version        = local.is_replica ? null : var.engine_version
   character_set_name    = var.charset_name
   instance_class        = var.instance_class
-  allocated_storage     = try(length(var.replicate_source_db), 0) == 0 ? var.allocated_storage : null
+  allocated_storage     = local.is_replica ? null : var.allocated_storage
   max_allocated_storage = var.max_allocated_storage
   storage_encrypted     = var.storage_encrypted
   kms_key_id            = var.kms_key_arn
