@@ -95,6 +95,12 @@ resource "aws_db_instance" "default" {
       snapshot_identifier, # if created from a snapshot, will be non-null at creation, but null afterwards
     ]
   }
+
+  timeouts {
+    create = var.timeouts.create
+    update = var.timeouts.update
+    delete = var.timeouts.delete
+  }
 }
 
 resource "aws_db_parameter_group" "default" {

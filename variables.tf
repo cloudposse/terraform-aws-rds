@@ -337,3 +337,17 @@ variable "timezone" {
   description = "Time zone of the DB instance. timezone is currently only supported by Microsoft SQL Server. The timezone can only be set on creation. See [MSSQL User Guide](http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SQLServer.html#SQLServer.Concepts.General.TimeZone) for more information."
   default     = null
 }
+
+variable "timeouts" {
+  type = object({
+    create = string
+    update = string
+    delete = string
+  })
+  description = "A list of DB timeouts to apply to the running code while creating, updating, or deleting the DB instance."
+  default = {
+    create = "40m"
+    update = "80m"
+    delete = "60m"
+  }
+}
