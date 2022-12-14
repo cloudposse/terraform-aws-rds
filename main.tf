@@ -11,9 +11,14 @@ locals {
 
   subnet_ids_provided           = var.subnet_ids != null && length(var.subnet_ids) > 0
   db_subnet_group_name_provided = var.db_subnet_group_name != null && var.db_subnet_group_name != ""
+  is_replica                    = try(length(var.replicate_source_db), 0) > 0
 
+  # Db Subnet group name should equal the name if provided
+  # we then check if this is a replica, if it is, and no name is provided, this should be null, see https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#db_subnet_group_name
+  # finally, if no name is provided, and it is not a replica, we check if subnets were provided.
   db_subnet_group_name = local.db_subnet_group_name_provided ? var.db_subnet_group_name : (
-    local.subnet_ids_provided ? join("", aws_db_subnet_group.default.*.name) : null
+    local.is_replica ? null : (
+    local.subnet_ids_provided ? join("", aws_db_subnet_group.default.*.name) : null)
   )
 
   availability_zone = var.multi_az ? null : var.availability_zone
@@ -23,15 +28,15 @@ resource "aws_db_instance" "default" {
   count = module.this.enabled ? 1 : 0
 
   identifier            = module.this.id
-  name                  = var.database_name
-  username              = var.database_user
-  password              = var.database_password
+  db_name               = var.database_name
+  username              = local.is_replica ? null : var.database_user
+  password              = local.is_replica ? null : var.database_password
   port                  = var.database_port
-  engine                = var.engine
-  engine_version        = var.engine_version
+  engine                = local.is_replica ? null : var.engine
+  engine_version        = local.is_replica ? null : var.engine_version
   character_set_name    = var.charset_name
   instance_class        = var.instance_class
-  allocated_storage     = var.allocated_storage
+  allocated_storage     = local.is_replica ? null : var.allocated_storage
   max_allocated_storage = var.max_allocated_storage
   storage_encrypted     = var.storage_encrypted
   kms_key_id            = var.kms_key_arn
@@ -67,6 +72,7 @@ resource "aws_db_instance" "default" {
   deletion_protection         = var.deletion_protection
   final_snapshot_identifier   = length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id
   replicate_source_db         = var.replicate_source_db
+  timezone                    = var.timezone
 
   iam_database_authentication_enabled   = var.iam_database_authentication_enabled
   enabled_cloudwatch_logs_exports       = var.enabled_cloudwatch_logs_exports
@@ -94,6 +100,12 @@ resource "aws_db_instance" "default" {
     ignore_changes = [
       snapshot_identifier, # if created from a snapshot, will be non-null at creation, but null afterwards
     ]
+  }
+
+  timeouts {
+    create = var.timeouts.create
+    update = var.timeouts.update
+    delete = var.timeouts.delete
   }
 }
 
@@ -151,7 +163,7 @@ resource "aws_db_option_group" "default" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  count = module.this.enabled && local.subnet_ids_provided && ! local.db_subnet_group_name_provided ? 1 : 0
+  count = module.this.enabled && local.subnet_ids_provided && !local.db_subnet_group_name_provided ? 1 : 0
 
   name       = module.this.id
   subnet_ids = var.subnet_ids
