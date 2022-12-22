@@ -90,11 +90,11 @@ resource "aws_db_instance" "default" {
     aws_db_option_group.default
   ]
 
-  timeouts {
-    create = lookup(var.timeouts, "create", null)
-    update = lookup(var.timeouts, "update", null)
-    delete = lookup(var.timeouts, "delete", null)
-  }
+#  timeouts {
+#    create = lookup(var.timeouts, "create", null)
+#    update = lookup(var.timeouts, "update", null)
+#    delete = lookup(var.timeouts, "delete", null)
+#  }
 
   lifecycle {
     ignore_changes = [
@@ -187,8 +187,8 @@ resource "aws_security_group_rule" "ingress_security_groups" {
   from_port                = var.database_port
   to_port                  = var.database_port
   protocol                 = "tcp"
-  source_security_group_id = var.security_group_ids[count.index]
-  security_group_id        = join("", aws_security_group.default.*.id)
+  source_security_group_id = [var.security_group_ids]
+  security_group_id        = aws_security_group.default.id
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
