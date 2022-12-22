@@ -12,8 +12,8 @@ variable "host_name" {
 
 
 variable "security_group_ids" {
-  type        = list(string)
-  default     = []
+  type        = string
+  default     = ""
   description = "The IDs of the security groups from which to allow `ingress` traffic to the DB instance"
 }
 
