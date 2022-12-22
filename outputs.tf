@@ -34,7 +34,7 @@ output "parameter_group_id" {
 }
 
 output "option_group_id" {
-  value       = aws_db_option_group.default.id
+  value       = join("", aws_db_option_group.default.*.id)
   description = "ID of the Option Group"
 }
 
