@@ -25,7 +25,7 @@ locals {
 }
 
 resource "aws_db_instance" "default" {
-  #  count = module.this.enabled ? 1 : 0
+#  count = module.this.enabled ? 1 : 0
 
   identifier            = module.this.id
   db_name               = var.database_name
@@ -52,8 +52,8 @@ resource "aws_db_instance" "default" {
   availability_zone    = local.availability_zone
 
   ca_cert_identifier          = var.ca_cert_identifier
-  parameter_group_name        = length(var.parameter_group_name) > 0 ? var.parameter_group_name : join("", aws_db_parameter_group.default.*.name)
-  option_group_name           = length(var.option_group_name) > 0 ? var.option_group_name : join("", aws_db_option_group.default.*.name)
+  parameter_group_name        = length(var.parameter_group_name) > 0 ? var.parameter_group_name : aws_db_parameter_group.default.name
+  option_group_name           = length(var.option_group_name) > 0 ? var.option_group_name : aws_db_option_group.default.name
   license_model               = var.license_model
   multi_az                    = var.multi_az
   storage_type                = var.storage_type
@@ -110,7 +110,7 @@ resource "aws_db_instance" "default" {
 }
 
 resource "aws_db_parameter_group" "default" {
-  #  count = length(var.parameter_group_name) == 0 && module.this.enabled ? 1 : 0
+#  count = length(var.parameter_group_name) == 0 && module.this.enabled ? 1 : 0
 
   name_prefix = "${module.this.id}${module.this.delimiter}"
   family      = var.db_parameter_group
@@ -131,7 +131,7 @@ resource "aws_db_parameter_group" "default" {
 }
 
 resource "aws_db_option_group" "default" {
-  count = length(var.option_group_name) == 0 ? 1 : 0
+#  count = length(var.option_group_name) == 0 && module.this.enabled ? 1 : 0
 
   name_prefix          = "${module.this.id}${module.this.delimiter}"
   engine_name          = var.engine
@@ -163,7 +163,7 @@ resource "aws_db_option_group" "default" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  #  count = module.this.enabled && local.subnet_ids_provided && !local.db_subnet_group_name_provided ? 1 : 0
+#  count = module.this.enabled && local.subnet_ids_provided && !local.db_subnet_group_name_provided ? 1 : 0
 
   name       = module.this.id
   subnet_ids = var.subnet_ids
