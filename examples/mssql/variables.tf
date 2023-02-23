@@ -54,7 +54,7 @@ variable "multi_az" {
 
 variable "storage_type" {
   type        = string
-  description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD)"
+  description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), 'gp3' (general purpose SSD), or 'io1' (provisioned IOPS SSD)"
 }
 
 variable "storage_encrypted" {
