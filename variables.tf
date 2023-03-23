@@ -81,6 +81,12 @@ variable "iops" {
   default     = 0
 }
 
+variable "storage_throughput" {
+  type        = number
+  description = "The storage throughput value for the DB instance. Can only be set when `storage_type` is `gp3`. Cannot be specified if the `allocated_storage` value is below a per-engine threshold."
+  default     = null
+}
+
 variable "allocated_storage" {
   type        = number
   description = "The allocated storage in GBs. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."

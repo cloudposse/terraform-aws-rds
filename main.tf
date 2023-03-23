@@ -58,6 +58,7 @@ resource "aws_db_instance" "default" {
   multi_az                    = var.multi_az
   storage_type                = var.storage_type
   iops                        = var.iops
+  storage_throughput          = var.storage_type == "gp3" ? var.storage_throughput : null
   publicly_accessible         = var.publicly_accessible
   snapshot_identifier         = var.snapshot_identifier
   allow_major_version_upgrade = var.allow_major_version_upgrade
