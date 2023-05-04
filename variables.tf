@@ -112,7 +112,7 @@ variable "engine" {
 
 variable "engine_version" {
   type        = string
-  description = "Database engine version, depends on engine type. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
+  description = "Database engine version, depends on engine type."
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
 }
 
