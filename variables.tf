@@ -47,8 +47,8 @@ variable "database_password" {
 }
 
 variable "database_manage_master_user_password" {
-  type        = string
-  default     = null
+  type        = bool
+  default     = false
   description = "Set to true to allow RDS to manage the master user password in Secrets Manager. Cannot be set if `database_password` is provided."
 }
 
