@@ -46,6 +46,18 @@ variable "database_password" {
   description = "Password for the primary DB user. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
 }
 
+variable "database_manage_master_user_password" {
+  type        = string
+  default     = null
+  description = "Set to true to allow RDS to manage the master user password in Secrets Manager. Cannot be set if `database_password` is provided."
+}
+
+variable "database_master_user_secret_kms_key_id" {
+  type        = string
+  default     = null
+  description = "The Amazon Web Services KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the KMS key. To use a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN. If not specified, the default KMS key for your Amazon Web Services account is used."
+}
+
 variable "database_port" {
   type        = number
   description = "Database port (_e.g._ `3306` for `MySQL`). Used in the DB Security Group to allow access to the DB instance from the provided `security_group_ids`"
