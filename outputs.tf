@@ -47,3 +47,8 @@ output "resource_id" {
   value       = join("", aws_db_instance.default.*.resource_id)
   description = "The RDS Resource ID of this instance."
 }
+
+output "master_user_secret_arn" {
+  value = local.master_user_secret_arn
+  description = "The Amazon Resource Name (ARN) of the secret if configure `database_manage_master_user_password`."
+}

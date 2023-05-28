@@ -122,6 +122,7 @@
 | <a name="output_instance_arn"></a> [instance\_arn](#output\_instance\_arn) | ARN of the instance |
 | <a name="output_instance_endpoint"></a> [instance\_endpoint](#output\_instance\_endpoint) | DNS Endpoint of the instance |
 | <a name="output_instance_id"></a> [instance\_id](#output\_instance\_id) | ID of the instance |
+| <a name="output_master_user_secret_arn"></a> [master\_user\_secret\_arn](#output\_master\_user\_secret\_arn) | The Amazon Resource Name (ARN) of the secret if configure `database_manage_master_user_password`. |
 | <a name="output_option_group_id"></a> [option\_group\_id](#output\_option\_group\_id) | ID of the Option Group |
 | <a name="output_parameter_group_id"></a> [parameter\_group\_id](#output\_parameter\_group\_id) | ID of the Parameter Group |
 | <a name="output_resource_id"></a> [resource\_id](#output\_resource\_id) | The RDS Resource ID of this instance. |
