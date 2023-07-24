@@ -22,9 +22,6 @@ locals {
   )
 
   availability_zone = var.multi_az ? null : var.availability_zone
-
-  master_user_secret = flatten([for x in aws_db_instance.default: lookup(x, "master_user_secret", {})])
-  master_user_secret_arn = join("",[for x in local.master_user_secret: lookup(x, "secret_arn", {})])
 }
 
 resource "aws_db_instance" "default" {
