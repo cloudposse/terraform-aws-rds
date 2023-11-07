@@ -49,6 +49,6 @@ output "resource_id" {
 }
 
 output "master_user_secret" {
-  value = one(aws_db_instance.default[*].master_user_secret)
-  description = "Secret object if configure `database_manage_master_user_password`."
+  value       = one(aws_db_instance.default[*].master_user_secret)
+  description = "Secret object if configured with `var.database_manage_master_user_password = true`."
 }
