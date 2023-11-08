@@ -328,6 +328,7 @@ variable "ca_cert_identifier" {
 }
 
 variable "monitoring_interval" {
+  type        = string
   description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. To disable collecting Enhanced Monitoring metrics, specify 0. Valid Values are 0, 1, 5, 10, 15, 30, 60."
   default     = "0"
 }
