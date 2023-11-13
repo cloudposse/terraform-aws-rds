@@ -18,7 +18,7 @@ locals {
   # finally, if no name is provided, and it is not a replica, we check if subnets were provided.
   db_subnet_group_name = local.db_subnet_group_name_provided ? var.db_subnet_group_name : (
     local.is_replica ? null : (
-    local.subnet_ids_provided ? join("", aws_db_subnet_group.default.*.name) : null)
+    local.subnet_ids_provided ? join("", aws_db_subnet_group.default[*].name) : null)
   )
 
   availability_zone = var.multi_az ? null : var.availability_zone
@@ -43,7 +43,7 @@ resource "aws_db_instance" "default" {
 
   vpc_security_group_ids = compact(
     concat(
-      [join("", aws_security_group.default.*.id)],
+      [join("", aws_security_group.default[*].id)],
       var.associate_security_group_ids
     )
   )
@@ -52,8 +52,8 @@ resource "aws_db_instance" "default" {
   availability_zone    = local.availability_zone
 
   ca_cert_identifier          = var.ca_cert_identifier
-  parameter_group_name        = length(var.parameter_group_name) > 0 ? var.parameter_group_name : join("", aws_db_parameter_group.default.*.name)
-  option_group_name           = length(var.option_group_name) > 0 ? var.option_group_name : join("", aws_db_option_group.default.*.name)
+  parameter_group_name        = length(var.parameter_group_name) > 0 ? var.parameter_group_name : join("", aws_db_parameter_group.default[*].name)
+  option_group_name           = length(var.option_group_name) > 0 ? var.option_group_name : join("", aws_db_option_group.default[*].name)
   license_model               = var.license_model
   multi_az                    = var.multi_az
   storage_type                = var.storage_type
@@ -183,7 +183,7 @@ resource "aws_security_group_rule" "ingress_security_groups" {
   to_port                  = var.database_port
   protocol                 = "tcp"
   source_security_group_id = var.security_group_ids[count.index]
-  security_group_id        = join("", aws_security_group.default.*.id)
+  security_group_id        = join("", aws_security_group.default[*].id)
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
@@ -195,7 +195,7 @@ resource "aws_security_group_rule" "ingress_cidr_blocks" {
   to_port           = var.database_port
   protocol          = "tcp"
   cidr_blocks       = var.allowed_cidr_blocks
-  security_group_id = join("", aws_security_group.default.*.id)
+  security_group_id = join("", aws_security_group.default[*].id)
 }
 
 resource "aws_security_group_rule" "egress" {
@@ -206,7 +206,7 @@ resource "aws_security_group_rule" "egress" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = join("", aws_security_group.default.*.id)
+  security_group_id = join("", aws_security_group.default[*].id)
 }
 
 module "dns_host_name" {
@@ -216,7 +216,7 @@ module "dns_host_name" {
   enabled  = length(var.dns_zone_id) > 0 && module.this.enabled
   dns_name = var.host_name
   zone_id  = var.dns_zone_id
-  records  = coalescelist(aws_db_instance.default.*.address, [""])
+  records  = coalescelist(aws_db_instance.default[*].address, [""])
 
   context = module.this.context
 }
