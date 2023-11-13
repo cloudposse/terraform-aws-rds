@@ -1,5 +1,5 @@
 output "instance_id" {
-  value       = join("", aws_db_instance.default[*].id)
+  value       = join("", aws_db_instance.default[*].identifier)
   description = "ID of the instance"
 }
 
