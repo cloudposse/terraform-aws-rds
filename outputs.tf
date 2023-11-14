@@ -47,3 +47,8 @@ output "resource_id" {
   value       = join("", aws_db_instance.default[*].resource_id)
   description = "The RDS Resource ID of this instance."
 }
+
+output "master_user_secret" {
+  value       = one(aws_db_instance.default[*].master_user_secret)
+  description = "Secret object if configured with `var.database_manage_master_user_password = true`."
+}

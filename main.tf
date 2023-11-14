@@ -41,6 +41,10 @@ resource "aws_db_instance" "default" {
   storage_encrypted     = var.storage_encrypted
   kms_key_id            = var.kms_key_arn
 
+  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#manage_master_user_password
+  manage_master_user_password   = local.is_replica || var.database_password != null ? null : var.database_manage_master_user_password
+  master_user_secret_kms_key_id = local.is_replica ? null : var.database_master_user_secret_kms_key_id
+
   vpc_security_group_ids = compact(
     concat(
       [join("", aws_security_group.default[*].id)],
