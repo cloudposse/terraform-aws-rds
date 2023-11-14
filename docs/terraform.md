@@ -3,14 +3,14 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.49.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.49.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0 |
 
 ## Modules
 
@@ -121,8 +121,7 @@
 | <a name="output_instance_address"></a> [instance\_address](#output\_instance\_address) | Address of the instance |
 | <a name="output_instance_arn"></a> [instance\_arn](#output\_instance\_arn) | ARN of the instance |
 | <a name="output_instance_endpoint"></a> [instance\_endpoint](#output\_instance\_endpoint) | DNS Endpoint of the instance |
-| <a name="output_instance_id"></a> [instance\_id](#output\_instance\_id) | ID of the resource |
-| <a name="output_instance_identifier"></a> [instance\_identifier](#output\_instance\_identifier) | Identifier of the instance |
+| <a name="output_instance_id"></a> [instance\_id](#output\_instance\_id) | ID of the instance |
 | <a name="output_master_user_secret"></a> [master\_user\_secret](#output\_master\_user\_secret) | Secret object if configured with `var.database_manage_master_user_password = true`. |
 | <a name="output_option_group_id"></a> [option\_group\_id](#output\_option\_group\_id) | ID of the Option Group |
 | <a name="output_parameter_group_id"></a> [parameter\_group\_id](#output\_parameter\_group\_id) | ID of the Parameter Group |

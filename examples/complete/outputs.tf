@@ -3,11 +3,6 @@ output "instance_id" {
   description = "ID of the resource"
 }
 
-output "instance_identifier" {
-  value       = module.rds_instance.instance_identifier
-  description = "Identifier of the instance"
-}
-
 output "instance_address" {
   value       = module.rds_instance.instance_address
   description = "Address of the instance"

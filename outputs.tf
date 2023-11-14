@@ -1,11 +1,6 @@
 output "instance_id" {
-  value       = join("", aws_db_instance.default[*].id)
-  description = "ID of the resource"
-}
-
-output "instance_identifier" {
   value       = join("", aws_db_instance.default[*].identifier)
-  description = "Identifier of the instance"
+  description = "ID of the instance"
 }
 
 output "instance_arn" {
