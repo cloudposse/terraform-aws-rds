@@ -52,9 +52,9 @@ func TestExamplesComplete(t *testing.T) {
 	assert.Equal(t, []string{"172.16.96.0/19", "172.16.128.0/19"}, publicSubnetCidrs)
 
 	// Run `terraform output` to get the value of an output variable
-	instanceId := terraform.Output(t, terraformOptions, "instance_id")
+	instanceIdentifier := terraform.Output(t, terraformOptions, "instance_identifier")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-rds-test-"+randId, instanceId)
+	assert.Equal(t, "eg-test-rds-test-"+randId, instanceIdentifier)
 
 	// Run `terraform output` to get the value of an output variable
 	optionGroupId := terraform.Output(t, terraformOptions, "option_group_id")
