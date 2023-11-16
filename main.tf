@@ -75,6 +75,18 @@ resource "aws_db_instance" "default" {
   monitoring_interval = var.monitoring_interval
   monitoring_role_arn = var.monitoring_role_arn
 
+  dynamic "restore_to_point_in_time" {
+    for_each = var.snapshot_identifier == null && var.restore_to_point_in_time != null ? [1] : []
+
+    content {
+      restore_time                             = lookup(var.restore_to_point_in_time, "restore_time", null)
+      source_db_instance_identifier            = lookup(var.restore_to_point_in_time, "source_db_instance_identifier", null)
+      source_db_instance_automated_backups_arn = lookup(var.restore_to_point_in_time, "source_db_instance_automated_backups_arn", null)
+      source_dbi_resource_id                   = lookup(var.restore_to_point_in_time, "source_dbi_resource_id", null)
+      use_latest_restorable_time               = lookup(var.restore_to_point_in_time, "use_latest_restorable_time", null)
+    }
+  }
+
   depends_on = [
     aws_db_subnet_group.default,
     aws_security_group.default,
@@ -143,7 +155,7 @@ resource "aws_db_option_group" "default" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  count = module.this.enabled && local.subnet_ids_provided && ! local.db_subnet_group_name_provided ? 1 : 0
+  count = module.this.enabled && local.subnet_ids_provided && !local.db_subnet_group_name_provided ? 1 : 0
 
   name       = module.this.id
   subnet_ids = var.subnet_ids
