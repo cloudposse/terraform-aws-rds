@@ -29,12 +29,12 @@ variable "database_name" {
 
 variable "database_user" {
   type        = string
-  description = "Username for the master DB user"
+  description = "Username for the primary DB user"
 }
 
 variable "database_password" {
   type        = string
-  description = "Password for the master DB user"
+  description = "Password for the primary DB user"
 }
 
 variable "database_port" {
@@ -54,7 +54,7 @@ variable "multi_az" {
 
 variable "storage_type" {
   type        = string
-  description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD)"
+  description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), 'gp3' (general purpose SSD), or 'io1' (provisioned IOPS SSD)"
 }
 
 variable "storage_encrypted" {

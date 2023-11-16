@@ -30,19 +30,32 @@ variable "associate_security_group_ids" {
 
 variable "database_name" {
   type        = string
+  default     = null
   description = "The name of the database to create when the DB instance is created"
 }
 
 variable "database_user" {
   type        = string
-  default     = ""
-  description = "(Required unless a `snapshot_identifier` or `replicate_source_db` is provided) Username for the master DB user"
+  default     = null
+  description = "Username for the primary DB user. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
 }
 
 variable "database_password" {
   type        = string
-  default     = ""
-  description = "(Required unless a snapshot_identifier or replicate_source_db is provided) Password for the master DB user"
+  default     = null
+  description = "Password for the primary DB user. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
+}
+
+variable "database_manage_master_user_password" {
+  type        = bool
+  default     = false
+  description = "Set to true to allow RDS to manage the master user password in Secrets Manager. Ignore if `database_password` is provided."
+}
+
+variable "database_master_user_secret_kms_key_id" {
+  type        = string
+  default     = null
+  description = "The Amazon Web Services KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the KMS key. To use a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN. If not specified, the default KMS key for your Amazon Web Services account is used."
 }
 
 variable "database_port" {
@@ -64,7 +77,7 @@ variable "multi_az" {
 
 variable "storage_type" {
   type        = string
-  description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), or 'io1' (provisioned IOPS SSD)"
+  description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), 'gp3' (general purpose SSD), or 'io1' (provisioned IOPS SSD)"
   default     = "standard"
 }
 
@@ -80,9 +93,16 @@ variable "iops" {
   default     = 0
 }
 
+variable "storage_throughput" {
+  type        = number
+  description = "The storage throughput value for the DB instance. Can only be set when `storage_type` is `gp3`. Cannot be specified if the `allocated_storage` value is below a per-engine threshold."
+  default     = null
+}
+
 variable "allocated_storage" {
   type        = number
-  description = "The allocated storage in GBs"
+  description = "The allocated storage in GBs. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
+  default     = null
 }
 
 variable "max_allocated_storage" {
@@ -93,7 +113,8 @@ variable "max_allocated_storage" {
 
 variable "engine" {
   type        = string
-  description = "Database engine type"
+  description = "Database engine type. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
+  default     = null
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
   # - mysql
   # - postgres
@@ -103,7 +124,7 @@ variable "engine" {
 
 variable "engine_version" {
   type        = string
-  description = "Database engine version, depends on engine type"
+  description = "Database engine version, depends on engine type."
   # http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
 }
 
@@ -112,6 +133,12 @@ variable "major_engine_version" {
   description = "Database MAJOR engine version, depends on engine type"
   default     = ""
   # https://docs.aws.amazon.com/cli/latest/reference/rds/create-option-group.html
+}
+
+variable "charset_name" {
+  type        = string
+  description = "The character set name to use for DB encoding. [Oracle & Microsoft SQL only](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#character_set_name). For other engines use `db_parameter`"
+  default     = null
 }
 
 variable "license_model" {
@@ -297,10 +324,11 @@ variable "enabled_cloudwatch_logs_exports" {
 variable "ca_cert_identifier" {
   type        = string
   description = "The identifier of the CA certificate for the DB instance"
-  default     = "rds-ca-2019"
+  default     = null
 }
 
 variable "monitoring_interval" {
+  type        = string
   description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. To disable collecting Enhanced Monitoring metrics, specify 0. Valid Values are 0, 1, 5, 10, 15, 30, 60."
   default     = "0"
 }
@@ -312,17 +340,44 @@ variable "monitoring_role_arn" {
 }
 
 variable "iam_database_authentication_enabled" {
+  type        = bool
   description = "Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled"
   default     = false
 }
 
+variable "replicate_source_db" {
+  type        = string
+  description = "Specifies that this resource is a Replicate database, and to use this value as the source database. This correlates to the `identifier` of another Amazon RDS Database to replicate (if replicating within a single region) or ARN of the Amazon RDS Database to replicate (if replicating cross-region). Note that if you are creating a cross-region replica of an encrypted database you will also need to specify a `kms_key_id`. See [DB Instance Replication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Replication.html) and [Working with PostgreSQL and MySQL Read Replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html) for more information on using Replication."
+  default     = null
+}
+
+variable "timezone" {
+  type        = string
+  description = "Time zone of the DB instance. timezone is currently only supported by Microsoft SQL Server. The timezone can only be set on creation. See [MSSQL User Guide](http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SQLServer.html#SQLServer.Concepts.General.TimeZone) for more information."
+  default     = null
+}
+
+variable "timeouts" {
+  type = object({
+    create = string
+    update = string
+    delete = string
+  })
+  description = "A list of DB timeouts to apply to the running code while creating, updating, or deleting the DB instance."
+  default = {
+    create = "40m"
+    update = "80m"
+    delete = "60m"
+  }
+}
+
 variable "restore_to_point_in_time" {
   type = object({
-    restore_time = optional(string, null)
-    source_db_instance_identifier = optional(string, null)
+    restore_time                             = optional(string, null)
+    source_db_instance_identifier            = optional(string, null)
     source_db_instance_automated_backups_arn = optional(string, null)
-    source_dbi_resource_id = optional(string, null)
-    use_latest_restorable_time = optional(bool, null)
+    source_dbi_resource_id                   = optional(string, null)
+    use_latest_restorable_time               = optional(bool, null)
   })
   description = "An object specifying the restore point in time for the DB instance to restore from. Only used when `snapshot_identifier` is not provided."
   default     = null
