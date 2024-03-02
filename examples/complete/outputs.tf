@@ -1,6 +1,6 @@
 output "instance_id" {
   value       = module.rds_instance.instance_id
-  description = "ID of the instance"
+  description = "ID of the resource"
 }
 
 output "instance_address" {

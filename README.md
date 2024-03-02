@@ -33,10 +33,7 @@ Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/) instances
 ---
 
 This project is part of our comprehensive ["SweetOps"](https://cpco.io/sweetops) approach towards DevOps.
-
-
-[![Terraform Open Source Modules](https://docs.cloudposse.com/images/terraform-open-source-modules.svg)][terraform_modules]
-
+<a href="https://cpco.io/terraform-modules"><img src="https://docs.cloudposse.com/images/terraform-open-source-modules.svg" align="right" /></a>
 
 
 It's 100% Open Source and licensed under the [APACHE2](LICENSE).
@@ -65,33 +62,18 @@ The module will create:
 * DNS Record in Route53 for the DB endpoint
 
 
-## Security & Compliance [<img src="https://cloudposse.com/wp-content/uploads/2020/11/bridgecrew.svg" width="250" align="right" />](https://bridgecrew.io/)
-
-Security scanning is graciously provided by Bridgecrew. Bridgecrew is the leading fully hosted, cloud-native solution providing continuous Terraform security and compliance.
-
-| Benchmark | Description |
-|--------|---------------|
-| [![Infrastructure Security](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-aws-rds/general)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-aws-rds&benchmark=INFRASTRUCTURE+SECURITY) | Infrastructure Security Compliance |
-| [![CIS KUBERNETES](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-aws-rds/cis_kubernetes)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-aws-rds&benchmark=CIS+KUBERNETES+V1.5) | Center for Internet Security, KUBERNETES Compliance |
-| [![CIS AWS](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-aws-rds/cis_aws)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-aws-rds&benchmark=CIS+AWS+V1.2) | Center for Internet Security, AWS Compliance |
-| [![CIS AZURE](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-aws-rds/cis_azure)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-aws-rds&benchmark=CIS+AZURE+V1.1) | Center for Internet Security, AZURE Compliance |
-| [![PCI-DSS](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-aws-rds/pci)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-aws-rds&benchmark=PCI-DSS+V3.2) | Payment Card Industry Data Security Standards Compliance |
-| [![NIST-800-53](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-aws-rds/nist)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-aws-rds&benchmark=NIST-800-53) | National Institute of Standards and Technology Compliance |
-| [![ISO27001](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-aws-rds/iso)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-aws-rds&benchmark=ISO27001) | Information Security Management System, ISO/IEC 27001 Compliance |
-| [![SOC2](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-aws-rds/soc2)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-aws-rds&benchmark=SOC2)| Service Organization Control 2 Compliance |
-| [![CIS GCP](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-aws-rds/cis_gcp)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-aws-rds&benchmark=CIS+GCP+V1.1) | Center for Internet Security, GCP Compliance |
-| [![HIPAA](https://www.bridgecrew.cloud/badges/github/cloudposse/terraform-aws-rds/hipaa)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=cloudposse%2Fterraform-aws-rds&benchmark=HIPAA) | Health Insurance Portability and Accountability Compliance |
-
-
 
 ## Usage
 
 
-**IMPORTANT:** We do not pin modules to versions in our examples because of the
-difficulty of keeping the versions in the documentation in sync with the latest released versions.
-We highly recommend that in your code you pin the version to the exact version you are
-using so that your infrastructure remains stable, and update versions in a
-systematic way so that they do not catch you by surprise.
+
+> **Important**
+> We do not pin modules to versions in our examples because of the
+> difficulty of keeping the versions in the documentation in sync with the latest released versions.
+> We highly recommend that in your code you pin the version to the exact version you are
+> using so that your infrastructure remains stable, and update versions in a
+> systematic way so that they do not catch you by surprise.
+
 
 
 ```hcl
@@ -257,6 +239,8 @@ Available targets:
 | <a name="input_charset_name"></a> [charset\_name](#input\_charset\_name) | The character set name to use for DB encoding. [Oracle & Microsoft SQL only](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#character_set_name). For other engines use `db_parameter` | `string` | `null` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "descriptor_formats": {},<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "labels_as_tags": [<br>    "unset"<br>  ],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {},<br>  "tenant": null<br>}</pre> | no |
 | <a name="input_copy_tags_to_snapshot"></a> [copy\_tags\_to\_snapshot](#input\_copy\_tags\_to\_snapshot) | Copy tags from DB to a snapshot | `bool` | `true` | no |
+| <a name="input_database_manage_master_user_password"></a> [database\_manage\_master\_user\_password](#input\_database\_manage\_master\_user\_password) | Set to true to allow RDS to manage the master user password in Secrets Manager. Ignore if `database_password` is provided. | `bool` | `false` | no |
+| <a name="input_database_master_user_secret_kms_key_id"></a> [database\_master\_user\_secret\_kms\_key\_id](#input\_database\_master\_user\_secret\_kms\_key\_id) | The Amazon Web Services KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the KMS key. To use a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN. If not specified, the default KMS key for your Amazon Web Services account is used. | `string` | `null` | no |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | The name of the database to create when the DB instance is created | `string` | `null` | no |
 | <a name="input_database_password"></a> [database\_password](#input\_database\_password) | Password for the primary DB user. Required unless a `snapshot_identifier` or `replicate_source_db` is provided. | `string` | `null` | no |
 | <a name="input_database_port"></a> [database\_port](#input\_database\_port) | Database port (\_e.g.\_ `3306` for `MySQL`). Used in the DB Security Group to allow access to the DB instance from the provided `security_group_ids` | `number` | n/a | yes |
@@ -302,9 +286,10 @@ Available targets:
 | <a name="input_publicly_accessible"></a> [publicly\_accessible](#input\_publicly\_accessible) | Determines if database can be publicly available (NOT recommended) | `bool` | `false` | no |
 | <a name="input_regex_replace_chars"></a> [regex\_replace\_chars](#input\_regex\_replace\_chars) | Terraform regular expression (regex) string.<br>Characters matching the regex will be removed from the ID elements.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
 | <a name="input_replicate_source_db"></a> [replicate\_source\_db](#input\_replicate\_source\_db) | Specifies that this resource is a Replicate database, and to use this value as the source database. This correlates to the `identifier` of another Amazon RDS Database to replicate (if replicating within a single region) or ARN of the Amazon RDS Database to replicate (if replicating cross-region). Note that if you are creating a cross-region replica of an encrypted database you will also need to specify a `kms_key_id`. See [DB Instance Replication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Replication.html) and [Working with PostgreSQL and MySQL Read Replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html) for more information on using Replication. | `string` | `null` | no |
+| <a name="input_restore_to_point_in_time"></a> [restore\_to\_point\_in\_time](#input\_restore\_to\_point\_in\_time) | An object specifying the restore point in time for the DB instance to restore from. Only used when `snapshot_identifier` is not provided. | <pre>object({<br>    restore_time                             = optional(string, null)<br>    source_db_instance_identifier            = optional(string, null)<br>    source_db_instance_automated_backups_arn = optional(string, null)<br>    source_dbi_resource_id                   = optional(string, null)<br>    use_latest_restorable_time               = optional(bool, null)<br>  })</pre> | `null` | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | The IDs of the security groups from which to allow `ingress` traffic to the DB instance | `list(string)` | `[]` | no |
 | <a name="input_skip_final_snapshot"></a> [skip\_final\_snapshot](#input\_skip\_final\_snapshot) | If true (default), no snapshot will be made before deleting DB | `bool` | `true` | no |
-| <a name="input_snapshot_identifier"></a> [snapshot\_identifier](#input\_snapshot\_identifier) | Snapshot identifier e.g: rds:production-2019-06-26-06-05. If specified, the module create cluster from the snapshot | `string` | `null` | no |
+| <a name="input_snapshot_identifier"></a> [snapshot\_identifier](#input\_snapshot\_identifier) | Snapshot identifier e.g: `rds:production-2019-06-26-06-05` for automated or `manual-backup-2023-11-16` for manual. If specified, the module create the instance from the snapshot. | `string` | `null` | no |
 | <a name="input_stage"></a> [stage](#input\_stage) | ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | <a name="input_storage_encrypted"></a> [storage\_encrypted](#input\_storage\_encrypted) | (Optional) Specifies whether the DB instance is encrypted. The default is false if not specified | `bool` | `true` | no |
 | <a name="input_storage_throughput"></a> [storage\_throughput](#input\_storage\_throughput) | The storage throughput value for the DB instance. Can only be set when `storage_type` is `gp3`. Cannot be specified if the `allocated_storage` value is below a per-engine threshold. | `number` | `null` | no |
@@ -325,19 +310,13 @@ Available targets:
 | <a name="output_instance_arn"></a> [instance\_arn](#output\_instance\_arn) | ARN of the instance |
 | <a name="output_instance_endpoint"></a> [instance\_endpoint](#output\_instance\_endpoint) | DNS Endpoint of the instance |
 | <a name="output_instance_id"></a> [instance\_id](#output\_instance\_id) | ID of the instance |
+| <a name="output_master_user_secret"></a> [master\_user\_secret](#output\_master\_user\_secret) | Secret object if configured with `var.database_manage_master_user_password = true`. |
 | <a name="output_option_group_id"></a> [option\_group\_id](#output\_option\_group\_id) | ID of the Option Group |
 | <a name="output_parameter_group_id"></a> [parameter\_group\_id](#output\_parameter\_group\_id) | ID of the Parameter Group |
 | <a name="output_resource_id"></a> [resource\_id](#output\_resource\_id) | The RDS Resource ID of this instance. |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | ID of the Security Group |
 | <a name="output_subnet_group_id"></a> [subnet\_group\_id](#output\_subnet\_group\_id) | ID of the created Subnet Group |
 <!-- markdownlint-restore -->
-
-
-
-## Share the Love
-
-Like this project? Please give it a ★ on [our GitHub](https://github.com/cloudposse/terraform-aws-rds)! (it helps us **a lot**)
-
 
 
 ## Related Projects
@@ -347,16 +326,49 @@ Check out these related projects.
 - [terraform-aws-rds-cluster](https://github.com/cloudposse/terraform-aws-rds-cluster) - Terraform module to provision an RDS Aurora cluster for MySQL or Postgres
 - [terraform-aws-rds-cloudwatch-sns-alarms](https://github.com/cloudposse/terraform-aws-rds-cloudwatch-sns-alarms) - Terraform module that configures important RDS alerts using CloudWatch and sends them to an SNS topic
 
-## Help
+## ✨ Contributing
 
-**Got a question?** We got answers.
+This project is under active development, and we encourage contributions from our community. 
+Many thanks to our outstanding contributors:
 
-File a GitHub [issue](https://github.com/cloudposse/terraform-aws-rds/issues), send us an [email][email] or join our [Slack Community][slack].
+<a href="https://github.com/cloudposse/terraform-aws-rds/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=cloudposse/terraform-aws-rds&max=24" />
+</a>
 
-[![README Commercial Support][readme_commercial_support_img]][readme_commercial_support_link]
+### 🐛 Bug Reports & Feature Requests
 
-## DevOps Accelerator for Startups
+Please use the [issue tracker](https://github.com/cloudposse/terraform-aws-rds/issues) to report any bugs or file feature requests.
 
+### 💻 Developing
+
+If you are interested in being a contributor and want to get involved in developing this project or [help out](https://cpco.io/help-out) with our other projects, we would love to hear from you! Shoot us an [email][email].
+
+In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
+
+ 1. **Fork** the repo on GitHub
+ 2. **Clone** the project to your own machine
+ 3. **Commit** changes to your own branch
+ 4. **Push** your work back up to your fork
+ 5. Submit a **Pull Request** so that we can review your changes
+
+**NOTE:** Be sure to merge the latest changes from "upstream" before making a pull request!
+
+### 🌎 Slack Community
+
+Join our [Open Source Community][slack] on Slack. It's **FREE** for everyone! Our "SweetOps" community is where you get to talk with others who share a similar vision for how to rollout and manage infrastructure. This is the best place to talk shop, ask questions, solicit feedback, and work together as a community to build totally *sweet* infrastructure.
+
+### 📰 Newsletter
+
+Sign up for [our newsletter][newsletter] that covers everything on our technology radar.  Receive updates on what we're up to on GitHub as well as awesome new projects we discover.
+
+### 📆 Office Hours <img src="https://img.cloudposse.com/fit-in/200x200/https://cloudposse.com/wp-content/uploads/2019/08/Powered-by-Zoom.png" align="right" />
+
+[Join us every Wednesday via Zoom][office_hours] for our weekly "Lunch & Learn" sessions. It's **FREE** for everyone!
+
+## About 
+
+This project is maintained and funded by [Cloud Posse, LLC][website]. 
+<a href="https://cpco.io/homepage"><img src="https://cloudposse.com/logo-300x69.svg" align="right" /></a>
 
 We are a [**DevOps Accelerator**][commercial_support]. We'll help you build your cloud infrastructure from the ground up so you can own it. Then we'll show you how to operate it and stick around for as long as you need us.
 
@@ -377,58 +389,7 @@ We deliver 10x the value for a fraction of the cost of a full-time engineer. Our
 - **Code Reviews.** You'll receive constructive feedback on Pull Requests.
 - **Bug Fixes.** We'll rapidly work with you to fix any bugs in our projects.
 
-## Slack Community
-
-Join our [Open Source Community][slack] on Slack. It's **FREE** for everyone! Our "SweetOps" community is where you get to talk with others who share a similar vision for how to rollout and manage infrastructure. This is the best place to talk shop, ask questions, solicit feedback, and work together as a community to build totally *sweet* infrastructure.
-
-## Newsletter
-
-Sign up for [our newsletter][newsletter] that covers everything on our technology radar.  Receive updates on what we're up to on GitHub as well as awesome new projects we discover.
-
-## Office Hours
-
-[Join us every Wednesday via Zoom][office_hours] for our weekly "Lunch & Learn" sessions. It's **FREE** for everyone!
-
-[![zoom](https://img.cloudposse.com/fit-in/200x200/https://cloudposse.com/wp-content/uploads/2019/08/Powered-by-Zoom.png")][office_hours]
-
-## ✨ Contributing
-
-
-
-This project is under active development, and we encourage contributions from our community. 
-Many thanks to our outstanding contributors:
-
-<a href="https://github.com/cloudposse/terraform-aws-rds/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=cloudposse/terraform-aws-rds&max=24" />
-</a>
-
-
-
-### Bug Reports & Feature Requests
-
-Please use the [issue tracker](https://github.com/cloudposse/terraform-aws-rds/issues) to report any bugs or file feature requests.
-
-### Developing
-
-If you are interested in being a contributor and want to get involved in developing this project or [help out](https://cpco.io/help-out) with our other projects, we would love to hear from you! Shoot us an [email][email].
-
-In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
-
- 1. **Fork** the repo on GitHub
- 2. **Clone** the project to your own machine
- 3. **Commit** changes to your own branch
- 4. **Push** your work back up to your fork
- 5. Submit a **Pull Request** so that we can review your changes
-
-**NOTE:** Be sure to merge the latest changes from "upstream" before making a pull request!
-
-
-## Copyright
-
-Copyright © 2017-2023 [Cloud Posse, LLC](https://cpco.io/copyright)
-
-
-
+[![README Commercial Support][readme_commercial_support_img]][readme_commercial_support_link]
 ## License
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -454,29 +415,12 @@ specific language governing permissions and limitations
 under the License.
 ```
 
-
-
-
-
-
-
-
-
 ## Trademarks
 
 All other trademarks referenced herein are the property of their respective owners.
-
-## About
-
-This project is maintained and funded by [Cloud Posse, LLC][website]. Like it? Please let us know by [leaving a testimonial][testimonial]!
-
-[![Cloud Posse][logo]][website]
-
-We're a [DevOps Professional Services][hire] company based in Los Angeles, CA. We ❤️  [Open Source Software][we_love_open_source].
-
-We offer [paid support][commercial_support] on all of our projects.
-
-Check out [our other projects][github], [follow us on twitter][twitter], [apply for a job][jobs], or [hire us][hire] to help with your cloud strategy and implementation.[![README Footer][readme_footer_img]][readme_footer_link]
+---
+Copyright © 2017-2023 [Cloud Posse, LLC](https://cpco.io/copyright)
+[![README Footer][readme_footer_img]][readme_footer_link]
 [![Beacon][beacon]][website]
 <!-- markdownlint-disable -->
   [logo]: https://cloudposse.com/logo-300x69.svg
@@ -487,7 +431,6 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
   [hire]: https://cpco.io/hire?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-rds&utm_content=hire
   [slack]: https://cpco.io/slack?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-rds&utm_content=slack
   [twitter]: https://cpco.io/twitter?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-rds&utm_content=twitter
-  [testimonial]: https://cpco.io/leave-testimonial?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-rds&utm_content=testimonial
   [office_hours]: https://cloudposse.com/office-hours?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-rds&utm_content=office_hours
   [newsletter]: https://cpco.io/newsletter?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-rds&utm_content=newsletter
   [email]: https://cpco.io/email?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-rds&utm_content=email

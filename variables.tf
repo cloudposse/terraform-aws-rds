@@ -46,6 +46,18 @@ variable "database_password" {
   description = "Password for the primary DB user. Required unless a `snapshot_identifier` or `replicate_source_db` is provided."
 }
 
+variable "database_manage_master_user_password" {
+  type        = bool
+  default     = false
+  description = "Set to true to allow RDS to manage the master user password in Secrets Manager. Ignore if `database_password` is provided."
+}
+
+variable "database_master_user_secret_kms_key_id" {
+  type        = string
+  default     = null
+  description = "The Amazon Web Services KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the KMS key. To use a KMS key in a different Amazon Web Services account, specify the key ARN or alias ARN. If not specified, the default KMS key for your Amazon Web Services account is used."
+}
+
 variable "database_port" {
   type        = number
   description = "Database port (_e.g._ `3306` for `MySQL`). Used in the DB Security Group to allow access to the DB instance from the provided `security_group_ids`"
@@ -257,7 +269,7 @@ variable "db_options" {
 
 variable "snapshot_identifier" {
   type        = string
-  description = "Snapshot identifier e.g: rds:production-2019-06-26-06-05. If specified, the module create cluster from the snapshot"
+  description = "Snapshot identifier e.g: `rds:production-2019-06-26-06-05` for automated or `manual-backup-2023-11-16` for manual. If specified, the module create the instance from the snapshot."
   default     = null
 }
 
@@ -316,6 +328,7 @@ variable "ca_cert_identifier" {
 }
 
 variable "monitoring_interval" {
+  type        = string
   description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. To disable collecting Enhanced Monitoring metrics, specify 0. Valid Values are 0, 1, 5, 10, 15, 30, 60."
   default     = "0"
 }
@@ -356,4 +369,16 @@ variable "timeouts" {
     update = "80m"
     delete = "60m"
   }
+}
+
+variable "restore_to_point_in_time" {
+  type = object({
+    restore_time                             = optional(string, null)
+    source_db_instance_identifier            = optional(string, null)
+    source_db_instance_automated_backups_arn = optional(string, null)
+    source_dbi_resource_id                   = optional(string, null)
+    use_latest_restorable_time               = optional(bool, null)
+  })
+  description = "An object specifying the restore point in time for the DB instance to restore from. Only used when `snapshot_identifier` is not provided."
+  default     = null
 }
