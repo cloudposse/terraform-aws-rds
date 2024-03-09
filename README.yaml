@@ -1,34 +1,37 @@
 name: terraform-aws-rds
 tags:
-- aws
-- terraform
-- terraform-modules
-- databases
-- rds
-- aws-rds
-- postgres
-- mysql
+  - aws
+  - terraform
+  - terraform-modules
+  - databases
+  - rds
+  - aws-rds
+  - postgres
+  - mysql
 categories:
-- terraform-modules/databases
+  - terraform-modules/databases
 license: APACHE2
 github_repo: cloudposse/terraform-aws-rds
 badges:
-- name: Latest Release
-  image: https://img.shields.io/github/release/cloudposse/terraform-aws-rds.svg
-  url: https://github.com/cloudposse/terraform-aws-rds/releases/latest
-- name: Slack Community
-  image: https://slack.cloudposse.com/badge.svg
-  url: https://slack.cloudposse.com
+  - name: Latest Release
+    image: https://img.shields.io/github/release/cloudposse/terraform-aws-rds.svg?style=for-the-badge
+    url: https://github.com/cloudposse/terraform-aws-rds/releases/latest
+  - name: Last Updated
+    image: https://img.shields.io/github/last-commit/cloudposse/terraform-aws-rds.svg?style=for-the-badge
+    url: https://github.com/cloudposse/terraform-aws-rds/commits
+  - name: Slack Community
+    image: https://slack.cloudposse.com/for-the-badge.svg
+    url: https://slack.cloudposse.com
+
+# List any related terraform modules that this module may be used with or that this module depends on.
 related:
-- name: terraform-aws-rds-cluster
-  description: Terraform module to provision an RDS Aurora cluster for MySQL or Postgres
-  url: https://github.com/cloudposse/terraform-aws-rds-cluster
-- name: terraform-aws-rds-cloudwatch-sns-alarms
-  description: Terraform module that configures important RDS alerts using CloudWatch
-    and sends them to an SNS topic
-  url: https://github.com/cloudposse/terraform-aws-rds-cloudwatch-sns-alarms
-description: Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/)
-  instances
+  - name: terraform-aws-rds-cluster
+    description: Terraform module to provision an RDS Aurora cluster for MySQL or Postgres
+    url: https://github.com/cloudposse/terraform-aws-rds-cluster
+  - name: terraform-aws-rds-cloudwatch-sns-alarms
+    description: Terraform module that configures important RDS alerts using CloudWatch and sends them to an SNS topic
+    url: https://github.com/cloudposse/terraform-aws-rds-cloudwatch-sns-alarms
+description: Terraform module to provision AWS [`RDS`](https://aws.amazon.com/rds/) instances
 introduction: |-
   The module will create:
 
@@ -131,22 +134,6 @@ usage: |-
   }
   ```
 include:
-- docs/targets.md
-- docs/terraform.md
-contributors:
-- name: Erik Osterman
-  github: osterman
-- name: Andriy Knysh
-  github: aknysh
-- name: Sergey Vasilyev
-  github: s2504s
-- name: Valeriy
-  github: drama17
-- name: Konstantin B
-  github: comeanother
-- name: drmikecrowe
-  github: drmikecrowe
-- name: Oscar Sullivan
-  github: osulli
-- name: Federico Márquez
-  github: fedemzcor
+  - docs/targets.md
+  - docs/terraform.md
+contributors: []
