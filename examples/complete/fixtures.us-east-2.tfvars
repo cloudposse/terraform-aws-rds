@@ -32,7 +32,7 @@ engine_version = "5.7"
 
 major_engine_version = "5"
 
-instance_class = "db.t2.small"
+instance_class = "db.t3.micro"
 
 db_parameter_group = "mysql5.7"
 
