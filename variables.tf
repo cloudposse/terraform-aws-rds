@@ -89,8 +89,8 @@ variable "storage_encrypted" {
 
 variable "iops" {
   type        = number
-  description = "The amount of provisioned IOPS. Setting this implies a storage_type of 'io1'. Default is 0 if rds storage type is not 'io1'"
-  default     = 0
+  description = "The amount of provisioned IOPS, only valid for certain values of storage_type."
+  default     = null
 }
 
 variable "storage_throughput" {
