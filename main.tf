@@ -9,7 +9,7 @@ locals {
   computed_major_engine_version = var.engine == "postgres" ? join(".", slice(split(".", var.engine_version), 0, 1)) : join(".", slice(split(".", var.engine_version), 0, 2))
   major_engine_version          = var.major_engine_version == "" ? local.computed_major_engine_version : var.major_engine_version
 
-  subnet_ids_provided           = var.subnet_ids != null && length(var.subnet_ids) > 0
+  subnet_ids_provided           = var.subnet_ids != null && try(length(var.subnet_ids), 0) > 0
   db_subnet_group_name_provided = var.db_subnet_group_name != null && var.db_subnet_group_name != ""
   is_replica                    = try(length(var.replicate_source_db), 0) > 0
 
