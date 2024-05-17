@@ -251,19 +251,17 @@ variable "db_parameter" {
 
 variable "db_options" {
   type = list(object({
-    db_security_group_memberships  = list(string)
     option_name                    = string
-    port                           = number
+    port                           = optional(number, null)
     version                        = string
-    vpc_security_group_memberships = list(string)
-
-    option_settings = list(object({
+    db_security_group_memberships  = optional(list(string), [])
+    vpc_security_group_memberships = optional(list(string), [])
+    option_settings = optional(list(object({
       name  = string
       value = string
-    }))
+    })), [])
   }))
-
-  default     = []
+  default = []
   description = "A list of DB options to apply with an option group. Depends on DB engine"
 }
 

@@ -142,21 +142,22 @@ resource "aws_db_parameter_group" "default" {
 }
 
 resource "aws_db_option_group" "default" {
-  count = length(var.option_group_name) == 0 && module.this.enabled ? 1 : 0
-
-  name_prefix          = "${module.this.id}${module.this.delimiter}"
+  name                 = var.option_group_name
+  count                = 1
   engine_name          = var.engine
-  major_engine_version = local.major_engine_version
-  tags                 = module.this.tags
+  major_engine_version = var.major_engine_version
+  tags                 = var.tags
 
   dynamic "option" {
     for_each = var.db_options
     content {
-      db_security_group_memberships  = lookup(option.value, "db_security_group_memberships", null)
-      option_name                    = option.value.option_name
-      port                           = lookup(option.value, "port", null)
-      version                        = lookup(option.value, "version", null)
-      vpc_security_group_memberships = lookup(option.value, "vpc_security_group_memberships", null)
+      option_name = option.value.option_name
+      version     = lookup(option.value, "version", null)
+
+      # Include port and security groups only if they are defined and not for SQLSERVER_BACKUP_RESTORE
+      db_security_group_memberships  = option.value.option_name != "SQLSERVER_BACKUP_RESTORE" ? lookup(option.value, "db_security_group_memberships", []) : null
+      vpc_security_group_memberships = option.value.option_name != "SQLSERVER_BACKUP_RESTORE" ? lookup(option.value, "vpc_security_group_memberships", []) : null
+      port                           = option.value.option_name != "SQLSERVER_BACKUP_RESTORE" ? lookup(option.value, "port", null) : null
 
       dynamic "option_settings" {
         for_each = lookup(option.value, "option_settings", [])
@@ -167,12 +168,7 @@ resource "aws_db_option_group" "default" {
       }
     }
   }
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
-
 resource "aws_db_subnet_group" "default" {
   count = module.this.enabled && local.subnet_ids_provided && !local.db_subnet_group_name_provided ? 1 : 0
 
