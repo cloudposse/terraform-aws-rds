@@ -30,7 +30,7 @@ output "security_group_id" {
 
 output "parameter_group_name" {
   value       = join("", aws_db_parameter_group.default[*].name)
-  description = "ID of the Parameter Group"
+  description = "Name of the Parameter Group"
 }
 
 output "parameter_group_id" {
@@ -40,7 +40,7 @@ output "parameter_group_id" {
 
 output "option_group_name" {
   value       = join("", aws_db_option_group.default[*].name)
-  description = "ID of the Option Group"
+  description = "Name of the Option Group"
 }
 
 output "option_group_id" {
