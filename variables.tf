@@ -383,7 +383,7 @@ variable "restore_to_point_in_time" {
   default     = null
 }
 
-variable "use_reserved_instsances" {
+variable "use_reserved_instances" {
   description = <<-EOT
     WARNING: Observe your plans and applies carefully when using this feature.
     It has potential to be very expensive if not used correctly.
