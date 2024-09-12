@@ -37,7 +37,7 @@ data "aws_rds_reserved_instance_offering" "default" {
 resource "aws_rds_reserved_instance" "default" {
   count = var.use_reserved_instsances ? 1 : 0
 
-  offering_id = data.aws_rds_reserved_instance_offering.this[0].id
+  offering_id = data.aws_rds_reserved_instance_offering.default[0].id
   lifecycle {
     # Once created, we want to avoid any case of accidentally re-creating.
     prevent_destroy = true
