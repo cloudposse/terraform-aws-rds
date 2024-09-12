@@ -24,6 +24,26 @@ locals {
   availability_zone = var.multi_az ? null : var.availability_zone
 }
 
+data "aws_rds_reserved_instance_offering" "default" {
+  count               = var.use_reserved_instsances ? 1 : 0
+  db_instance_class   = var.instance_class
+  duration            = var.rds_ri_duration
+  multi_az            = var.multi_az
+  offering_type       = var.rds_ri_offering_type
+  product_description = var.engine
+}
+
+# Note: I'm not sure what will happen when the db reservation expires, and this is not easy to test.
+resource "aws_rds_reserved_instance" "default" {
+  count = var.use_reserved_instsances ? 1 : 0
+
+  offering_id = data.aws_rds_reserved_instance_offering.this[0].id
+  lifecycle {
+    # Once created, we want to avoid any case of accidentally re-creating.
+    prevent_destroy = true
+  }
+}
+
 resource "aws_db_instance" "default" {
   count = module.this.enabled ? 1 : 0
 

@@ -382,3 +382,26 @@ variable "restore_to_point_in_time" {
   description = "An object specifying the restore point in time for the DB instance to restore from. Only used when `snapshot_identifier` is not provided."
   default     = null
 }
+
+variable "use_reserved_instsances" {
+  description = <<-EOT
+    WARNING: Observe your plans and applies carefully when using this feature.
+    It has potential to be very expensive if not used correctly.
+
+    Whether to use reserved instances.
+  EOT
+  type        = bool
+  default     = false
+}
+
+variable "rds_ri_offering_type" {
+  description = "Offering type of reserved DB instances. Valid values are 'No Upfront', 'Partial Upfront', 'All Upfront'."
+  type        = string
+  default     = ""
+}
+
+variable "rds_ri_duration" {
+  description = "The number of years to reserve the instance. Values can be 1 or 3 (or in seconds, 31536000 or 94608000)"
+  type        = number
+  default     = 1
+}
