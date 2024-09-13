@@ -383,12 +383,12 @@ variable "restore_to_point_in_time" {
   default     = null
 }
 
-variable "use_reserved_instances" {
+variable "reserved_instance_enabled" {
   description = <<-EOT
     WARNING: Observe your plans and applies carefully when using this feature.
     It has potential to be very expensive if not used correctly.
 
-    Whether to use reserved instances.
+    Whether to create a reserved instance.
   EOT
   type        = bool
   default     = false

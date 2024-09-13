@@ -25,7 +25,7 @@ locals {
 }
 
 data "aws_rds_reserved_instance_offering" "default" {
-  count               = var.use_reserved_instances ? 1 : 0
+  count               = var.reserved_instance_enabled ? 1 : 0
   db_instance_class   = var.instance_class
   duration            = var.rds_ri_duration
   multi_az            = var.multi_az
@@ -35,7 +35,7 @@ data "aws_rds_reserved_instance_offering" "default" {
 
 # Note: I'm not sure what will happen when the db reservation expires, and this is not easy to test.
 resource "aws_rds_reserved_instance" "default" {
-  count = var.use_reserved_instances ? 1 : 0
+  count = var.reserved_instance_enabled ? 1 : 0
 
   offering_id = data.aws_rds_reserved_instance_offering.default[0].id
   lifecycle {
