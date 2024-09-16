@@ -52,3 +52,8 @@ output "master_user_secret" {
   value       = one(aws_db_instance.default[*].master_user_secret)
   description = "Secret object if configured with `var.database_manage_master_user_password = true`."
 }
+
+output "reserved_instance" {
+  value       = join("", aws_rds_reserved_instance.default[*])
+  description = "All information about the reserved instance if created."
+}
