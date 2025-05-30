@@ -315,6 +315,20 @@ variable "performance_insights_retention_period" {
   description = "The amount of time in days to retain Performance Insights data. Either 7 (7 days) or 731 (2 years)."
 }
 
+variable "database_insights_mode" {
+  type        = string
+  default     = null
+  description = "The mode for CloudWatch Database Insights. Valid values: 'standard', 'advanced', or null."
+  validation {
+    condition     = (
+      var.database_insights_mode == null || (
+        contains(["standard", "advanced"], var.database_insights_mode)
+      )
+    )
+    error_message = "database_insights_mode must be one of: 'standard', 'advanced', or null."
+  }
+}
+
 variable "enabled_cloudwatch_logs_exports" {
   type        = list(string)
   default     = []
