@@ -319,7 +319,7 @@ variable "database_insights_mode" {
   type        = string
   default     = "standard"
   nullable    = false
-  description = "The mode for CloudWatch Database Insights. Valid values: 'standard', 'advanced', or null."
+  description = "The mode for CloudWatch Database Insights. Valid values: 'standard' or 'advanced'."
   validation {
     condition     = contains(["standard", "advanced"], var.database_insights_mode)
     error_message = "database_insights_mode must be one of: 'standard' (free) or 'advanced'."
