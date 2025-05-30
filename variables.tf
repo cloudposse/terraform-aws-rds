@@ -317,15 +317,12 @@ variable "performance_insights_retention_period" {
 
 variable "database_insights_mode" {
   type        = string
-  default     = null
+  default     = "standard"
+  nullable    = false
   description = "The mode for CloudWatch Database Insights. Valid values: 'standard', 'advanced', or null."
   validation {
-    condition     = (
-      var.database_insights_mode == null || (
-        contains(["standard", "advanced"], var.database_insights_mode)
-      )
-    )
-    error_message = "database_insights_mode must be one of: 'standard', 'advanced', or null."
+    condition     = contains(["standard", "advanced"], var.database_insights_mode)
+    error_message = "database_insights_mode must be one of: 'standard' (free) or 'advanced'."
   }
 }
 
