@@ -4,7 +4,8 @@ variable "region" {
 }
 
 variable "availability_zones" {
-  type = list(string)
+  description = "The AZ for the RDS instance. Specify one of `subnet_ids`, `db_subnet_group_name` or `availability_zone`. If `availability_zone` is provided, the instance will be placed into the default VPC or EC2 Classic"
+  type        = list(string)
 }
 
 variable "database_name" {
