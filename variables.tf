@@ -22,6 +22,12 @@ variable "allowed_cidr_blocks" {
   description = "The whitelisted CIDRs which to allow `ingress` traffic to the DB instance"
 }
 
+variable "allowed_prefix_list_ids" {
+  type        = list(string)
+  default     = []
+  description = "The list of prefix list IDs from which to allow `ingress` traffic to the DB instance"
+}
+
 variable "associate_security_group_ids" {
   type        = list(string)
   default     = []
