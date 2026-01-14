@@ -224,7 +224,7 @@ resource "aws_security_group_rule" "ingress_prefix_lists" {
   to_port           = var.database_port
   protocol          = "tcp"
   prefix_list_ids   = var.allowed_prefix_list_ids
-  security_group_id = join("", aws_security_group.default[*].id)
+  security_group_id = one(aws_security_group.default[*].id)
 }
 
 resource "aws_security_group_rule" "egress" {
