@@ -109,3 +109,10 @@ variable "apply_immediately" {
   type        = bool
   description = "Specifies whether any database modifications are applied immediately, or during the next maintenance window"
 }
+
+variable "blue_green_update_enabled" {
+  type        = bool
+  description = "Enables low-downtime updates using RDS Blue/Green deployments. Low-downtime updates are only available for DB Instances using MySQL, MariaDB and PostgreSQL, as other engines are not supported by RDS Blue/Green deployments. They cannot be used with DB Instances with replicas."
+  default     = false
+}
+
