@@ -89,6 +89,15 @@ resource "aws_db_instance" "default" {
   monitoring_interval = var.monitoring_interval
   monitoring_role_arn = var.monitoring_role_arn
 
+  # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/blue-green-deployments.html
+  dynamic "blue_green_update" {
+    for_each = var.blue_green_update_enabled ? [1] : []
+
+    content {
+      enabled = true
+    }
+  }
+
   dynamic "restore_to_point_in_time" {
     for_each = var.snapshot_identifier == null && var.restore_to_point_in_time != null ? [1] : []
 
