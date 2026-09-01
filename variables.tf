@@ -405,3 +405,9 @@ variable "restore_to_point_in_time" {
   description = "An object specifying the restore point in time for the DB instance to restore from. Only used when `snapshot_identifier` is not provided."
   default     = null
 }
+
+variable "delete_automated_backups" {
+  type        = bool
+  description = "Disable this to not deleet automated backups when deleting the DB instance."
+  default     = true
+}

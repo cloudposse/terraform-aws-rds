@@ -75,6 +75,7 @@ resource "aws_db_instance" "default" {
   backup_window               = var.backup_window
   tags                        = module.this.tags
   deletion_protection         = var.deletion_protection
+  delete_automated_backups    = var.delete_automated_backups
   final_snapshot_identifier   = length(var.final_snapshot_identifier) > 0 ? var.final_snapshot_identifier : module.final_snapshot_label.id
   replicate_source_db         = var.replicate_source_db
   timezone                    = var.timezone
