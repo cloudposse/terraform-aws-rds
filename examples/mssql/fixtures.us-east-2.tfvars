@@ -20,7 +20,7 @@ database_port = 1433
 
 multi_az = false
 
-storage_type = "standard"
+storage_type = "gp3"
 
 storage_encrypted = false
 
