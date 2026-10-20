@@ -20,11 +20,11 @@ database_port = 3306
 
 multi_az = false
 
-storage_type = "standard"
+storage_type = "gp3"
 
 storage_encrypted = false
 
-allocated_storage = 5
+allocated_storage = 20
 
 engine = "mysql"
 
